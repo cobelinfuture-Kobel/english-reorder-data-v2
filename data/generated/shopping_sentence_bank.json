@@ -1,0 +1,446 @@
+[
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_001",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want that black jacket.",
+    "chunks": [
+      "I want",
+      "that black jacket"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want that black jacket?",
+        "chunks": [
+          "Do you want",
+          "that black jacket",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want that black jacket.",
+        "chunks": [
+          "I do not want",
+          "that black jacket"
+        ]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_002",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want that green backpack.",
+    "chunks": [
+      "I want",
+      "that green backpack"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want that green backpack?",
+        "chunks": [
+          "Do you want",
+          "that green backpack",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want that green backpack.",
+        "chunks": [
+          "I do not want",
+          "that green backpack"
+        ]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_003",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want that white cap.",
+    "chunks": [
+      "I want",
+      "that white cap"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want that white cap?",
+        "chunks": [
+          "Do you want",
+          "that white cap",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want that white cap.",
+        "chunks": [
+          "I do not want",
+          "that white cap"
+        ]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_004",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want this white cap.",
+    "chunks": [
+      "I want",
+      "this white cap"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want this white cap?",
+        "chunks": [
+          "Do you want",
+          "this white cap",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want this white cap.",
+        "chunks": [
+          "I do not want",
+          "this white cap"
+        ]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_005",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want the green backpack.",
+    "chunks": [
+      "I want",
+      "the green backpack"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want the green backpack?",
+        "chunks": [
+          "Do you want",
+          "the green backpack",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want the green backpack.",
+        "chunks": [
+          "I do not want",
+          "the green backpack"
+        ]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_006",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want the white cap.",
+    "chunks": [
+      "I want",
+      "the white cap"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want the white cap?",
+        "chunks": [
+          "Do you want",
+          "the white cap",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want the white cap.",
+        "chunks": [
+          "I do not want",
+          "the white cap"
+        ]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_007",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want this blue shirt.",
+    "chunks": [
+      "I want",
+      "this blue shirt"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want this blue shirt?",
+        "chunks": [
+          "Do you want",
+          "this blue shirt",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want this blue shirt.",
+        "chunks": [
+          "I do not want",
+          "this blue shirt"
+        ]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_008",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want that blue shirt.",
+    "chunks": [
+      "I want",
+      "that blue shirt"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want that blue shirt?",
+        "chunks": [
+          "Do you want",
+          "that blue shirt",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want that blue shirt.",
+        "chunks": [
+          "I do not want",
+          "that blue shirt"
+        ]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_009",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want this black jacket.",
+    "chunks": [
+      "I want",
+      "this black jacket"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want this black jacket?",
+        "chunks": [
+          "Do you want",
+          "this black jacket",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want this black jacket.",
+        "chunks": [
+          "I do not want",
+          "this black jacket"
+        ]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_010",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want this green backpack.",
+    "chunks": [
+      "I want",
+      "this green backpack"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want this green backpack?",
+        "chunks": [
+          "Do you want",
+          "this green backpack",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want this green backpack.",
+        "chunks": [
+          "I do not want",
+          "this green backpack"
+        ]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_011",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want the blue shirt.",
+    "chunks": [
+      "I want",
+      "the blue shirt"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want the blue shirt?",
+        "chunks": [
+          "Do you want",
+          "the blue shirt",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want the blue shirt.",
+        "chunks": [
+          "I do not want",
+          "the blue shirt"
+        ]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOPPING_SHOP_WANT_012",
+    "level": "A1",
+    "scenario": "shopping",
+    "pattern_id": "SHOP_WANT",
+    "target_sentence": "I want the black jacket.",
+    "chunks": [
+      "I want",
+      "the black jacket"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "shopping_vocabulary",
+      "demonstratives"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you want the black jacket?",
+        "chunks": [
+          "Do you want",
+          "the black jacket",
+          "?"
+        ]
+      },
+      {
+        "task_type": "negative",
+        "target": "I do not want the black jacket.",
+        "chunks": [
+          "I do not want",
+          "the black jacket"
+        ]
+      }
+    ]
+  }
+]

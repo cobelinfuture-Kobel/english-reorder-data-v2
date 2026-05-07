@@ -1,0 +1,264 @@
+[
+  {
+    "sentence_id": "A1_ROUTINE_001",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "grammar_focus": ["present_simple", "time_expression"],
+    "target_sentence": "I wake up at six every day.",
+    "chunks": ["I", "wake up", "at six", "every day"],
+    "translation": "我每天六點起床。",
+    "difficulty_score": 1.0,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you wake up at six every day?",
+        "chunks": ["Do you", "wake up", "at six", "every day", "?"]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_ROUTINE_002",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "grammar_focus": ["present_simple", "adverb_of_frequency"],
+    "target_sentence": "She always brushes her teeth after lunch.",
+    "chunks": ["She", "always brushes", "her teeth", "after lunch"],
+    "translation": "她總是在午餐後刷牙。",
+    "difficulty_score": 1.1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_ROUTINE_003",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "grammar_focus": ["present_simple", "daily_activity"],
+    "target_sentence": "We do homework in the evening.",
+    "chunks": ["We", "do homework", "in the evening"],
+    "translation": "我們晚上做功課。",
+    "difficulty_score": 1.0,
+    "fsi_tasks": [
+      {
+        "task_type": "negative",
+        "target": "We do not do homework in the evening.",
+        "chunks": ["We", "do not do", "homework", "in the evening"]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_ROUTINE_004",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "grammar_focus": ["present_simple", "adverb_of_frequency"],
+    "target_sentence": "I usually drink milk for breakfast.",
+    "chunks": ["I", "usually", "drink milk", "for breakfast"],
+    "translation": "我早餐通常喝牛奶。",
+    "difficulty_score": 1.2,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Do you usually drink milk for breakfast?",
+        "chunks": ["Do you", "usually", "drink milk", "for breakfast", "?"]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_ROUTINE_005",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "grammar_focus": ["present_simple", "sequence_words"],
+    "target_sentence": "He takes a shower before school.",
+    "chunks": ["He", "takes a shower", "before school"],
+    "translation": "他上學前洗澡。",
+    "difficulty_score": 1.1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_001",
+    "level": "A1",
+    "scenario": "food_drink",
+    "grammar_focus": ["countable_nouns", "food_vocabulary"],
+    "target_sentence": "I want two sandwiches and a juice.",
+    "chunks": ["I", "want", "two sandwiches", "and a juice"],
+    "translation": "我想要兩個三明治和一杯果汁。",
+    "difficulty_score": 1.1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_002",
+    "level": "A1",
+    "scenario": "food_drink",
+    "grammar_focus": ["like_verb", "food_vocabulary"],
+    "target_sentence": "My brother likes spicy noodles.",
+    "chunks": ["My brother", "likes", "spicy noodles"],
+    "translation": "我哥哥喜歡辣麵。",
+    "difficulty_score": 1.0,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Does your brother like spicy noodles?",
+        "chunks": ["Does your brother", "like", "spicy noodles", "?"]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_FOOD_003",
+    "level": "A1",
+    "scenario": "food_drink",
+    "grammar_focus": ["there_is_are", "restaurant_language"],
+    "target_sentence": "There is fresh bread on the table.",
+    "chunks": ["There is", "fresh bread", "on the table"],
+    "translation": "桌上有新鮮麵包。",
+    "difficulty_score": 1.2,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_004",
+    "level": "A1",
+    "scenario": "food_drink",
+    "grammar_focus": ["can_request", "drink_vocabulary"],
+    "target_sentence": "Can I have a cup of hot tea?",
+    "chunks": ["Can I", "have", "a cup of hot tea", "?"],
+    "translation": "我可以來一杯熱茶嗎？",
+    "difficulty_score": 1.2,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_005",
+    "level": "A1",
+    "scenario": "food_drink",
+    "grammar_focus": ["negation", "food_preference"],
+    "target_sentence": "She does not eat eggs in the morning.",
+    "chunks": ["She", "does not eat", "eggs", "in the morning"],
+    "translation": "她早上不吃蛋。",
+    "difficulty_score": 1.3,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Does she eat eggs in the morning?",
+        "chunks": ["Does she", "eat", "eggs", "in the morning", "?"]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOP_001",
+    "level": "A1",
+    "scenario": "shopping",
+    "grammar_focus": ["price_question", "shopping_vocabulary"],
+    "target_sentence": "How much is this blue hat?",
+    "chunks": ["How much", "is", "this blue hat", "?"],
+    "translation": "這頂藍色帽子多少錢？",
+    "difficulty_score": 1.2,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_SHOP_002",
+    "level": "A1",
+    "scenario": "shopping",
+    "grammar_focus": ["demonstratives", "shopping_vocabulary"],
+    "target_sentence": "These shoes are too small for me.",
+    "chunks": ["These shoes", "are", "too small", "for me"],
+    "translation": "這雙鞋對我來說太小了。",
+    "difficulty_score": 1.2,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_SHOP_003",
+    "level": "A1",
+    "scenario": "shopping",
+    "grammar_focus": ["can_request", "shopping_vocabulary"],
+    "target_sentence": "Can you show me a cheaper bag?",
+    "chunks": ["Can you", "show me", "a cheaper bag", "?"],
+    "translation": "你可以拿一個更便宜的包包給我看嗎？",
+    "difficulty_score": 1.3,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_SHOP_004",
+    "level": "A1",
+    "scenario": "shopping",
+    "grammar_focus": ["present_simple", "shopping_actions"],
+    "target_sentence": "We buy fruit at the night market.",
+    "chunks": ["We", "buy fruit", "at the night market"],
+    "translation": "我們在夜市買水果。",
+    "difficulty_score": 1.0,
+    "fsi_tasks": [
+      {
+        "task_type": "negative",
+        "target": "We do not buy fruit at the night market.",
+        "chunks": ["We", "do not buy", "fruit", "at the night market"]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A1_SHOP_005",
+    "level": "A1",
+    "scenario": "shopping",
+    "grammar_focus": ["quantity", "shopping_vocabulary"],
+    "target_sentence": "I need three notebooks for class.",
+    "chunks": ["I", "need", "three notebooks", "for class"],
+    "translation": "我上課需要三本筆記本。",
+    "difficulty_score": 1.1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A2_TRAVEL_001",
+    "level": "A2",
+    "scenario": "travel_holiday",
+    "grammar_focus": ["future_plan", "travel_vocabulary"],
+    "target_sentence": "We are going to visit Tainan next weekend.",
+    "chunks": ["We", "are going to visit", "Tainan", "next weekend"],
+    "translation": "我們下個週末要去台南。",
+    "difficulty_score": 1.4,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A2_TRAVEL_002",
+    "level": "A2",
+    "scenario": "travel_holiday",
+    "grammar_focus": ["comparatives", "hotel_vocabulary"],
+    "target_sentence": "This hotel is cleaner than the last one.",
+    "chunks": ["This hotel", "is cleaner", "than", "the last one"],
+    "translation": "這家旅館比上一家更乾淨。",
+    "difficulty_score": 1.5,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A2_TRAVEL_003",
+    "level": "A2",
+    "scenario": "travel_holiday",
+    "grammar_focus": ["past_simple", "travel_actions"],
+    "target_sentence": "They missed the train yesterday morning.",
+    "chunks": ["They", "missed", "the train", "yesterday morning"],
+    "translation": "他們昨天早上錯過火車了。",
+    "difficulty_score": 1.5,
+    "fsi_tasks": [
+      {
+        "task_type": "question",
+        "target": "Did they miss the train yesterday morning?",
+        "chunks": ["Did they", "miss", "the train", "yesterday morning", "?"]
+      }
+    ]
+  },
+  {
+    "sentence_id": "A2_TRAVEL_004",
+    "level": "A2",
+    "scenario": "travel_holiday",
+    "grammar_focus": ["must", "airport_language"],
+    "target_sentence": "You must show your passport at the gate.",
+    "chunks": ["You", "must show", "your passport", "at the gate"],
+    "translation": "你必須在登機口出示護照。",
+    "difficulty_score": 1.4,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A2_TRAVEL_005",
+    "level": "A2",
+    "scenario": "travel_holiday",
+    "grammar_focus": ["direction_language", "prepositions"],
+    "target_sentence": "The museum is across from the station.",
+    "chunks": ["The museum", "is", "across from", "the station"],
+    "translation": "博物館就在車站對面。",
+    "difficulty_score": 1.3,
+    "fsi_tasks": []
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "schema_version": "2.0",
+  "routine_action_phrases": [
+    {"text": "make my bed"},
+    {"text": "wash my face"},
+    {"text": "pack my school bag"},
+    {"text": "check my homework"},
+    {"text": "water the plants"},
+    {"text": "feed the dog"},
+    {"text": "open the windows"},
+    {"text": "clean the table"},
+    {"text": "review new words"},
+    {"text": "stretch for ten minutes"},
+    {"text": "prepare my lunch"},
+    {"text": "write a short plan"}
+  ]
+}

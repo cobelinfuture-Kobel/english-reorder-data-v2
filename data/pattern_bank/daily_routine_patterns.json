@@ -1,0 +1,25 @@
+{
+  "schema_version": "2.0",
+  "scenario": "daily_routine",
+  "patterns": ["ROUTINE_DO"],
+  "ROUTINE_DO": {
+    "pattern_id": "ROUTINE_DO",
+    "description": "Learner describes a daily morning action.",
+    "variants": {
+      "A1": {
+        "template": "I {routine_phrase} every morning.",
+        "chunks_template": ["I", "{routine_phrase}", "every morning"],
+        "slot_constraints": {
+          "routine_phrase": {
+            "category": ["routine_action_phrases"]
+          }
+        },
+        "grammar_focus": ["present_simple", "daily_activity", "time_expression"],
+        "fsi_rules": [],
+        "complexity": {
+          "depth": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "2.0",
+  "scenario": "shopping",
+  "patterns": ["SHOP_WANT"],
+  "SHOP_WANT": {
+    "pattern_id": "SHOP_WANT",
+    "description": "Learner expresses a direct shopping preference.",
+    "variants": {
+      "A1": {
+        "template": "I want {object}.",
+        "chunks_template": ["I want", "{object}"],
+        "slot_constraints": {
+          "object": {
+            "category": ["shopping_request_objects"]
+          }
+        },
+        "grammar_focus": ["present_simple", "shopping_vocabulary", "demonstratives"],
+        "fsi_rules": ["question", "negative"],
+        "complexity": {
+          "depth": 1
+        }
+      }
+    }
+  }
+}

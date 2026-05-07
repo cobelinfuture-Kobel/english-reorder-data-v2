@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Mission Control</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body>
+    <div id="game-container">
+        <div id="login-view">
+            <div class="launcher-header">
+                <h1>English Mission Control</h1>
+                <p>Enter a username to start and save your progress.</p>
+            </div>
+            <div class="login-panel">
+                <label class="picker-label" for="username-input">Username</label>
+                <input id="username-input" type="text" maxlength="32" autocomplete="username" placeholder="Tom">
+                <button id="login-btn" type="button">Login</button>
+                <p id="login-error" class="error-text" hidden></p>
+            </div>
+        </div>
+
+        <div id="launcher-view">
+            <div class="launcher-header">
+                <h1>English Mission Control</h1>
+                <p>Choose your level and scenario to start the mission.</p>
+            </div>
+            <div id="user-session-bar" hidden>
+                <span id="user-session-text"></span>
+                <button id="logout-btn" type="button" class="btn-secondary">Switch User</button>
+            </div>
+
+            <div id="level-picker">
+                <span class="picker-label">Choose Level:</span>
+                <div class="level-options">
+                    <button class="level-chip is-selected" type="button" data-level="A1">A1</button>
+                    <button class="level-chip" type="button" data-level="A1+">A1+</button>
+                    <button class="level-chip" type="button" data-level="A2">A2</button>
+                    <button class="level-chip" type="button" data-level="A2+">A2+</button>
+                </div>
+            </div>
+
+            <div class="scenario-grid">
+                <button class="scenario-card" type="button" data-scenario="daily_routine">
+                    <span class="icon">DR</span>
+                    <span class="label">Daily Routine</span>
+                </button>
+                <button class="scenario-card" type="button" data-scenario="food_drink">
+                    <span class="icon">FD</span>
+                    <span class="label">Food & Drink</span>
+                </button>
+                <button class="scenario-card" type="button" data-scenario="shopping">
+                    <span class="icon">SP</span>
+                    <span class="label">Shopping</span>
+                </button>
+                <button class="scenario-card" type="button" data-scenario="travel_holiday">
+                    <span class="icon">TH</span>
+                    <span class="label">Travel & Holiday</span>
+                </button>
+            </div>
+        </div>
+
+        <section id="learning-summary-panel" class="learning-summary-panel" hidden>
+            <div class="learning-summary-cards">
+                <div class="summary-card">
+                    <span class="summary-card-label">Total Attempts</span>
+                    <strong id="summary-total-attempts">--</strong>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-card-label">Accuracy</span>
+                    <strong id="summary-accuracy">--</strong>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-card-label">最近10題正確率</span>
+                    <strong id="summary-recent-accuracy">--</strong>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-card-label">Coverage</span>
+                    <strong id="summary-coverage">--</strong>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-card-label">Not Attempted</span>
+                    <strong id="summary-not-attempted">--</strong>
+                </div>
+            </div>
+
+            <div id="weak-patterns-panel" class="weak-patterns-panel">
+                <h3 class="next-practice-title">Weak Patterns</h3>
+                <ul id="weak-patterns-list" class="next-practice-list"></ul>
+            </div>
+
+            <aside id="next-practice-panel" class="next-practice-panel">
+                <h3 class="next-practice-title">Next Practice</h3>
+                <p id="next-practice-status" class="next-practice-status"></p>
+                <ul id="next-practice-list" class="next-practice-list"></ul>
+            </aside>
+        </section>
+
+        <div id="game-play-area" hidden>
+            <div id="status-bar">
+                <div id="hearts">❤️❤️❤️</div>
+                <div class="progress-outer">
+                    <div id="progress-fill" style="width: 0%"></div>
+                </div>
+                <div id="score-display">Score: 0</div>
+            </div>
+
+            <div id="header">
+                <h2 id="scenario-display">Loading...</h2>
+                <div id="fsi-instruction" class="fsi-hint"></div>
+                <p id="translation-display">Build the sentence by dragging chunks into the answer zone.</p>
+            </div>
+
+            <div class="zone-label">Answer Zone</div>
+            <div id="drop-zone" class="sortable-list"></div>
+
+            <div class="zone-label">Chunk Pool</div>
+            <div id="pool-zone" class="sortable-list"></div>
+
+            <div id="controls">
+                <button id="submit-btn" type="button">Submit</button>
+                <button id="next-btn" type="button" hidden>Next</button>
+                <button id="replay-voice-btn" type="button" class="btn-secondary" title="Listen again">Replay</button>
+            </div>
+
+            <div id="feedback" aria-live="polite"></div>
+
+            <div id="summary-view" hidden>
+                <div class="summary-header">
+                    <h1>Mission Complete</h1>
+                    <p id="summary-score-text">Final Score: 0</p>
+                    <p id="bonus-score-note" hidden></p>
+                    <div id="resilience-badge" hidden></div>
+                </div>
+
+                <div id="coach-feedback" class="coach-bubble" hidden>
+                    <div id="coach-title" class="coach-title"></div>
+                    <ol id="coach-steps" class="coach-steps"></ol>
+                </div>
+
+                <div class="summary-stats">
+                    <div class="stat-card">
+                        <span class="stat-label">Hearts Left</span>
+                        <span id="final-hearts">3</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Completed Items</span>
+                        <span id="completed-count">0</span>
+                    </div>
+                </div>
+
+                <h3>Mastered Topics</h3>
+                <ul id="mastered-topics"></ul>
+
+                <div id="skill-report-panel" class="skill-report-panel">
+                    <h3>Learning Report</h3>
+                    <p id="skill-report-empty" hidden>No skill data yet.</p>
+                    <div class="skill-report-grid">
+                        <div class="skill-report-card">
+                            <span class="skill-report-label">Weak</span>
+                            <ul id="weak-skills" class="skill-report-list"></ul>
+                        </div>
+                        <div class="skill-report-card">
+                            <span class="skill-report-label">Developing</span>
+                            <ul id="developing-skills" class="skill-report-list"></ul>
+                        </div>
+                        <div class="skill-report-card">
+                            <span class="skill-report-label">Strong</span>
+                            <ul id="strong-skills" class="skill-report-list"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="restart-btn" type="button">Play Again</button>
+            </div>
+
+            <div id="game-over-view" hidden>
+                <h1 class="text-danger">Mission Paused</h1>
+                <p>Mistakes are part of learning. Let&apos;s repair the weak spots.</p>
+
+                <div id="coach-feedback-over" class="coach-bubble" hidden>
+                    <div id="coach-title-over" class="coach-title"></div>
+                    <ol id="coach-steps-over" class="coach-steps"></ol>
+                </div>
+
+                <div id="mistake-analysis">
+                    <h3>Questions that need attention</h3>
+                    <ul id="mistake-list"></ul>
+                </div>
+
+                <div class="control-group">
+                    <button id="quit-btn" type="button" class="btn-secondary">Back to Launcher</button>
+                    <button id="review-btn" type="button" class="btn-success">Review Mistakes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>

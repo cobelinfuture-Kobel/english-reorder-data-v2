@@ -1,0 +1,17 @@
+{
+  "schema_version": "2.0",
+  "food_preference_phrases": [
+    {"text": "hot noodle soup"},
+    {"text": "fresh fruit salad"},
+    {"text": "grilled chicken rice"},
+    {"text": "cold lemon tea"},
+    {"text": "spicy tofu noodles"},
+    {"text": "sweet mango ice"},
+    {"text": "warm tomato soup"},
+    {"text": "crispy fish tacos"},
+    {"text": "garlic fried rice"},
+    {"text": "soft chocolate cake"},
+    {"text": "iced peach tea"},
+    {"text": "cheese vegetable pasta"}
+  ]
+}

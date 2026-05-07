@@ -1,0 +1,25 @@
+{
+  "schema_version": "2.0",
+  "scenario": "food_drink",
+  "patterns": ["FOOD_LIKE"],
+  "FOOD_LIKE": {
+    "pattern_id": "FOOD_LIKE",
+    "description": "Learner describes a basic food preference.",
+    "variants": {
+      "A1": {
+        "template": "My sister likes {food_phrase}.",
+        "chunks_template": ["My sister", "likes", "{food_phrase}"],
+        "slot_constraints": {
+          "food_phrase": {
+            "category": ["food_preference_phrases"]
+          }
+        },
+        "grammar_focus": ["like_verb", "food_vocabulary"],
+        "fsi_rules": [],
+        "complexity": {
+          "depth": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,242 @@
+[
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_001",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I pack my school bag every morning.",
+    "chunks": [
+      "I",
+      "pack my school bag",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_002",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I review new words every morning.",
+    "chunks": [
+      "I",
+      "review new words",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_003",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I prepare my lunch every morning.",
+    "chunks": [
+      "I",
+      "prepare my lunch",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_004",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I wash my face every morning.",
+    "chunks": [
+      "I",
+      "wash my face",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_005",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I water the plants every morning.",
+    "chunks": [
+      "I",
+      "water the plants",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_006",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I stretch for ten minutes every morning.",
+    "chunks": [
+      "I",
+      "stretch for ten minutes",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_007",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I feed the dog every morning.",
+    "chunks": [
+      "I",
+      "feed the dog",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_008",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I make my bed every morning.",
+    "chunks": [
+      "I",
+      "make my bed",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_009",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I write a short plan every morning.",
+    "chunks": [
+      "I",
+      "write a short plan",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_010",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I open the windows every morning.",
+    "chunks": [
+      "I",
+      "open the windows",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_011",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I clean the table every morning.",
+    "chunks": [
+      "I",
+      "clean the table",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_DAILY_ROUTINE_ROUTINE_DO_012",
+    "level": "A1",
+    "scenario": "daily_routine",
+    "pattern_id": "ROUTINE_DO",
+    "target_sentence": "I check my homework every morning.",
+    "chunks": [
+      "I",
+      "check my homework",
+      "every morning"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "present_simple",
+      "daily_activity",
+      "time_expression"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "schema_version": "2.0",
+  "shopping_request_objects": [
+    {"text": "this blue shirt"},
+    {"text": "this black jacket"},
+    {"text": "this white cap"},
+    {"text": "this green backpack"},
+    {"text": "that blue shirt"},
+    {"text": "that black jacket"},
+    {"text": "that white cap"},
+    {"text": "that green backpack"},
+    {"text": "the blue shirt"},
+    {"text": "the black jacket"},
+    {"text": "the white cap"},
+    {"text": "the green backpack"}
+  ]
+}

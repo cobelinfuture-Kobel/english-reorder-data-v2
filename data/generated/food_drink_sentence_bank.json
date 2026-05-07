@@ -1,0 +1,230 @@
+[
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_001",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes crispy fish tacos.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "crispy fish tacos"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_002",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes cold lemon tea.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "cold lemon tea"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_003",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes soft chocolate cake.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "soft chocolate cake"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_004",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes grilled chicken rice.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "grilled chicken rice"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_005",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes garlic fried rice.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "garlic fried rice"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_006",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes fresh fruit salad.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "fresh fruit salad"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_007",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes iced peach tea.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "iced peach tea"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_008",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes hot noodle soup.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "hot noodle soup"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_009",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes sweet mango ice.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "sweet mango ice"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_010",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes cheese vegetable pasta.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "cheese vegetable pasta"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_011",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes spicy tofu noodles.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "spicy tofu noodles"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  },
+  {
+    "sentence_id": "A1_FOOD_DRINK_FOOD_LIKE_012",
+    "level": "A1",
+    "scenario": "food_drink",
+    "pattern_id": "FOOD_LIKE",
+    "target_sentence": "My sister likes warm tomato soup.",
+    "chunks": [
+      "My sister",
+      "likes",
+      "warm tomato soup"
+    ],
+    "translation": "",
+    "grammar_focus": [
+      "like_verb",
+      "food_vocabulary"
+    ],
+    "difficulty_score": 1,
+    "fsi_tasks": []
+  }
+]

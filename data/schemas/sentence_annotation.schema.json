@@ -1,0 +1,317 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/sentence_annotation.schema.json",
+  "title": "Sentence-First Annotation Registry",
+  "type": "object",
+  "required": [
+    "metadata",
+    "sentences"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": [
+        "curriculum",
+        "level",
+        "level_order",
+        "scenario_id",
+        "scenario_order",
+        "scenario_title",
+        "annotation_version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "curriculum": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level": {
+          "$ref": "#/$defs/level"
+        },
+        "level_order": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "scenario_id": {
+          "type": "string",
+          "pattern": "^\\d{2}_[a-z0-9_]+$"
+        },
+        "scenario_order": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 15
+        },
+        "scenario_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "annotation_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "level": {
+                "const": "A1"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "level_order": {
+                "const": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "level": {
+                "const": "A1+"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "level_order": {
+                "const": 2
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "level": {
+                "const": "A2"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "level_order": {
+                "const": 3
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "level": {
+                "const": "A2+"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "level_order": {
+                "const": 4
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "level": {
+                "const": "B1"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "level_order": {
+                "const": 5
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "level": {
+                "const": "B1+"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "level_order": {
+                "const": 6
+              }
+            }
+          }
+        }
+      ]
+    },
+    "sentences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sentence"
+      }
+    }
+  },
+  "$defs": {
+    "level": {
+      "type": "string",
+      "enum": [
+        "A1",
+        "A1+",
+        "A2",
+        "A2+",
+        "B1",
+        "B1+"
+      ]
+    },
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "chunk": {
+      "type": "object",
+      "required": [
+        "slot",
+        "text",
+        "semantic_group",
+        "form"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "slot": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "semantic_group": {
+          "type": "string",
+          "minLength": 1
+        },
+        "form": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "generator": {
+      "type": "object",
+      "required": [
+        "safe_for_substitution",
+        "safe_slots",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "safe_for_substitution": {
+          "type": "boolean"
+        },
+        "safe_slots": {
+          "$ref": "#/$defs/string_array"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "sentence": {
+      "type": "object",
+      "required": [
+        "id",
+        "text",
+        "zh",
+        "level",
+        "scenario_id",
+        "scenario_role",
+        "communicative_function",
+        "grammar",
+        "pattern",
+        "slots",
+        "chunks",
+        "words",
+        "drill_tags",
+        "generator"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "zh": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level": {
+          "$ref": "#/$defs/level"
+        },
+        "scenario_id": {
+          "type": "string",
+          "pattern": "^\\d{2}_[a-z0-9_]+$"
+        },
+        "scenario_role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "communicative_function": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grammar": {
+          "$ref": "#/$defs/string_array"
+        },
+        "pattern": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slots": {
+          "type": "object"
+        },
+        "chunks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/chunk"
+          }
+        },
+        "words": {
+          "$ref": "#/$defs/string_array"
+        },
+        "drill_tags": {
+          "$ref": "#/$defs/string_array"
+        },
+        "expected_answers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "cross_training_for": {
+          "$ref": "#/$defs/string_array"
+        },
+        "source_refs": {
+          "$ref": "#/$defs/string_array"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "generator": {
+          "$ref": "#/$defs/generator"
+        }
+      }
+    }
+  }
+}

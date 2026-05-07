@@ -1,0 +1,319 @@
+{
+  "metadata": {
+    "curriculum": "core_adventure",
+    "level": "A1",
+    "level_order": 1,
+    "scenario_id": "01_personal_info",
+    "scenario_order": 1,
+    "scenario_title": "Personal Info",
+    "annotation_version": "0.1.0"
+  },
+  "sentences": [
+    {
+      "id": "A1_01_personal_info_0001",
+      "text": "I am seven years old.",
+      "zh": "我七歲。",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "core",
+      "communicative_function": "state_personal_age",
+      "grammar": ["be_verb", "first_person_singular", "affirmative_statement"],
+      "pattern": "I am {age_chunk}.",
+      "slots": {
+        "age_chunk": "seven years old"
+      },
+      "chunks": [
+        {
+          "slot": "age_chunk",
+          "text": "seven years old",
+          "semantic_group": "age",
+          "form": "adjective_phrase"
+        }
+      ],
+      "words": ["I", "am", "seven", "years old"],
+      "drill_tags": ["echo", "rapid_substitution", "identity_response"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["age_chunk"],
+        "notes": "Keep 'seven years old' as a phrase chunk. Do not reduce to 'seven' in this pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0002",
+      "text": "Are you a student?",
+      "zh": "你是學生嗎？",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "core",
+      "communicative_function": "ask_role_identity",
+      "grammar": ["be_verb", "second_person", "yes_no_question"],
+      "pattern": "Are you {role_chunk}?",
+      "slots": {
+        "role_chunk": "a student"
+      },
+      "chunks": [
+        {
+          "slot": "role_chunk",
+          "text": "a student",
+          "semantic_group": "role_identity",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": ["are", "you", "a", "student"],
+      "drill_tags": ["rapid_substitution", "yes_no_answer", "identity_question"],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I'm not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["role_chunk"],
+        "notes": "Use phrase chunk 'a student', not raw noun 'student'."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0003",
+      "text": "She is from Taiwan.",
+      "zh": "她來自台灣。",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "core",
+      "communicative_function": "state_origin",
+      "grammar": ["be_verb", "third_person_singular", "affirmative_statement"],
+      "pattern": "{third_person_singular} is {origin_chunk}.",
+      "slots": {
+        "third_person_singular": "She",
+        "origin_chunk": "from Taiwan"
+      },
+      "chunks": [
+        {
+          "slot": "origin_chunk",
+          "text": "from Taiwan",
+          "semantic_group": "origin",
+          "form": "prepositional_phrase"
+        }
+      ],
+      "words": ["she", "is", "from", "Taiwan"],
+      "drill_tags": ["pronoun_switch", "be_verb_agreement", "identity_statement"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["third_person_singular", "origin_chunk"],
+        "notes": "Origin should use prepositional phrase 'from Taiwan'. Do not generate 'She is Taiwan.'"
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0004",
+      "text": "I am happy.",
+      "zh": "我很開心。",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "extension",
+      "communicative_function": "state_feeling",
+      "grammar": ["be_verb", "first_person_singular", "affirmative_statement", "adjective_complement"],
+      "pattern": "I am {feeling_adjective}.",
+      "slots": {
+        "feeling_adjective": "happy"
+      },
+      "chunks": [
+        {
+          "slot": "feeling_adjective",
+          "text": "happy",
+          "semantic_group": "feeling",
+          "form": "adjective"
+        }
+      ],
+      "words": ["I", "am", "happy"],
+      "drill_tags": ["echo", "rapid_substitution", "feeling_response"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["feeling_adjective"],
+        "notes": "Can be mixed with Health & Body scenario."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0005",
+      "text": "Are you tired?",
+      "zh": "你累嗎？",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "extension",
+      "communicative_function": "ask_feeling",
+      "grammar": ["be_verb", "second_person", "yes_no_question", "adjective_complement"],
+      "pattern": "Are you {feeling_adjective}?",
+      "slots": {
+        "feeling_adjective": "tired"
+      },
+      "chunks": [
+        {
+          "slot": "feeling_adjective",
+          "text": "tired",
+          "semantic_group": "feeling",
+          "form": "adjective"
+        }
+      ],
+      "words": ["are", "you", "tired"],
+      "drill_tags": ["rapid_substitution", "yes_no_answer", "feeling_question"],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I'm not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["feeling_adjective"],
+        "notes": "Question pattern shares answer form with identity questions."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0006",
+      "text": "He is a teacher.",
+      "zh": "他是一位老師。",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "core",
+      "communicative_function": "state_role_identity",
+      "grammar": ["be_verb", "third_person_singular", "affirmative_statement"],
+      "pattern": "{third_person_singular} is {role_chunk}.",
+      "slots": {
+        "third_person_singular": "He",
+        "role_chunk": "a teacher"
+      },
+      "chunks": [
+        {
+          "slot": "role_chunk",
+          "text": "a teacher",
+          "semantic_group": "role_identity",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": ["he", "is", "a", "teacher"],
+      "drill_tags": ["pronoun_switch", "be_verb_agreement", "identity_statement"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["third_person_singular", "role_chunk"],
+        "notes": "Use phrase chunk 'a teacher', not raw noun 'teacher'."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0007",
+      "text": "I am not hungry.",
+      "zh": "我不餓。",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "extension",
+      "communicative_function": "state_negative_feeling",
+      "grammar": ["be_verb", "first_person_singular", "negative_statement", "adjective_complement"],
+      "pattern": "I am not {feeling_adjective}.",
+      "slots": {
+        "feeling_adjective": "hungry"
+      },
+      "chunks": [
+        {
+          "slot": "feeling_adjective",
+          "text": "hungry",
+          "semantic_group": "physical_state",
+          "form": "adjective"
+        }
+      ],
+      "words": ["I", "am", "not", "hungry"],
+      "drill_tags": ["negative_transformation", "rapid_substitution", "feeling_response"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["feeling_adjective"],
+        "notes": "Store negative as pattern-level grammar, not as chunk 'not hungry'."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0008",
+      "text": "Are you brave?",
+      "zh": "你勇敢嗎？",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "extension",
+      "communicative_function": "ask_trait",
+      "grammar": ["be_verb", "second_person", "yes_no_question", "adjective_complement"],
+      "pattern": "Are you {trait_adjective}?",
+      "slots": {
+        "trait_adjective": "brave"
+      },
+      "chunks": [
+        {
+          "slot": "trait_adjective",
+          "text": "brave",
+          "semantic_group": "trait",
+          "form": "adjective"
+        }
+      ],
+      "words": ["are", "you", "brave"],
+      "drill_tags": ["rapid_substitution", "yes_no_answer", "trait_question"],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I'm not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["trait_adjective"],
+        "notes": "Trait adjectives can be grouped separately from temporary feelings."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0009",
+      "text": "She is ten.",
+      "zh": "她十歲。",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "core",
+      "communicative_function": "state_personal_age",
+      "grammar": ["be_verb", "third_person_singular", "affirmative_statement"],
+      "pattern": "{third_person_singular} is {age_short_chunk}.",
+      "slots": {
+        "third_person_singular": "She",
+        "age_short_chunk": "ten"
+      },
+      "chunks": [
+        {
+          "slot": "age_short_chunk",
+          "text": "ten",
+          "semantic_group": "age",
+          "form": "number_as_age"
+        }
+      ],
+      "words": ["she", "is", "ten"],
+      "drill_tags": ["pronoun_switch", "be_verb_agreement", "age_statement"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["third_person_singular", "age_short_chunk"],
+        "notes": "In A1 spoken English, 'She is ten' is acceptable as age expression. Keep separate from 'ten years old' for chunk-level control."
+      }
+    },
+    {
+      "id": "A1_05_weather_environment_0001",
+      "text": "It is sunny.",
+      "zh": "天氣晴朗。",
+      "level": "A1",
+      "scenario_id": "05_weather_environment",
+      "scenario_role": "cross_training",
+      "communicative_function": "state_weather",
+      "grammar": ["be_verb", "third_person_singular_it", "affirmative_statement", "weather_expression"],
+      "pattern": "It is {weather_adjective}.",
+      "slots": {
+        "weather_adjective": "sunny"
+      },
+      "chunks": [
+        {
+          "slot": "weather_adjective",
+          "text": "sunny",
+          "semantic_group": "weather",
+          "form": "adjective"
+        }
+      ],
+      "words": ["it", "is", "sunny"],
+      "drill_tags": ["weather_response", "cross_scenario_mix"],
+      "cross_training_for": ["A1_01_personal_info"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["weather_adjective"],
+        "notes": "Belongs to scenario 05 Weather & Environment, but can be mixed with scenario 01 be-verb reaction drills."
+      }
+    }
+  ]
+}

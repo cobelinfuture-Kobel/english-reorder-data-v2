@@ -1,0 +1,313 @@
+{
+  "metadata": {
+    "curriculum": "core_adventure",
+    "level": "A1",
+    "level_order": 1,
+    "scenario_id": "02_family_friends",
+    "scenario_order": 2,
+    "scenario_title": "Family & Friends",
+    "annotation_version": "0.1.0"
+  },
+  "sentences": [
+    {
+      "id": "A1_02_family_friends_0001",
+      "text": "This is my mother.",
+      "zh": "這是我的媽媽。",
+      "level": "A1",
+      "scenario_id": "02_family_friends",
+      "scenario_role": "core",
+      "communicative_function": "introduce_family_member",
+      "grammar": ["demonstrative_this", "be_verb", "third_person_singular", "possessive_adjective", "affirmative_statement"],
+      "pattern": "This is {possessive_relationship_chunk}.",
+      "slots": {
+        "possessive_relationship_chunk": "my mother"
+      },
+      "chunks": [
+        {
+          "slot": "possessive_relationship_chunk",
+          "text": "my mother",
+          "semantic_group": "family_relationship",
+          "form": "possessive_noun_phrase"
+        }
+      ],
+      "words": ["this", "is", "my", "mother"],
+      "drill_tags": ["echo", "rapid_substitution", "family_introduction"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["possessive_relationship_chunk"],
+        "notes": "Keep 'my mother' as a phrase chunk. Do not generate 'This is mother.'"
+      }
+    },
+    {
+      "id": "A1_02_family_friends_0002",
+      "text": "Is he your best friend?",
+      "zh": "他是你最好的朋友嗎？",
+      "level": "A1",
+      "scenario_id": "02_family_friends",
+      "scenario_role": "core",
+      "communicative_function": "ask_relationship_identity",
+      "grammar": ["be_verb", "third_person_singular", "yes_no_question", "possessive_adjective"],
+      "pattern": "Is he {possessive_relationship_chunk}?",
+      "slots": {
+        "possessive_relationship_chunk": "your best friend"
+      },
+      "chunks": [
+        {
+          "slot": "possessive_relationship_chunk",
+          "text": "your best friend",
+          "semantic_group": "friend_relationship",
+          "form": "possessive_noun_phrase"
+        }
+      ],
+      "words": ["is", "he", "your", "best", "friend"],
+      "drill_tags": ["rapid_substitution", "yes_no_answer", "relationship_question"],
+      "expected_answers": {
+        "yes": "Yes, he is.",
+        "no": "No, he isn't."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["possessive_relationship_chunk"],
+        "notes": "Use a complete possessive noun phrase such as 'your best friend'."
+      }
+    },
+    {
+      "id": "A1_02_family_friends_0003",
+      "text": "She is a kind girl.",
+      "zh": "她是一個善良的女孩。",
+      "level": "A1",
+      "scenario_id": "02_family_friends",
+      "scenario_role": "core",
+      "communicative_function": "describe_person_identity",
+      "grammar": ["be_verb", "third_person_singular", "affirmative_statement", "adjective_before_noun"],
+      "pattern": "She is {person_description_chunk}.",
+      "slots": {
+        "person_description_chunk": "a kind girl"
+      },
+      "chunks": [
+        {
+          "slot": "person_description_chunk",
+          "text": "a kind girl",
+          "semantic_group": "person_description",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": ["she", "is", "a", "kind", "girl"],
+      "drill_tags": ["echo", "rapid_substitution", "person_description"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["person_description_chunk"],
+        "notes": "Keep 'a kind girl' as a noun phrase chunk to preserve article and adjective order."
+      }
+    },
+    {
+      "id": "A1_02_family_friends_0004",
+      "text": "He is my big brother.",
+      "zh": "他是我的哥哥。",
+      "level": "A1",
+      "scenario_id": "02_family_friends",
+      "scenario_role": "core",
+      "communicative_function": "state_family_relationship",
+      "grammar": ["be_verb", "third_person_singular", "affirmative_statement", "possessive_adjective", "adjective_before_noun"],
+      "pattern": "He is {possessive_relationship_chunk}.",
+      "slots": {
+        "possessive_relationship_chunk": "my big brother"
+      },
+      "chunks": [
+        {
+          "slot": "possessive_relationship_chunk",
+          "text": "my big brother",
+          "semantic_group": "family_relationship",
+          "form": "possessive_noun_phrase"
+        }
+      ],
+      "words": ["he", "is", "my", "big", "brother"],
+      "drill_tags": ["pronoun_switch", "be_verb_agreement", "family_relationship"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["possessive_relationship_chunk"],
+        "notes": "Keep 'my big brother' as a complete relationship chunk."
+      }
+    },
+    {
+      "id": "A1_02_family_friends_0005",
+      "text": "Are they happy?",
+      "zh": "他們開心嗎？",
+      "level": "A1",
+      "scenario_id": "02_family_friends",
+      "scenario_role": "extension",
+      "communicative_function": "ask_group_feeling",
+      "grammar": ["be_verb", "third_person_plural", "yes_no_question", "adjective_complement"],
+      "pattern": "Are they {feeling_adjective}?",
+      "slots": {
+        "feeling_adjective": "happy"
+      },
+      "chunks": [
+        {
+          "slot": "feeling_adjective",
+          "text": "happy",
+          "semantic_group": "feeling",
+          "form": "adjective"
+        }
+      ],
+      "words": ["are", "they", "happy"],
+      "drill_tags": ["rapid_substitution", "yes_no_answer", "plural_subject_question"],
+      "expected_answers": {
+        "yes": "Yes, they are.",
+        "no": "No, they aren't."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["feeling_adjective"],
+        "notes": "Use 'are' with plural subject 'they'."
+      }
+    },
+    {
+      "id": "A1_02_family_friends_0006",
+      "text": "My father is tall.",
+      "zh": "我的爸爸很高。",
+      "level": "A1",
+      "scenario_id": "02_family_friends",
+      "scenario_role": "core",
+      "communicative_function": "describe_family_member_appearance",
+      "grammar": ["be_verb", "third_person_singular", "affirmative_statement", "possessive_adjective", "adjective_complement"],
+      "pattern": "{possessive_person_chunk} is {appearance_adjective}.",
+      "slots": {
+        "possessive_person_chunk": "My father",
+        "appearance_adjective": "tall"
+      },
+      "chunks": [
+        {
+          "slot": "possessive_person_chunk",
+          "text": "My father",
+          "semantic_group": "family_relationship",
+          "form": "possessive_noun_phrase"
+        },
+        {
+          "slot": "appearance_adjective",
+          "text": "tall",
+          "semantic_group": "appearance",
+          "form": "adjective"
+        }
+      ],
+      "words": ["my", "father", "is", "tall"],
+      "drill_tags": ["echo", "rapid_substitution", "family_description"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["possessive_person_chunk", "appearance_adjective"],
+        "notes": "Singular family member subjects require 'is'."
+      }
+    },
+    {
+      "id": "A1_02_family_friends_0007",
+      "text": "Who is she?",
+      "zh": "她是誰？",
+      "level": "A1",
+      "scenario_id": "02_family_friends",
+      "scenario_role": "core",
+      "communicative_function": "ask_person_identity",
+      "grammar": ["be_verb", "third_person_singular", "wh_question", "who_question"],
+      "pattern": "Who is she?",
+      "slots": {},
+      "chunks": [],
+      "words": ["who", "is", "she"],
+      "drill_tags": ["wh_question", "identity_question", "recognition_prompt"],
+      "generator": {
+        "safe_for_substitution": false,
+        "safe_slots": [],
+        "notes": "Fixed wh-question for identity recognition. Do not generate freely from this sentence in v0.1."
+      }
+    },
+    {
+      "id": "A1_02_family_friends_0008",
+      "text": "We are friends.",
+      "zh": "我們是朋友。",
+      "level": "A1",
+      "scenario_id": "02_family_friends",
+      "scenario_role": "core",
+      "communicative_function": "state_friend_relationship",
+      "grammar": ["be_verb", "first_person_plural", "affirmative_statement", "plural_noun"],
+      "pattern": "We are {relationship_plural_chunk}.",
+      "slots": {
+        "relationship_plural_chunk": "friends"
+      },
+      "chunks": [
+        {
+          "slot": "relationship_plural_chunk",
+          "text": "friends",
+          "semantic_group": "friend_relationship",
+          "form": "plural_noun"
+        }
+      ],
+      "words": ["we", "are", "friends"],
+      "drill_tags": ["echo", "rapid_substitution", "plural_subject_statement"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["relationship_plural_chunk"],
+        "notes": "Use plural complement with 'We are'."
+      }
+    },
+    {
+      "id": "A1_02_family_friends_0009",
+      "text": "Is she your sister?",
+      "zh": "她是你的姊妹嗎？",
+      "level": "A1",
+      "scenario_id": "02_family_friends",
+      "scenario_role": "core",
+      "communicative_function": "ask_family_relationship",
+      "grammar": ["be_verb", "third_person_singular", "yes_no_question", "possessive_adjective"],
+      "pattern": "Is she {possessive_relationship_chunk}?",
+      "slots": {
+        "possessive_relationship_chunk": "your sister"
+      },
+      "chunks": [
+        {
+          "slot": "possessive_relationship_chunk",
+          "text": "your sister",
+          "semantic_group": "family_relationship",
+          "form": "possessive_noun_phrase"
+        }
+      ],
+      "words": ["is", "she", "your", "sister"],
+      "drill_tags": ["rapid_substitution", "yes_no_answer", "family_relationship_question"],
+      "expected_answers": {
+        "yes": "Yes, she is.",
+        "no": "No, she isn't."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["possessive_relationship_chunk"],
+        "notes": "Use a full possessive relationship phrase. Do not generate 'Is she sister?'"
+      }
+    },
+    {
+      "id": "A1_02_family_friends_0010",
+      "text": "They are brave.",
+      "zh": "他們很勇敢。",
+      "level": "A1",
+      "scenario_id": "02_family_friends",
+      "scenario_role": "extension",
+      "communicative_function": "describe_group_trait",
+      "grammar": ["be_verb", "third_person_plural", "affirmative_statement", "adjective_complement"],
+      "pattern": "They are {trait_adjective}.",
+      "slots": {
+        "trait_adjective": "brave"
+      },
+      "chunks": [
+        {
+          "slot": "trait_adjective",
+          "text": "brave",
+          "semantic_group": "trait",
+          "form": "adjective"
+        }
+      ],
+      "words": ["they", "are", "brave"],
+      "drill_tags": ["echo", "rapid_substitution", "plural_subject_statement", "trait_description"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["trait_adjective"],
+        "notes": "Use 'are' with plural subject 'they'."
+      }
+    }
+  ]
+}

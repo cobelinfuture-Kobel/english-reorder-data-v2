@@ -1,0 +1,381 @@
+{
+  "metadata": {
+    "curriculum": "core_adventure",
+    "level": "A1",
+    "level_order": 1,
+    "scenario_id": "04_home_daily_tasks",
+    "scenario_order": 4,
+    "scenario_title": "Home & Daily Tasks",
+    "annotation_version": "0.1.0"
+  },
+  "sentences": [
+    {
+      "id": "A1_04_home_daily_tasks_0001",
+      "text": "There is a lamp on the desk.",
+      "zh": "桌上有一盞燈。",
+      "level": "A1",
+      "scenario_id": "04_home_daily_tasks",
+      "scenario_role": "core",
+      "communicative_function": "state_object_location",
+      "grammar": ["there_is", "singular_noun_phrase", "prepositional_phrase", "affirmative_statement"],
+      "pattern": "There is {singular_object_chunk} {location_phrase}.",
+      "slots": {
+        "singular_object_chunk": "a lamp",
+        "location_phrase": "on the desk"
+      },
+      "chunks": [
+        {
+          "slot": "singular_object_chunk",
+          "text": "a lamp",
+          "semantic_group": "home_object_singular",
+          "form": "noun_phrase"
+        },
+        {
+          "slot": "location_phrase",
+          "text": "on the desk",
+          "semantic_group": "location_phrase",
+          "form": "prepositional_phrase"
+        }
+      ],
+      "words": ["there", "is", "a", "lamp", "on", "the", "desk"],
+      "drill_tags": ["there_is", "location_description", "rapid_substitution"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["singular_object_chunk", "location_phrase"],
+        "notes": "Use 'There is' with singular object chunks. Keep 'a lamp' and 'on the desk' as phrase-level chunks."
+      }
+    },
+    {
+      "id": "A1_04_home_daily_tasks_0002",
+      "text": "Is there a sofa in the living room?",
+      "zh": "客廳裡有一張沙發嗎？",
+      "level": "A1",
+      "scenario_id": "04_home_daily_tasks",
+      "scenario_role": "core",
+      "communicative_function": "ask_object_location_existence",
+      "grammar": ["there_is", "yes_no_question", "singular_noun_phrase", "prepositional_phrase"],
+      "pattern": "Is there {singular_object_chunk} {location_phrase}?",
+      "slots": {
+        "singular_object_chunk": "a sofa",
+        "location_phrase": "in the living room"
+      },
+      "chunks": [
+        {
+          "slot": "singular_object_chunk",
+          "text": "a sofa",
+          "semantic_group": "home_object_singular",
+          "form": "noun_phrase"
+        },
+        {
+          "slot": "location_phrase",
+          "text": "in the living room",
+          "semantic_group": "room_location",
+          "form": "prepositional_phrase"
+        }
+      ],
+      "words": ["is", "there", "a", "sofa", "in", "the", "living", "room"],
+      "drill_tags": ["there_is_question", "yes_no_answer", "location_description"],
+      "expected_answers": {
+        "yes": "Yes, there is.",
+        "no": "No, there isn't."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["singular_object_chunk", "location_phrase"],
+        "notes": "Use 'Is there' with singular object chunks. Do not generate 'Is there some books'."
+      }
+    },
+    {
+      "id": "A1_04_home_daily_tasks_0003",
+      "text": "I clean my bedroom every day.",
+      "zh": "我每天打掃我的臥室。",
+      "level": "A1",
+      "scenario_id": "04_home_daily_tasks",
+      "scenario_role": "core",
+      "communicative_function": "state_daily_task",
+      "grammar": ["simple_present", "first_person_singular", "affirmative_statement", "frequency_time_phrase"],
+      "pattern": "I {daily_task_chunk} {time_phrase}.",
+      "slots": {
+        "daily_task_chunk": "clean my bedroom",
+        "time_phrase": "every day"
+      },
+      "chunks": [
+        {
+          "slot": "daily_task_chunk",
+          "text": "clean my bedroom",
+          "semantic_group": "daily_task",
+          "form": "verb_object_phrase"
+        },
+        {
+          "slot": "time_phrase",
+          "text": "every day",
+          "semantic_group": "frequency_time",
+          "form": "time_phrase"
+        }
+      ],
+      "words": ["I", "clean", "my", "bedroom", "every", "day"],
+      "drill_tags": ["daily_task", "simple_present", "rapid_substitution"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["daily_task_chunk", "time_phrase"],
+        "notes": "Keep 'clean my bedroom' as a verb-object task chunk. Do not freely combine verbs and home objects."
+      }
+    },
+    {
+      "id": "A1_04_home_daily_tasks_0004",
+      "text": "The cat is under the bed.",
+      "zh": "貓在床底下。",
+      "level": "A1",
+      "scenario_id": "04_home_daily_tasks",
+      "scenario_role": "core",
+      "communicative_function": "state_subject_location",
+      "grammar": ["be_verb", "third_person_singular", "prepositional_phrase", "affirmative_statement"],
+      "pattern": "{definite_subject_chunk} is {location_phrase}.",
+      "slots": {
+        "definite_subject_chunk": "The cat",
+        "location_phrase": "under the bed"
+      },
+      "chunks": [
+        {
+          "slot": "definite_subject_chunk",
+          "text": "The cat",
+          "semantic_group": "living_thing_subject",
+          "form": "definite_noun_phrase"
+        },
+        {
+          "slot": "location_phrase",
+          "text": "under the bed",
+          "semantic_group": "location_phrase",
+          "form": "prepositional_phrase"
+        }
+      ],
+      "words": ["the", "cat", "is", "under", "the", "bed"],
+      "drill_tags": ["be_verb_location", "preposition", "location_description"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["definite_subject_chunk", "location_phrase"],
+        "notes": "Use 'is' with singular definite subject chunks."
+      }
+    },
+    {
+      "id": "A1_04_home_daily_tasks_0005",
+      "text": "There are some books in the bookcase.",
+      "zh": "書櫃裡有一些書。",
+      "level": "A1",
+      "scenario_id": "04_home_daily_tasks",
+      "scenario_role": "core",
+      "communicative_function": "state_plural_object_location",
+      "grammar": ["there_are", "plural_noun_phrase", "prepositional_phrase", "affirmative_statement"],
+      "pattern": "There are {plural_object_chunk} {location_phrase}.",
+      "slots": {
+        "plural_object_chunk": "some books",
+        "location_phrase": "in the bookcase"
+      },
+      "chunks": [
+        {
+          "slot": "plural_object_chunk",
+          "text": "some books",
+          "semantic_group": "home_object_plural",
+          "form": "plural_noun_phrase"
+        },
+        {
+          "slot": "location_phrase",
+          "text": "in the bookcase",
+          "semantic_group": "location_phrase",
+          "form": "prepositional_phrase"
+        }
+      ],
+      "words": ["there", "are", "some", "books", "in", "the", "bookcase"],
+      "drill_tags": ["there_are", "plural_object", "location_description"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["plural_object_chunk", "location_phrase"],
+        "notes": "Use 'There are' with plural object chunks. Do not generate 'There is some books.'"
+      }
+    },
+    {
+      "id": "A1_04_home_daily_tasks_0006",
+      "text": "I help my mother in the kitchen.",
+      "zh": "我在廚房幫媽媽。",
+      "level": "A1",
+      "scenario_id": "04_home_daily_tasks",
+      "scenario_role": "core",
+      "communicative_function": "state_helping_task_location",
+      "grammar": ["simple_present", "first_person_singular", "affirmative_statement", "prepositional_phrase"],
+      "pattern": "I {daily_task_chunk} {location_phrase}.",
+      "slots": {
+        "daily_task_chunk": "help my mother",
+        "location_phrase": "in the kitchen"
+      },
+      "chunks": [
+        {
+          "slot": "daily_task_chunk",
+          "text": "help my mother",
+          "semantic_group": "daily_task",
+          "form": "verb_object_phrase"
+        },
+        {
+          "slot": "location_phrase",
+          "text": "in the kitchen",
+          "semantic_group": "room_location",
+          "form": "prepositional_phrase"
+        }
+      ],
+      "words": ["I", "help", "my", "mother", "in", "the", "kitchen"],
+      "drill_tags": ["daily_task", "simple_present", "location_phrase"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["daily_task_chunk", "location_phrase"],
+        "notes": "Keep 'help my mother' as a daily task chunk."
+      }
+    },
+    {
+      "id": "A1_04_home_daily_tasks_0007",
+      "text": "Is the bag behind the door?",
+      "zh": "袋子在門後面嗎？",
+      "level": "A1",
+      "scenario_id": "04_home_daily_tasks",
+      "scenario_role": "core",
+      "communicative_function": "ask_subject_location",
+      "grammar": ["be_verb", "third_person_singular", "yes_no_question", "prepositional_phrase"],
+      "pattern": "Is {definite_subject_chunk} {location_phrase}?",
+      "slots": {
+        "definite_subject_chunk": "the bag",
+        "location_phrase": "behind the door"
+      },
+      "chunks": [
+        {
+          "slot": "definite_subject_chunk",
+          "text": "the bag",
+          "semantic_group": "home_object_subject",
+          "form": "definite_noun_phrase"
+        },
+        {
+          "slot": "location_phrase",
+          "text": "behind the door",
+          "semantic_group": "location_phrase",
+          "form": "prepositional_phrase"
+        }
+      ],
+      "words": ["is", "the", "bag", "behind", "the", "door"],
+      "drill_tags": ["be_verb_question", "yes_no_answer", "location_description"],
+      "expected_answers": {
+        "yes": "Yes, it is.",
+        "no": "No, it isn't."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["definite_subject_chunk", "location_phrase"],
+        "notes": "Use 'Is' with singular definite subject chunks."
+      }
+    },
+    {
+      "id": "A1_04_home_daily_tasks_0008",
+      "text": "There isn't a TV in the dining room.",
+      "zh": "餐廳裡沒有電視。",
+      "level": "A1",
+      "scenario_id": "04_home_daily_tasks",
+      "scenario_role": "core",
+      "communicative_function": "state_absence_of_object_location",
+      "grammar": ["there_is", "negative_statement", "singular_noun_phrase", "prepositional_phrase"],
+      "pattern": "There isn't {singular_object_chunk} {location_phrase}.",
+      "slots": {
+        "singular_object_chunk": "a TV",
+        "location_phrase": "in the dining room"
+      },
+      "chunks": [
+        {
+          "slot": "singular_object_chunk",
+          "text": "a TV",
+          "semantic_group": "home_object_singular",
+          "form": "noun_phrase"
+        },
+        {
+          "slot": "location_phrase",
+          "text": "in the dining room",
+          "semantic_group": "room_location",
+          "form": "prepositional_phrase"
+        }
+      ],
+      "words": ["there", "isn't", "a", "TV", "in", "the", "dining", "room"],
+      "drill_tags": ["there_is_negative", "location_description", "home_object"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["singular_object_chunk", "location_phrase"],
+        "notes": "Use negative there-is pattern with singular object chunks."
+      }
+    },
+    {
+      "id": "A1_04_home_daily_tasks_0009",
+      "text": "We wash the dishes after dinner.",
+      "zh": "我們晚餐後洗碗。",
+      "level": "A1",
+      "scenario_id": "04_home_daily_tasks",
+      "scenario_role": "core",
+      "communicative_function": "state_group_daily_task",
+      "grammar": ["simple_present", "first_person_plural", "affirmative_statement", "sequence_time_phrase"],
+      "pattern": "We {daily_task_chunk} {time_phrase}.",
+      "slots": {
+        "daily_task_chunk": "wash the dishes",
+        "time_phrase": "after dinner"
+      },
+      "chunks": [
+        {
+          "slot": "daily_task_chunk",
+          "text": "wash the dishes",
+          "semantic_group": "daily_task",
+          "form": "verb_object_phrase"
+        },
+        {
+          "slot": "time_phrase",
+          "text": "after dinner",
+          "semantic_group": "sequence_time",
+          "form": "time_phrase"
+        }
+      ],
+      "words": ["we", "wash", "the", "dishes", "after", "dinner"],
+      "drill_tags": ["daily_task", "simple_present", "sequence_time"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["daily_task_chunk", "time_phrase"],
+        "notes": "Keep 'wash the dishes' as a daily task chunk."
+      }
+    },
+    {
+      "id": "A1_04_home_daily_tasks_0010",
+      "text": "The rug is next to the sofa.",
+      "zh": "地毯在沙發旁邊。",
+      "level": "A1",
+      "scenario_id": "04_home_daily_tasks",
+      "scenario_role": "core",
+      "communicative_function": "state_subject_location",
+      "grammar": ["be_verb", "third_person_singular", "affirmative_statement", "prepositional_phrase"],
+      "pattern": "{definite_subject_chunk} is {location_phrase}.",
+      "slots": {
+        "definite_subject_chunk": "The rug",
+        "location_phrase": "next to the sofa"
+      },
+      "chunks": [
+        {
+          "slot": "definite_subject_chunk",
+          "text": "The rug",
+          "semantic_group": "home_object_subject",
+          "form": "definite_noun_phrase"
+        },
+        {
+          "slot": "location_phrase",
+          "text": "next to the sofa",
+          "semantic_group": "location_phrase",
+          "form": "prepositional_phrase"
+        }
+      ],
+      "words": ["the", "rug", "is", "next", "to", "the", "sofa"],
+      "drill_tags": ["be_verb_location", "preposition", "location_description"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["definite_subject_chunk", "location_phrase"],
+        "notes": "Keep 'next to the sofa' as a phrase-level preposition chunk."
+      }
+    }
+  ]
+}

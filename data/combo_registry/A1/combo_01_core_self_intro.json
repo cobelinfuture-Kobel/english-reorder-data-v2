@@ -1,0 +1,615 @@
+{
+  "metadata": {
+    "curriculum": "core_adventure",
+    "level": "A1",
+    "level_order": 1,
+    "combo_id": "combo_01_core_self_intro",
+    "combo_order": 1,
+    "combo_title": "Core Self Intro Combo",
+    "required_scenarios": [
+      "01_personal_info",
+      "02_family_friends",
+      "03_health_body"
+    ],
+    "annotation_version": "0.1.0"
+  },
+  "combo_tasks": [
+    {
+      "task_id": "self_intro_basic",
+      "task_title": "Basic Self Introduction",
+      "task_type": "spoken_output",
+      "required_scenarios": [
+        "01_personal_info",
+        "03_health_body"
+      ],
+      "learning_goal": "Combine personal age, role identity, feeling, and physical feature into a short self-introduction.",
+      "templates": [
+        {
+          "template_id": "self_intro_basic_t1",
+          "text": "Hello! I am {age_chunk}. I am {role_chunk}. I am {feeling_adjective}.",
+          "slots": [
+            "age_chunk",
+            "role_chunk",
+            "feeling_adjective"
+          ]
+        },
+        {
+          "template_id": "self_intro_basic_t2",
+          "text": "Hi! I am {role_chunk}. I am {age_chunk}. I have got {physical_feature_chunk}.",
+          "slots": [
+            "role_chunk",
+            "age_chunk",
+            "physical_feature_chunk"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "age_chunk": {
+          "from": "data/sentence_registry/A1/01_personal_info.json",
+          "semantic_groups": [
+            "age"
+          ]
+        },
+        "role_chunk": {
+          "from": "data/sentence_registry/A1/01_personal_info.json",
+          "semantic_groups": [
+            "role_identity"
+          ]
+        },
+        "feeling_adjective": {
+          "from": "data/sentence_registry/A1/01_personal_info.json",
+          "semantic_groups": [
+            "feeling"
+          ]
+        },
+        "physical_feature_chunk": {
+          "from": "data/sentence_registry/A1/03_health_body.json",
+          "semantic_groups": [
+            "physical_feature"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "Hello! I am seven years old. I am a student. I am happy.",
+          "slots_used": {
+            "age_chunk": "seven years old",
+            "role_chunk": "a student",
+            "feeling_adjective": "happy"
+          }
+        },
+        {
+          "text": "Hi! I am a student. I am seven years old. I have got brown eyes.",
+          "slots_used": {
+            "role_chunk": "a student",
+            "age_chunk": "seven years old",
+            "physical_feature_chunk": "brown eyes"
+          }
+        }
+      ],
+      "drill_modes": [
+        "spoken_output",
+        "rapid_substitution",
+        "exit_ticket"
+      ],
+      "pass_condition": "Student can produce a three-sentence self-introduction using controlled chunks with no be-verb or have-got errors.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "I am student.",
+          "I have got headache.",
+          "I am seven."
+        ],
+        "notes": "Use phrase chunks such as 'a student' and 'seven years old'. Do not generate from raw words."
+      }
+    },
+    {
+      "task_id": "self_intro_health",
+      "task_title": "Self Introduction with Health",
+      "task_type": "spoken_output",
+      "required_scenarios": [
+        "01_personal_info",
+        "03_health_body"
+      ],
+      "learning_goal": "Combine personal identity with have-got health or body chunks.",
+      "templates": [
+        {
+          "template_id": "self_intro_health_t1",
+          "text": "I am {age_chunk}. I have got {physical_feature_chunk}. I have got {health_condition_chunk}.",
+          "slots": [
+            "age_chunk",
+            "physical_feature_chunk",
+            "health_condition_chunk"
+          ]
+        },
+        {
+          "template_id": "self_intro_health_t2",
+          "text": "I am {role_chunk}. I have got {body_quantity_chunk}. My hands are {sensation_adjective}.",
+          "slots": [
+            "role_chunk",
+            "body_quantity_chunk",
+            "sensation_adjective"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "age_chunk": {
+          "from": "data/sentence_registry/A1/01_personal_info.json",
+          "semantic_groups": [
+            "age"
+          ]
+        },
+        "role_chunk": {
+          "from": "data/sentence_registry/A1/01_personal_info.json",
+          "semantic_groups": [
+            "role_identity"
+          ]
+        },
+        "physical_feature_chunk": {
+          "from": "data/sentence_registry/A1/03_health_body.json",
+          "semantic_groups": [
+            "physical_feature"
+          ]
+        },
+        "health_condition_chunk": {
+          "from": "data/sentence_registry/A1/03_health_body.json",
+          "semantic_groups": [
+            "health_condition"
+          ]
+        },
+        "body_quantity_chunk": {
+          "from": "data/sentence_registry/A1/03_health_body.json",
+          "semantic_groups": [
+            "body_part_quantity"
+          ]
+        },
+        "sensation_adjective": {
+          "from": "data/sentence_registry/A1/03_health_body.json",
+          "semantic_groups": [
+            "sensation"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "I am seven years old. I have got brown eyes. I have got a headache.",
+          "slots_used": {
+            "age_chunk": "seven years old",
+            "physical_feature_chunk": "brown eyes",
+            "health_condition_chunk": "a headache"
+          }
+        },
+        {
+          "text": "I am a student. I have got ten fingers. My hands are cold.",
+          "slots_used": {
+            "role_chunk": "a student",
+            "body_quantity_chunk": "ten fingers",
+            "sensation_adjective": "cold"
+          }
+        }
+      ],
+      "drill_modes": [
+        "spoken_output",
+        "chunk_substitution",
+        "health_body_review"
+      ],
+      "pass_condition": "Student can combine have-got body chunks and be-verb sensation sentences without mixing the structures.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "I have got cold.",
+          "I have got tired.",
+          "My hands is cold."
+        ],
+        "notes": "Keep health conditions and sensation adjectives in separate slot groups."
+      }
+    },
+    {
+      "task_id": "family_intro_basic",
+      "task_title": "Family Introduction",
+      "task_type": "spoken_output",
+      "required_scenarios": [
+        "02_family_friends",
+        "03_health_body"
+      ],
+      "learning_goal": "Introduce a family member and describe the person with identity, appearance, or body feature chunks.",
+      "templates": [
+        {
+          "template_id": "family_intro_basic_t1",
+          "text": "This is {family_profile.relationship}. {family_profile.pronoun_capitalized} is {family_profile.description}. {family_profile.pronoun_capitalized} has got {physical_feature_chunk}.",
+          "slots": [
+            "family_profile.relationship",
+            "family_profile.pronoun_capitalized",
+            "family_profile.description",
+            "physical_feature_chunk"
+          ]
+        },
+        {
+          "template_id": "family_intro_basic_t2",
+          "text": "This is {family_profile.relationship}. {family_profile.pronoun_capitalized} is {appearance_adjective}.",
+          "slots": [
+            "family_profile.relationship",
+            "family_profile.pronoun_capitalized",
+            "appearance_adjective"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "family_profile": {
+          "type": "paired_slot",
+          "items": [
+            {
+              "relationship": "my mother",
+              "pronoun": "she",
+              "pronoun_capitalized": "She",
+              "description": "a kind girl"
+            },
+            {
+              "relationship": "my big brother",
+              "pronoun": "he",
+              "pronoun_capitalized": "He",
+              "description": "brave"
+            }
+          ]
+        },
+        "physical_feature_chunk": {
+          "from": "data/sentence_registry/A1/03_health_body.json",
+          "semantic_groups": [
+            "physical_feature"
+          ]
+        },
+        "appearance_adjective": {
+          "from": "data/sentence_registry/A1/02_family_friends.json",
+          "semantic_groups": [
+            "appearance"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "This is my mother. She is a kind girl. She has got short hair.",
+          "slots_used": {
+            "family_profile.relationship": "my mother",
+            "family_profile.pronoun_capitalized": "She",
+            "family_profile.description": "a kind girl",
+            "physical_feature_chunk": "short hair"
+          }
+        },
+        {
+          "text": "This is my big brother. He is tall.",
+          "slots_used": {
+            "family_profile.relationship": "my big brother",
+            "family_profile.pronoun_capitalized": "He",
+            "appearance_adjective": "tall"
+          }
+        }
+      ],
+      "drill_modes": [
+        "spoken_output",
+        "paired_slot_substitution",
+        "family_description"
+      ],
+      "pass_condition": "Student can introduce a family member and preserve pronoun agreement.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "This is my mother. He is tall.",
+          "This is my big brother. She is a kind girl.",
+          "She has got a headache hair."
+        ],
+        "notes": "Use family_profile as a paired slot so relationship and pronoun stay together."
+      }
+    },
+    {
+      "task_id": "friend_intro_basic",
+      "task_title": "Friend Introduction",
+      "task_type": "spoken_output",
+      "required_scenarios": [
+        "02_family_friends",
+        "03_health_body"
+      ],
+      "learning_goal": "Introduce a friend and describe traits or physical features using controlled slots.",
+      "templates": [
+        {
+          "template_id": "friend_intro_basic_t1",
+          "text": "This is {friend_profile.relationship}. {friend_profile.pronoun_capitalized} is {trait_adjective}. {friend_profile.pronoun_capitalized} has got {physical_feature_chunk}.",
+          "slots": [
+            "friend_profile.relationship",
+            "friend_profile.pronoun_capitalized",
+            "trait_adjective",
+            "physical_feature_chunk"
+          ]
+        },
+        {
+          "template_id": "friend_intro_basic_t2",
+          "text": "We are {relationship_plural_chunk}. They are {trait_adjective}.",
+          "slots": [
+            "relationship_plural_chunk",
+            "trait_adjective"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "friend_profile": {
+          "type": "paired_slot",
+          "items": [
+            {
+              "relationship": "your best friend",
+              "pronoun": "he",
+              "pronoun_capitalized": "He"
+            },
+            {
+              "relationship": "your sister",
+              "pronoun": "she",
+              "pronoun_capitalized": "She"
+            }
+          ]
+        },
+        "relationship_plural_chunk": {
+          "from": "data/sentence_registry/A1/02_family_friends.json",
+          "semantic_groups": [
+            "friend_relationship"
+          ]
+        },
+        "trait_adjective": {
+          "from": "data/sentence_registry/A1/02_family_friends.json",
+          "semantic_groups": [
+            "trait"
+          ]
+        },
+        "physical_feature_chunk": {
+          "from": "data/sentence_registry/A1/03_health_body.json",
+          "semantic_groups": [
+            "physical_feature"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "This is your best friend. He is brave. He has got big ears.",
+          "slots_used": {
+            "friend_profile.relationship": "your best friend",
+            "friend_profile.pronoun_capitalized": "He",
+            "trait_adjective": "brave",
+            "physical_feature_chunk": "big ears"
+          }
+        },
+        {
+          "text": "We are friends. They are brave.",
+          "slots_used": {
+            "relationship_plural_chunk": "friends",
+            "trait_adjective": "brave"
+          }
+        }
+      ],
+      "drill_modes": [
+        "spoken_output",
+        "paired_slot_substitution",
+        "friend_description"
+      ],
+      "pass_condition": "Student can describe a friend or group while preserving pronoun and be-verb agreement.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "This is your sister. He is brave.",
+          "They is brave.",
+          "We are friend."
+        ],
+        "notes": "Friend profiles that include gendered pronouns must be paired slots."
+      }
+    },
+    {
+      "task_id": "mixed_question_chain",
+      "task_title": "Mixed Question Chain",
+      "task_type": "question_chain",
+      "required_scenarios": [
+        "01_personal_info",
+        "02_family_friends",
+        "03_health_body"
+      ],
+      "learning_goal": "Train fast switching across Are you, Is he/she, Are they, and Have you got question-answer patterns.",
+      "templates": [
+        {
+          "template_id": "mixed_question_chain_t1",
+          "text": "Are you {role_chunk}? | Have you got {health_condition_chunk}? | Is she {possessive_relationship_chunk}?",
+          "slots": [
+            "role_chunk",
+            "health_condition_chunk",
+            "possessive_relationship_chunk"
+          ]
+        },
+        {
+          "template_id": "mixed_question_chain_t2",
+          "text": "Are they {feeling_adjective}? | Is he {possessive_relationship_chunk}? | Have you got {health_condition_chunk}?",
+          "slots": [
+            "feeling_adjective",
+            "possessive_relationship_chunk",
+            "health_condition_chunk"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "role_chunk": {
+          "from": "data/sentence_registry/A1/01_personal_info.json",
+          "semantic_groups": [
+            "role_identity"
+          ]
+        },
+        "health_condition_chunk": {
+          "from": "data/sentence_registry/A1/03_health_body.json",
+          "semantic_groups": [
+            "health_condition"
+          ]
+        },
+        "possessive_relationship_chunk": {
+          "from": "data/sentence_registry/A1/02_family_friends.json",
+          "semantic_groups": [
+            "family_relationship",
+            "friend_relationship"
+          ]
+        },
+        "feeling_adjective": {
+          "from": "data/sentence_registry/A1/02_family_friends.json",
+          "semantic_groups": [
+            "feeling"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "Are you a student? | Have you got a headache? | Is she your sister?",
+          "slots_used": {
+            "role_chunk": "a student",
+            "health_condition_chunk": "a headache",
+            "possessive_relationship_chunk": "your sister"
+          }
+        },
+        {
+          "text": "Are they happy? | Is he your best friend? | Have you got a stomach ache?",
+          "slots_used": {
+            "feeling_adjective": "happy",
+            "possessive_relationship_chunk": "your best friend",
+            "health_condition_chunk": "a stomach ache"
+          }
+        }
+      ],
+      "drill_modes": [
+        "rapid_question_answer",
+        "random_switch",
+        "boss_challenge"
+      ],
+      "pass_condition": "Student answers each question with the correct short answer pattern within one second.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "Have you got hungry?",
+          "Are they a student?",
+          "Is he your sister?"
+        ],
+        "notes": "Question chain requires answer-pattern mapping during runtime."
+      }
+    },
+    {
+      "task_id": "role_card_output",
+      "task_title": "Role Card Output",
+      "task_type": "role_card",
+      "required_scenarios": [
+        "01_personal_info",
+        "02_family_friends",
+        "03_health_body"
+      ],
+      "learning_goal": "Generate a short character card using identity, relationship, body feature, and trait chunks.",
+      "templates": [
+        {
+          "template_id": "role_card_output_t1",
+          "text": "This is {character_profile.name}. {character_profile.pronoun_capitalized} is {age_chunk}. {character_profile.pronoun_capitalized} is {relationship_chunk}. {character_profile.pronoun_capitalized} has got {physical_feature_chunk}. {character_profile.pronoun_capitalized} is {trait_adjective}.",
+          "slots": [
+            "character_profile.name",
+            "character_profile.pronoun_capitalized",
+            "age_chunk",
+            "relationship_chunk",
+            "physical_feature_chunk",
+            "trait_adjective"
+          ]
+        },
+        {
+          "template_id": "role_card_output_t2",
+          "text": "Name: {character_profile.name}. Age: {age_chunk}. Family/Friend: {relationship_chunk}. Body: {physical_feature_chunk}. Trait: {trait_adjective}.",
+          "slots": [
+            "character_profile.name",
+            "age_chunk",
+            "relationship_chunk",
+            "physical_feature_chunk",
+            "trait_adjective"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "character_profile": {
+          "type": "paired_slot",
+          "items": [
+            {
+              "name": "Leo",
+              "pronoun": "he",
+              "pronoun_capitalized": "He"
+            },
+            {
+              "name": "Amy",
+              "pronoun": "she",
+              "pronoun_capitalized": "She"
+            }
+          ]
+        },
+        "age_chunk": {
+          "from": "data/sentence_registry/A1/01_personal_info.json",
+          "semantic_groups": [
+            "age"
+          ]
+        },
+        "relationship_chunk": {
+          "from": "data/sentence_registry/A1/02_family_friends.json",
+          "semantic_groups": [
+            "family_relationship",
+            "friend_relationship"
+          ]
+        },
+        "physical_feature_chunk": {
+          "from": "data/sentence_registry/A1/03_health_body.json",
+          "semantic_groups": [
+            "physical_feature"
+          ]
+        },
+        "trait_adjective": {
+          "from": "data/sentence_registry/A1/02_family_friends.json",
+          "semantic_groups": [
+            "trait"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "This is Leo. He is ten. He is my big brother. He has got short hair. He is brave.",
+          "slots_used": {
+            "character_profile.name": "Leo",
+            "character_profile.pronoun_capitalized": "He",
+            "age_chunk": "ten",
+            "relationship_chunk": "my big brother",
+            "physical_feature_chunk": "short hair",
+            "trait_adjective": "brave"
+          }
+        },
+        {
+          "text": "Name: Amy. Age: seven years old. Family/Friend: your sister. Body: brown eyes. Trait: brave.",
+          "slots_used": {
+            "character_profile.name": "Amy",
+            "age_chunk": "seven years old",
+            "relationship_chunk": "your sister",
+            "physical_feature_chunk": "brown eyes",
+            "trait_adjective": "brave"
+          }
+        }
+      ],
+      "drill_modes": [
+        "role_card",
+        "spoken_output",
+        "mini_presentation"
+      ],
+      "pass_condition": "Student can convert a role card into a short spoken description with correct pronouns and be/has got forms.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "He is your sister.",
+          "She has got a headache hair.",
+          "This is Leo. She is ten."
+        ],
+        "notes": "Use character_profile as a paired slot for name and pronoun consistency."
+      }
+    }
+  ]
+}

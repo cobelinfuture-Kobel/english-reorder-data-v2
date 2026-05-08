@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/combo_registry.schema.json",
+  "title": "Combo Registry",
+  "type": "object",
+  "required": [
+    "metadata",
+    "combo_tasks"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": [
+        "curriculum",
+        "level",
+        "level_order",
+        "combo_id",
+        "combo_order",
+        "combo_title",
+        "required_scenarios",
+        "annotation_version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "curriculum": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level": {
+          "$ref": "#/$defs/level"
+        },
+        "level_order": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "combo_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "combo_order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "combo_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required_scenarios": {
+          "$ref": "#/$defs/string_array"
+        },
+        "annotation_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        }
+      }
+    },
+    "combo_tasks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/combo_task"
+      }
+    }
+  },
+  "$defs": {
+    "level": {
+      "type": "string",
+      "enum": [
+        "A1",
+        "A1+",
+        "A2",
+        "A2+",
+        "B1",
+        "B1+"
+      ]
+    },
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "template": {
+      "type": "object",
+      "required": [
+        "template_id",
+        "text",
+        "slots"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "template_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slots": {
+          "$ref": "#/$defs/string_array"
+        }
+      }
+    },
+    "sample_output": {
+      "type": "object",
+      "required": [
+        "text",
+        "slots_used"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slots_used": {
+          "type": "object"
+        }
+      }
+    },
+    "generator_rules": {
+      "type": "object",
+      "required": [
+        "safe_for_generation",
+        "use_controlled_slots",
+        "blocked_outputs",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "safe_for_generation": {
+          "type": "boolean"
+        },
+        "use_controlled_slots": {
+          "type": "boolean"
+        },
+        "blocked_outputs": {
+          "$ref": "#/$defs/string_array"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "combo_task": {
+      "type": "object",
+      "required": [
+        "task_id",
+        "task_title",
+        "task_type",
+        "required_scenarios",
+        "learning_goal",
+        "templates",
+        "slot_sources",
+        "sample_outputs",
+        "drill_modes",
+        "pass_condition",
+        "generator_rules"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_type": {
+          "type": "string",
+          "enum": [
+            "spoken_output",
+            "question_chain",
+            "role_card",
+            "boss_challenge",
+            "exit_ticket"
+          ]
+        },
+        "required_scenarios": {
+          "$ref": "#/$defs/string_array"
+        },
+        "learning_goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "templates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/template"
+          }
+        },
+        "slot_sources": {
+          "type": "object"
+        },
+        "sample_outputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sample_output"
+          }
+        },
+        "drill_modes": {
+          "$ref": "#/$defs/string_array"
+        },
+        "pass_condition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "generator_rules": {
+          "$ref": "#/$defs/generator_rules"
+        }
+      }
+    }
+  }
+}

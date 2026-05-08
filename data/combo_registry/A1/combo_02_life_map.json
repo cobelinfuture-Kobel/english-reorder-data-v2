@@ -1,0 +1,758 @@
+{
+  "metadata": {
+    "curriculum": "core_adventure",
+    "level": "A1",
+    "level_order": 1,
+    "combo_id": "combo_02_life_map",
+    "combo_order": 2,
+    "combo_title": "My Life Map Combo",
+    "required_scenarios": [
+      "01_personal_info",
+      "02_family_friends",
+      "03_health_body",
+      "04_home_daily_tasks",
+      "05_weather_environment"
+    ],
+    "annotation_version": "0.1.0"
+  },
+  "combo_tasks": [
+    {
+      "task_id": "weather_room_scene",
+      "task_title": "Weather and Room Scene",
+      "task_type": "spoken_output",
+      "required_scenarios": [
+        "04_home_daily_tasks",
+        "05_weather_environment"
+      ],
+      "learning_goal": "Combine weather state and location phrase to establish a simple scene.",
+      "templates": [
+        {
+          "template_id": "weather_room_scene_t1",
+          "text": "It is {weather_state_chunk}. I am in the {room_chunk}.",
+          "slots": [
+            "weather_state_chunk",
+            "room_chunk"
+          ]
+        },
+        {
+          "template_id": "weather_room_scene_t2",
+          "text": "How is the weather? It is {weather_state_chunk}. I am in the {room_chunk}.",
+          "slots": [
+            "weather_state_chunk",
+            "room_chunk"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "weather_state_chunk": {
+          "from": "data/sentence_registry/A1/05_weather_environment.json",
+          "semantic_groups": [
+            "weather_state"
+          ]
+        },
+        "room_chunk": {
+          "type": "controlled_list",
+          "items": [
+            "kitchen",
+            "living room",
+            "dining room",
+            "garden",
+            "bedroom"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "It is sunny today. I am in the garden.",
+          "slots_used": {
+            "weather_state_chunk": "sunny today",
+            "room_chunk": "garden"
+          }
+        },
+        {
+          "text": "How is the weather? It is cold and windy. I am in the living room.",
+          "slots_used": {
+            "weather_state_chunk": "cold and windy",
+            "room_chunk": "living room"
+          }
+        }
+      ],
+      "drill_modes": [
+        "spoken_output",
+        "weather_prompt",
+        "scene_setting"
+      ],
+      "pass_condition": "Student can combine a weather sentence with a room/location sentence without changing the be-verb pattern.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "It is kitchen.",
+          "I am in the sunny.",
+          "I am in garden."
+        ],
+        "notes": "Use weather_state_chunk for weather and room_chunk for locations. Keep 'in the' in the template."
+      }
+    },
+    {
+      "task_id": "family_life_map",
+      "task_title": "Family Life Map",
+      "task_type": "spoken_output",
+      "required_scenarios": [
+        "02_family_friends",
+        "03_health_body",
+        "04_home_daily_tasks",
+        "05_weather_environment"
+      ],
+      "learning_goal": "Build a short scene with weather, room, family member, physical feature, and feeling.",
+      "templates": [
+        {
+          "template_id": "family_life_map_t1",
+          "text": "It is {weather_state_chunk}. I am in the {room_chunk}. {family_profile.relationship_sentence} {family_profile.pronoun_capitalized} has got {physical_feature_chunk}. We are very {feeling_adjective}.",
+          "slots": [
+            "weather_state_chunk",
+            "room_chunk",
+            "family_profile.relationship_sentence",
+            "family_profile.pronoun_capitalized",
+            "physical_feature_chunk",
+            "feeling_adjective"
+          ]
+        },
+        {
+          "template_id": "family_life_map_t2",
+          "text": "I am in the {room_chunk}. {family_profile.relationship_sentence} There is {singular_object_chunk} {location_phrase}. We are very {feeling_adjective}.",
+          "slots": [
+            "room_chunk",
+            "family_profile.relationship_sentence",
+            "singular_object_chunk",
+            "location_phrase",
+            "feeling_adjective"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "weather_state_chunk": {
+          "from": "data/sentence_registry/A1/05_weather_environment.json",
+          "semantic_groups": [
+            "weather_state"
+          ]
+        },
+        "room_chunk": {
+          "type": "controlled_list",
+          "items": [
+            "kitchen",
+            "living room",
+            "dining room",
+            "garden",
+            "bedroom"
+          ]
+        },
+        "family_profile": {
+          "type": "paired_slot",
+          "items": [
+            {
+              "relationship": "my mother",
+              "relationship_sentence": "My mother is here too.",
+              "pronoun": "she",
+              "pronoun_capitalized": "She"
+            },
+            {
+              "relationship": "my father",
+              "relationship_sentence": "My father is here too.",
+              "pronoun": "he",
+              "pronoun_capitalized": "He"
+            },
+            {
+              "relationship": "my big brother",
+              "relationship_sentence": "My big brother is here too.",
+              "pronoun": "he",
+              "pronoun_capitalized": "He"
+            }
+          ]
+        },
+        "physical_feature_chunk": {
+          "from": "data/sentence_registry/A1/03_health_body.json",
+          "semantic_groups": [
+            "physical_feature"
+          ]
+        },
+        "feeling_adjective": {
+          "from": "data/sentence_registry/A1/01_personal_info.json",
+          "semantic_groups": [
+            "feeling",
+            "physical_state"
+          ]
+        },
+        "singular_object_chunk": {
+          "from": "data/sentence_registry/A1/04_home_daily_tasks.json",
+          "semantic_groups": [
+            "home_object_singular"
+          ]
+        },
+        "location_phrase": {
+          "from": "data/sentence_registry/A1/04_home_daily_tasks.json",
+          "semantic_groups": [
+            "location_phrase",
+            "room_location"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "It is sunny today. I am in the garden. My mother is here too. She has got short hair. We are very happy.",
+          "slots_used": {
+            "weather_state_chunk": "sunny today",
+            "room_chunk": "garden",
+            "family_profile.relationship_sentence": "My mother is here too.",
+            "family_profile.pronoun_capitalized": "She",
+            "physical_feature_chunk": "short hair",
+            "feeling_adjective": "happy"
+          }
+        },
+        {
+          "text": "I am in the kitchen. My father is here too. There is a lamp on the desk. We are very tired.",
+          "slots_used": {
+            "room_chunk": "kitchen",
+            "family_profile.relationship_sentence": "My father is here too.",
+            "singular_object_chunk": "a lamp",
+            "location_phrase": "on the desk",
+            "feeling_adjective": "tired"
+          }
+        }
+      ],
+      "drill_modes": [
+        "spoken_output",
+        "scene_generation",
+        "paired_slot_substitution"
+      ],
+      "pass_condition": "Student can describe a family scene while keeping pronoun agreement and controlled location chunks.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "My mother is here too. He has got short hair.",
+          "There is some books on the desk.",
+          "I am in garden."
+        ],
+        "notes": "Use family_profile as a paired slot. Do not mix plural objects with 'There is'."
+      }
+    },
+    {
+      "task_id": "friend_life_map",
+      "task_title": "Friend Life Map",
+      "task_type": "spoken_output",
+      "required_scenarios": [
+        "02_family_friends",
+        "03_health_body",
+        "04_home_daily_tasks",
+        "05_weather_environment"
+      ],
+      "learning_goal": "Build a short scene with a friend, a weather state, a portable object, and a feeling.",
+      "templates": [
+        {
+          "template_id": "friend_life_map_t1",
+          "text": "It is {weather_state_chunk}. I am in the {room_chunk}. {friend_profile.relationship_sentence} {friend_profile.pronoun_capitalized} has got {portable_object_chunk}. We are very {feeling_adjective}.",
+          "slots": [
+            "weather_state_chunk",
+            "room_chunk",
+            "friend_profile.relationship_sentence",
+            "friend_profile.pronoun_capitalized",
+            "portable_object_chunk",
+            "feeling_adjective"
+          ]
+        },
+        {
+          "template_id": "friend_life_map_t2",
+          "text": "I am in the {room_chunk}. {friend_profile.relationship_sentence} {friend_profile.pronoun_capitalized} is {trait_adjective}. We can {weather_activity_chunk} {weather_location_phrase}.",
+          "slots": [
+            "room_chunk",
+            "friend_profile.relationship_sentence",
+            "friend_profile.pronoun_capitalized",
+            "trait_adjective",
+            "weather_activity_chunk",
+            "weather_location_phrase"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "weather_state_chunk": {
+          "from": "data/sentence_registry/A1/05_weather_environment.json",
+          "semantic_groups": [
+            "weather_state"
+          ]
+        },
+        "room_chunk": {
+          "type": "controlled_list",
+          "items": [
+            "garden",
+            "living room",
+            "bedroom"
+          ]
+        },
+        "friend_profile": {
+          "type": "paired_slot",
+          "items": [
+            {
+              "relationship": "my best friend",
+              "relationship_sentence": "My best friend is here too.",
+              "pronoun": "she",
+              "pronoun_capitalized": "She"
+            },
+            {
+              "relationship": "your best friend",
+              "relationship_sentence": "Your best friend is here too.",
+              "pronoun": "he",
+              "pronoun_capitalized": "He"
+            },
+            {
+              "relationship": "my friend",
+              "relationship_sentence": "My friend is here too.",
+              "pronoun": "he",
+              "pronoun_capitalized": "He"
+            }
+          ]
+        },
+        "portable_object_chunk": {
+          "type": "controlled_list",
+          "items": [
+            "a red bag",
+            "a new book",
+            "an umbrella",
+            "a small cat"
+          ]
+        },
+        "feeling_adjective": {
+          "from": "data/sentence_registry/A1/01_personal_info.json",
+          "semantic_groups": [
+            "feeling",
+            "physical_state"
+          ]
+        },
+        "trait_adjective": {
+          "from": "data/sentence_registry/A1/02_family_friends.json",
+          "semantic_groups": [
+            "trait"
+          ]
+        },
+        "weather_activity_chunk": {
+          "from": "data/sentence_registry/A1/05_weather_environment.json",
+          "semantic_groups": [
+            "weather_activity"
+          ]
+        },
+        "weather_location_phrase": {
+          "type": "controlled_list",
+          "items": [
+            "in the snow",
+            "in the garden"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "It is sunny today. I am in the garden. My best friend is here too. She has got a small cat. We are very happy.",
+          "slots_used": {
+            "weather_state_chunk": "sunny today",
+            "room_chunk": "garden",
+            "friend_profile.relationship_sentence": "My best friend is here too.",
+            "friend_profile.pronoun_capitalized": "She",
+            "portable_object_chunk": "a small cat",
+            "feeling_adjective": "happy"
+          }
+        },
+        {
+          "text": "I am in the garden. Your best friend is here too. He is brave. We can play in the snow.",
+          "slots_used": {
+            "room_chunk": "garden",
+            "friend_profile.relationship_sentence": "Your best friend is here too.",
+            "friend_profile.pronoun_capitalized": "He",
+            "trait_adjective": "brave",
+            "weather_activity_chunk": "play",
+            "weather_location_phrase": "in the snow"
+          }
+        }
+      ],
+      "drill_modes": [
+        "spoken_output",
+        "scene_generation",
+        "friend_description"
+      ],
+      "pass_condition": "Student can introduce a companion in a scene and maintain pronoun and slot consistency.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "My best friend is here too. He has got a small cat.",
+          "She has got kitchen.",
+          "We can plays in the snow."
+        ],
+        "notes": "Use friend_profile as a paired slot. After modal 'can', use base verb."
+      }
+    },
+    {
+      "task_id": "home_object_scene",
+      "task_title": "Home Object Scene",
+      "task_type": "spoken_output",
+      "required_scenarios": [
+        "04_home_daily_tasks"
+      ],
+      "learning_goal": "Describe objects and their positions in a room using there-is/there-are and preposition chunks.",
+      "templates": [
+        {
+          "template_id": "home_object_scene_t1",
+          "text": "I am in the {room_chunk}. There is {singular_object_chunk} {location_phrase}.",
+          "slots": [
+            "room_chunk",
+            "singular_object_chunk",
+            "location_phrase"
+          ]
+        },
+        {
+          "template_id": "home_object_scene_t2",
+          "text": "I am in the {room_chunk}. There are {plural_object_chunk} {location_phrase}.",
+          "slots": [
+            "room_chunk",
+            "plural_object_chunk",
+            "location_phrase"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "room_chunk": {
+          "type": "controlled_list",
+          "items": [
+            "kitchen",
+            "living room",
+            "dining room",
+            "bedroom"
+          ]
+        },
+        "singular_object_chunk": {
+          "from": "data/sentence_registry/A1/04_home_daily_tasks.json",
+          "semantic_groups": [
+            "home_object_singular"
+          ]
+        },
+        "plural_object_chunk": {
+          "from": "data/sentence_registry/A1/04_home_daily_tasks.json",
+          "semantic_groups": [
+            "home_object_plural"
+          ]
+        },
+        "location_phrase": {
+          "from": "data/sentence_registry/A1/04_home_daily_tasks.json",
+          "semantic_groups": [
+            "location_phrase",
+            "room_location"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "I am in the living room. There is a sofa in the living room.",
+          "slots_used": {
+            "room_chunk": "living room",
+            "singular_object_chunk": "a sofa",
+            "location_phrase": "in the living room"
+          }
+        },
+        {
+          "text": "I am in the bedroom. There are some books in the bookcase.",
+          "slots_used": {
+            "room_chunk": "bedroom",
+            "plural_object_chunk": "some books",
+            "location_phrase": "in the bookcase"
+          }
+        }
+      ],
+      "drill_modes": [
+        "location_description",
+        "there_is_there_are_switch",
+        "visual_prompt"
+      ],
+      "pass_condition": "Student can use 'There is' for singular objects and 'There are' for plural objects.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "There is some books in the bookcase.",
+          "There are a sofa in the living room.",
+          "I am in living room."
+        ],
+        "notes": "Keep singular and plural object slots separate."
+      }
+    },
+    {
+      "task_id": "weather_response_scene",
+      "task_title": "Weather Response Scene",
+      "task_type": "spoken_output",
+      "required_scenarios": [
+        "03_health_body",
+        "05_weather_environment"
+      ],
+      "learning_goal": "Connect weather state with a practical response or tool.",
+      "templates": [
+        {
+          "template_id": "weather_response_scene_t1",
+          "text": "It is {weather_state_chunk}. {weather_response_action_chunk}. I have got {weather_tool_chunk}.",
+          "slots": [
+            "weather_state_chunk",
+            "weather_response_action_chunk",
+            "weather_tool_chunk"
+          ]
+        },
+        {
+          "template_id": "weather_response_scene_t2",
+          "text": "It is {weather_state_chunk}. I have got {weather_tool_chunk}. We can {weather_activity_chunk} {weather_location_phrase}.",
+          "slots": [
+            "weather_state_chunk",
+            "weather_tool_chunk",
+            "weather_activity_chunk",
+            "weather_location_phrase"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "weather_state_chunk": {
+          "from": "data/sentence_registry/A1/05_weather_environment.json",
+          "semantic_groups": [
+            "weather_state"
+          ]
+        },
+        "weather_response_action_chunk": {
+          "from": "data/sentence_registry/A1/05_weather_environment.json",
+          "semantic_groups": [
+            "weather_response_action"
+          ]
+        },
+        "weather_tool_chunk": {
+          "from": "data/sentence_registry/A1/05_weather_environment.json",
+          "semantic_groups": [
+            "weather_tool"
+          ]
+        },
+        "weather_activity_chunk": {
+          "from": "data/sentence_registry/A1/05_weather_environment.json",
+          "semantic_groups": [
+            "weather_activity"
+          ]
+        },
+        "weather_location_phrase": {
+          "type": "controlled_list",
+          "items": [
+            "in the snow",
+            "in the garden"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "It is cold and windy. Put on your coat. I have got an umbrella.",
+          "slots_used": {
+            "weather_state_chunk": "cold and windy",
+            "weather_response_action_chunk": "Put on your coat",
+            "weather_tool_chunk": "an umbrella"
+          }
+        },
+        {
+          "text": "It is sunny today. I have got an umbrella. We can play in the snow.",
+          "slots_used": {
+            "weather_state_chunk": "sunny today",
+            "weather_tool_chunk": "an umbrella",
+            "weather_activity_chunk": "play",
+            "weather_location_phrase": "in the snow"
+          }
+        }
+      ],
+      "drill_modes": [
+        "weather_response",
+        "tpr",
+        "spoken_output"
+      ],
+      "pass_condition": "Student can connect weather to a response action or weather tool.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "I have got umbrella.",
+          "We can plays in the snow.",
+          "Put your coat on your umbrella."
+        ],
+        "notes": "Keep phrasal verb and tool chunks controlled."
+      }
+    },
+    {
+      "task_id": "full_life_map_output",
+      "task_title": "Full My Life Map Output",
+      "task_type": "role_card",
+      "required_scenarios": [
+        "01_personal_info",
+        "02_family_friends",
+        "03_health_body",
+        "04_home_daily_tasks",
+        "05_weather_environment"
+      ],
+      "learning_goal": "Generate a complete mini scene using weather, room, companion, object, nearby furniture, and feeling.",
+      "templates": [
+        {
+          "template_id": "full_life_map_output_t1",
+          "text": "It is {weather_state_chunk}. I am in the {room_chunk}. {companion_profile.relationship_sentence} {companion_profile.pronoun_capitalized} has got {portable_object_chunk}. There is {furniture_chunk} {position_to_us_phrase}. We are very {feeling_adjective}.",
+          "slots": [
+            "weather_state_chunk",
+            "room_chunk",
+            "companion_profile.relationship_sentence",
+            "companion_profile.pronoun_capitalized",
+            "portable_object_chunk",
+            "furniture_chunk",
+            "position_to_us_phrase",
+            "feeling_adjective"
+          ]
+        },
+        {
+          "template_id": "full_life_map_output_t2",
+          "text": "Today, it is {weather_state_chunk}. I am in the {room_chunk}. {companion_profile.relationship_sentence} There are {plural_object_chunk} {location_phrase}. We are very {feeling_adjective}.",
+          "slots": [
+            "weather_state_chunk",
+            "room_chunk",
+            "companion_profile.relationship_sentence",
+            "plural_object_chunk",
+            "location_phrase",
+            "feeling_adjective"
+          ]
+        }
+      ],
+      "slot_sources": {
+        "weather_state_chunk": {
+          "from": "data/sentence_registry/A1/05_weather_environment.json",
+          "semantic_groups": [
+            "weather_state"
+          ]
+        },
+        "room_chunk": {
+          "type": "controlled_list",
+          "items": [
+            "garden",
+            "kitchen",
+            "living room",
+            "bedroom",
+            "dining room"
+          ]
+        },
+        "companion_profile": {
+          "type": "paired_slot",
+          "items": [
+            {
+              "relationship": "my best friend",
+              "relationship_sentence": "My best friend is here too.",
+              "pronoun": "she",
+              "pronoun_capitalized": "She"
+            },
+            {
+              "relationship": "my mother",
+              "relationship_sentence": "My mother is here too.",
+              "pronoun": "she",
+              "pronoun_capitalized": "She"
+            },
+            {
+              "relationship": "my big brother",
+              "relationship_sentence": "My big brother is here too.",
+              "pronoun": "he",
+              "pronoun_capitalized": "He"
+            }
+          ]
+        },
+        "portable_object_chunk": {
+          "type": "controlled_list",
+          "items": [
+            "a small cat",
+            "a red bag",
+            "a new book",
+            "an umbrella"
+          ]
+        },
+        "furniture_chunk": {
+          "type": "controlled_list",
+          "items": [
+            "a bench",
+            "a sofa",
+            "a lamp",
+            "a TV"
+          ]
+        },
+        "position_to_us_phrase": {
+          "type": "controlled_list",
+          "items": [
+            "next to us",
+            "behind us",
+            "in front of us"
+          ]
+        },
+        "plural_object_chunk": {
+          "from": "data/sentence_registry/A1/04_home_daily_tasks.json",
+          "semantic_groups": [
+            "home_object_plural"
+          ]
+        },
+        "location_phrase": {
+          "from": "data/sentence_registry/A1/04_home_daily_tasks.json",
+          "semantic_groups": [
+            "location_phrase",
+            "room_location"
+          ]
+        },
+        "feeling_adjective": {
+          "from": "data/sentence_registry/A1/01_personal_info.json",
+          "semantic_groups": [
+            "feeling",
+            "physical_state"
+          ]
+        }
+      },
+      "sample_outputs": [
+        {
+          "text": "It is sunny today. I am in the garden. My best friend is here too. She has got a small cat. There is a bench next to us. We are very happy.",
+          "slots_used": {
+            "weather_state_chunk": "sunny today",
+            "room_chunk": "garden",
+            "companion_profile.relationship_sentence": "My best friend is here too.",
+            "companion_profile.pronoun_capitalized": "She",
+            "portable_object_chunk": "a small cat",
+            "furniture_chunk": "a bench",
+            "position_to_us_phrase": "next to us",
+            "feeling_adjective": "happy"
+          }
+        },
+        {
+          "text": "Today, it is cold and windy. I am in the living room. My big brother is here too. There are some books in the bookcase. We are very tired.",
+          "slots_used": {
+            "weather_state_chunk": "cold and windy",
+            "room_chunk": "living room",
+            "companion_profile.relationship_sentence": "My big brother is here too.",
+            "plural_object_chunk": "some books",
+            "location_phrase": "in the bookcase",
+            "feeling_adjective": "tired"
+          }
+        }
+      ],
+      "drill_modes": [
+        "scene_generation",
+        "mini_presentation",
+        "boss_challenge",
+        "exit_ticket"
+      ],
+      "pass_condition": "Student can produce a coherent six-sentence life map using weather, room, companion, object, position, and feeling chunks.",
+      "generator_rules": {
+        "safe_for_generation": true,
+        "use_controlled_slots": true,
+        "blocked_outputs": [
+          "My mother is here too. He has got a small cat.",
+          "There are a bench next to us.",
+          "There is some books in the bookcase.",
+          "I am in garden.",
+          "We are very a student."
+        ],
+        "notes": "This is the full Combo B output. Use paired companion slots and keep there-is / there-are slots separate."
+      }
+    }
+  ]
+}

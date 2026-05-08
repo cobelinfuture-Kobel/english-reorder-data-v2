@@ -1,0 +1,319 @@
+{
+  "metadata": {
+    "curriculum": "core_adventure",
+    "level": "A1",
+    "level_order": 1,
+    "scenario_id": "05_weather_environment",
+    "scenario_order": 5,
+    "scenario_title": "Weather & Environment",
+    "annotation_version": "0.1.0"
+  },
+  "sentences": [
+    {
+      "id": "A1_05_weather_environment_0001",
+      "text": "It is sunny today.",
+      "zh": "今天是晴天。",
+      "level": "A1",
+      "scenario_id": "05_weather_environment",
+      "scenario_role": "core",
+      "communicative_function": "state_weather_today",
+      "grammar": ["be_verb", "third_person_singular_it", "affirmative_statement", "weather_expression", "time_adverb"],
+      "pattern": "It is {weather_state_chunk}.",
+      "slots": {
+        "weather_state_chunk": "sunny today"
+      },
+      "chunks": [
+        {
+          "slot": "weather_state_chunk",
+          "text": "sunny today",
+          "semantic_group": "weather_state",
+          "form": "adjective_time_phrase"
+        }
+      ],
+      "words": ["it", "is", "sunny", "today"],
+      "drill_tags": ["weather_response", "be_verb", "rapid_substitution"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["weather_state_chunk"],
+        "notes": "Keep 'sunny today' as a weather state chunk. Do not generate from raw weather adjectives alone in this template."
+      }
+    },
+    {
+      "id": "A1_05_weather_environment_0002",
+      "text": "How is the weather?",
+      "zh": "天氣如何？",
+      "level": "A1",
+      "scenario_id": "05_weather_environment",
+      "scenario_role": "core",
+      "communicative_function": "ask_weather",
+      "grammar": ["be_verb", "wh_question", "how_question", "weather_expression"],
+      "pattern": "How is the weather?",
+      "slots": {},
+      "chunks": [],
+      "words": ["how", "is", "the", "weather"],
+      "drill_tags": ["weather_question", "recognition_prompt", "fixed_question"],
+      "expected_answers": {
+        "yes": "It is sunny today.",
+        "no": "It is not sunny today."
+      },
+      "generator": {
+        "safe_for_substitution": false,
+        "safe_slots": [],
+        "notes": "Fixed weather question. Runtime should map this to weather state answers such as 'It is sunny today.'"
+      }
+    },
+    {
+      "id": "A1_05_weather_environment_0003",
+      "text": "I like rainy days.",
+      "zh": "我喜歡雨天。",
+      "level": "A1",
+      "scenario_id": "05_weather_environment",
+      "scenario_role": "core",
+      "communicative_function": "state_weather_preference",
+      "grammar": ["simple_present", "first_person_singular", "affirmative_statement", "verb_object_phrase"],
+      "pattern": "I like {weather_day_chunk}.",
+      "slots": {
+        "weather_day_chunk": "rainy days"
+      },
+      "chunks": [
+        {
+          "slot": "weather_day_chunk",
+          "text": "rainy days",
+          "semantic_group": "weather_day",
+          "form": "adjective_plural_noun_phrase"
+        }
+      ],
+      "words": ["I", "like", "rainy", "days"],
+      "drill_tags": ["weather_preference", "simple_present", "rapid_substitution"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["weather_day_chunk"],
+        "notes": "Keep 'rainy days' as a phrase chunk. Do not generate 'I like rainy' in this pattern."
+      }
+    },
+    {
+      "id": "A1_05_weather_environment_0004",
+      "text": "It is cold and windy.",
+      "zh": "天氣又冷又有風。",
+      "level": "A1",
+      "scenario_id": "05_weather_environment",
+      "scenario_role": "core",
+      "communicative_function": "state_weather_condition",
+      "grammar": ["be_verb", "third_person_singular_it", "affirmative_statement", "compound_adjective"],
+      "pattern": "It is {weather_state_chunk}.",
+      "slots": {
+        "weather_state_chunk": "cold and windy"
+      },
+      "chunks": [
+        {
+          "slot": "weather_state_chunk",
+          "text": "cold and windy",
+          "semantic_group": "weather_state",
+          "form": "compound_adjective_phrase"
+        }
+      ],
+      "words": ["it", "is", "cold", "and", "windy"],
+      "drill_tags": ["weather_response", "compound_adjective", "rapid_substitution"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["weather_state_chunk"],
+        "notes": "Keep 'cold and windy' as a weather state chunk."
+      }
+    },
+    {
+      "id": "A1_05_weather_environment_0005",
+      "text": "Put on your coat.",
+      "zh": "穿上你的外套。",
+      "level": "A1",
+      "scenario_id": "05_weather_environment",
+      "scenario_role": "core",
+      "communicative_function": "give_weather_response_instruction",
+      "grammar": ["imperative", "phrasal_verb", "possessive_adjective", "clothing_noun"],
+      "pattern": "{weather_response_action_chunk}.",
+      "slots": {
+        "weather_response_action_chunk": "Put on your coat"
+      },
+      "chunks": [
+        {
+          "slot": "weather_response_action_chunk",
+          "text": "Put on your coat",
+          "semantic_group": "weather_response_action",
+          "form": "imperative_verb_object_phrase"
+        }
+      ],
+      "words": ["put", "on", "your", "coat"],
+      "drill_tags": ["imperative", "weather_response_action", "tpr"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["weather_response_action_chunk"],
+        "notes": "Keep 'put on your coat' as an imperative action chunk. Do not split phrasal verb 'put on'."
+      }
+    },
+    {
+      "id": "A1_05_weather_environment_0006",
+      "text": "I have got an umbrella.",
+      "zh": "我有一把雨傘。",
+      "level": "A1",
+      "scenario_id": "05_weather_environment",
+      "scenario_role": "core",
+      "communicative_function": "state_weather_tool_possession",
+      "grammar": ["have_got", "first_person_singular", "affirmative_statement", "singular_noun_phrase"],
+      "pattern": "I have got {weather_tool_chunk}.",
+      "slots": {
+        "weather_tool_chunk": "an umbrella"
+      },
+      "chunks": [
+        {
+          "slot": "weather_tool_chunk",
+          "text": "an umbrella",
+          "semantic_group": "weather_tool",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": ["I", "have", "got", "an", "umbrella"],
+      "drill_tags": ["have_got_statement", "weather_tool", "rapid_substitution"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["weather_tool_chunk"],
+        "notes": "Use full phrase 'an umbrella'. Do not generate 'I have got umbrella.'"
+      }
+    },
+    {
+      "id": "A1_05_weather_environment_0007",
+      "text": "The sun is big and hot.",
+      "zh": "太陽又大又熱。",
+      "level": "A1",
+      "scenario_id": "05_weather_environment",
+      "scenario_role": "core",
+      "communicative_function": "describe_environment_object",
+      "grammar": ["be_verb", "third_person_singular", "affirmative_statement", "compound_adjective"],
+      "pattern": "{environment_subject_chunk} is {environment_description_chunk}.",
+      "slots": {
+        "environment_subject_chunk": "The sun",
+        "environment_description_chunk": "big and hot"
+      },
+      "chunks": [
+        {
+          "slot": "environment_subject_chunk",
+          "text": "The sun",
+          "semantic_group": "environment_object",
+          "form": "definite_noun_phrase"
+        },
+        {
+          "slot": "environment_description_chunk",
+          "text": "big and hot",
+          "semantic_group": "environment_description",
+          "form": "compound_adjective_phrase"
+        }
+      ],
+      "words": ["the", "sun", "is", "big", "and", "hot"],
+      "drill_tags": ["environment_description", "be_verb", "compound_adjective"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["environment_subject_chunk", "environment_description_chunk"],
+        "notes": "Use singular environment subjects with 'is'."
+      }
+    },
+    {
+      "id": "A1_05_weather_environment_0008",
+      "text": "It isn't snowing now.",
+      "zh": "現在沒有在下雪。",
+      "level": "A1",
+      "scenario_id": "05_weather_environment",
+      "scenario_role": "extension",
+      "communicative_function": "state_negative_current_weather_action",
+      "grammar": ["present_continuous", "third_person_singular_it", "negative_statement", "weather_action"],
+      "pattern": "It isn't {weather_action_ing} {time_phrase}.",
+      "slots": {
+        "weather_action_ing": "snowing",
+        "time_phrase": "now"
+      },
+      "chunks": [
+        {
+          "slot": "weather_action_ing",
+          "text": "snowing",
+          "semantic_group": "weather_action",
+          "form": "present_participle"
+        },
+        {
+          "slot": "time_phrase",
+          "text": "now",
+          "semantic_group": "current_time",
+          "form": "time_adverb"
+        }
+      ],
+      "words": ["it", "isn't", "snowing", "now"],
+      "drill_tags": ["present_continuous", "weather_action", "negative_statement"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["weather_action_ing", "time_phrase"],
+        "notes": "This is an extension pattern because present continuous is beyond the simplest A1 weather state pattern."
+      }
+    },
+    {
+      "id": "A1_05_weather_environment_0009",
+      "text": "Look at the white clouds.",
+      "zh": "看那些白雲。",
+      "level": "A1",
+      "scenario_id": "05_weather_environment",
+      "scenario_role": "core",
+      "communicative_function": "direct_attention_to_environment_object",
+      "grammar": ["imperative", "prepositional_verb", "definite_noun_phrase", "adjective_before_noun"],
+      "pattern": "Look at {environment_object_chunk}.",
+      "slots": {
+        "environment_object_chunk": "the white clouds"
+      },
+      "chunks": [
+        {
+          "slot": "environment_object_chunk",
+          "text": "the white clouds",
+          "semantic_group": "environment_object",
+          "form": "definite_plural_noun_phrase"
+        }
+      ],
+      "words": ["look", "at", "the", "white", "clouds"],
+      "drill_tags": ["imperative", "environment_object", "visual_prompt"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["environment_object_chunk"],
+        "notes": "Keep 'the white clouds' as an environment object chunk. Do not split into free adjective and noun combinations in v0.1."
+      }
+    },
+    {
+      "id": "A1_05_weather_environment_0010",
+      "text": "We can play in the snow.",
+      "zh": "我們可以在雪中玩。",
+      "level": "A1",
+      "scenario_id": "05_weather_environment",
+      "scenario_role": "core",
+      "communicative_function": "state_weather_activity_possibility",
+      "grammar": ["modal_can", "first_person_plural", "base_verb_after_modal", "prepositional_phrase"],
+      "pattern": "We can {weather_activity_chunk} {location_phrase}.",
+      "slots": {
+        "weather_activity_chunk": "play",
+        "location_phrase": "in the snow"
+      },
+      "chunks": [
+        {
+          "slot": "weather_activity_chunk",
+          "text": "play",
+          "semantic_group": "weather_activity",
+          "form": "base_verb"
+        },
+        {
+          "slot": "location_phrase",
+          "text": "in the snow",
+          "semantic_group": "weather_location",
+          "form": "prepositional_phrase"
+        }
+      ],
+      "words": ["we", "can", "play", "in", "the", "snow"],
+      "drill_tags": ["modal_can", "weather_activity", "location_phrase"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["weather_activity_chunk", "location_phrase"],
+        "notes": "After modal 'can', use base verb. Keep 'in the snow' as a location phrase chunk."
+      }
+    }
+  ]
+}

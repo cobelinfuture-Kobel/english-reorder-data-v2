@@ -1,0 +1,329 @@
+{
+  "metadata": {
+    "curriculum": "core_adventure",
+    "level": "A1",
+    "level_order": 1,
+    "scenario_id": "03_health_body",
+    "scenario_order": 3,
+    "scenario_title": "Health & Body",
+    "annotation_version": "0.1.0"
+  },
+  "sentences": [
+    {
+      "id": "A1_03_health_body_0001",
+      "text": "I have got brown eyes.",
+      "zh": "我有棕色的眼睛。",
+      "level": "A1",
+      "scenario_id": "03_health_body",
+      "scenario_role": "core",
+      "communicative_function": "state_physical_feature",
+      "grammar": ["have_got", "first_person_singular", "affirmative_statement", "plural_noun"],
+      "pattern": "I have got {physical_feature_chunk}.",
+      "slots": {
+        "physical_feature_chunk": "brown eyes"
+      },
+      "chunks": [
+        {
+          "slot": "physical_feature_chunk",
+          "text": "brown eyes",
+          "semantic_group": "physical_feature",
+          "form": "adjective_plural_noun_phrase"
+        }
+      ],
+      "words": ["I", "have", "got", "brown", "eyes"],
+      "drill_tags": ["echo", "rapid_substitution", "have_got_statement", "physical_feature"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["physical_feature_chunk"],
+        "notes": "Keep 'brown eyes' as a physical feature chunk. Do not split into free adjective and noun combinations in v0.1."
+      }
+    },
+    {
+      "id": "A1_03_health_body_0002",
+      "text": "Have you got a headache?",
+      "zh": "你頭痛嗎？",
+      "level": "A1",
+      "scenario_id": "03_health_body",
+      "scenario_role": "core",
+      "communicative_function": "ask_health_condition",
+      "grammar": ["have_got", "second_person", "yes_no_question", "health_condition"],
+      "pattern": "Have you got {health_condition_chunk}?",
+      "slots": {
+        "health_condition_chunk": "a headache"
+      },
+      "chunks": [
+        {
+          "slot": "health_condition_chunk",
+          "text": "a headache",
+          "semantic_group": "health_condition",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": ["have", "you", "got", "a", "headache"],
+      "drill_tags": ["rapid_substitution", "yes_no_answer", "have_got_question", "health_condition"],
+      "expected_answers": {
+        "yes": "Yes, I have.",
+        "no": "No, I haven't."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["health_condition_chunk"],
+        "notes": "Use full health condition chunk 'a headache'. Do not generate 'Have you got headache?'"
+      }
+    },
+    {
+      "id": "A1_03_health_body_0003",
+      "text": "My legs are tired.",
+      "zh": "我的腿很累。",
+      "level": "A1",
+      "scenario_id": "03_health_body",
+      "scenario_role": "extension",
+      "communicative_function": "describe_body_part_sensation",
+      "grammar": ["be_verb", "third_person_plural", "affirmative_statement", "possessive_adjective", "adjective_complement"],
+      "pattern": "{possessive_body_part_plural} are {sensation_adjective}.",
+      "slots": {
+        "possessive_body_part_plural": "My legs",
+        "sensation_adjective": "tired"
+      },
+      "chunks": [
+        {
+          "slot": "possessive_body_part_plural",
+          "text": "My legs",
+          "semantic_group": "body_part_plural",
+          "form": "possessive_plural_noun_phrase"
+        },
+        {
+          "slot": "sensation_adjective",
+          "text": "tired",
+          "semantic_group": "sensation",
+          "form": "adjective"
+        }
+      ],
+      "words": ["my", "legs", "are", "tired"],
+      "drill_tags": ["body_part_description", "be_verb_agreement", "plural_subject_statement"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["possessive_body_part_plural", "sensation_adjective"],
+        "notes": "Plural body part subjects require 'are'. Do not generate 'My legs is tired.'"
+      }
+    },
+    {
+      "id": "A1_03_health_body_0004",
+      "text": "He has got short hair.",
+      "zh": "他有短頭髮。",
+      "level": "A1",
+      "scenario_id": "03_health_body",
+      "scenario_role": "core",
+      "communicative_function": "state_physical_feature",
+      "grammar": ["has_got", "third_person_singular", "affirmative_statement", "physical_feature"],
+      "pattern": "He has got {physical_feature_chunk}.",
+      "slots": {
+        "physical_feature_chunk": "short hair"
+      },
+      "chunks": [
+        {
+          "slot": "physical_feature_chunk",
+          "text": "short hair",
+          "semantic_group": "physical_feature",
+          "form": "adjective_uncountable_noun_phrase"
+        }
+      ],
+      "words": ["he", "has", "got", "short", "hair"],
+      "drill_tags": ["echo", "rapid_substitution", "has_got_statement", "third_person_singular"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["physical_feature_chunk"],
+        "notes": "Use 'has got' with third person singular subject. Do not generate 'He have got short hair.'"
+      }
+    },
+    {
+      "id": "A1_03_health_body_0005",
+      "text": "Does your arm hurt?",
+      "zh": "你的手臂痛嗎？",
+      "level": "A1",
+      "scenario_id": "03_health_body",
+      "scenario_role": "extension",
+      "communicative_function": "ask_body_part_pain",
+      "grammar": ["simple_present", "does_question", "third_person_singular", "base_verb_after_does", "possessive_adjective"],
+      "pattern": "Does {possessive_body_part_singular} hurt?",
+      "slots": {
+        "possessive_body_part_singular": "your arm"
+      },
+      "chunks": [
+        {
+          "slot": "possessive_body_part_singular",
+          "text": "your arm",
+          "semantic_group": "body_part_singular",
+          "form": "possessive_singular_noun_phrase"
+        }
+      ],
+      "words": ["does", "your", "arm", "hurt"],
+      "drill_tags": ["yes_no_answer", "does_question", "body_part_pain"],
+      "expected_answers": {
+        "yes": "Yes, it does.",
+        "no": "No, it doesn't."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["possessive_body_part_singular"],
+        "notes": "After 'does', keep base verb 'hurt'. Do not generate 'Does your arm hurts?'"
+      }
+    },
+    {
+      "id": "A1_03_health_body_0006",
+      "text": "I have got ten fingers.",
+      "zh": "我有十根手指。",
+      "level": "A1",
+      "scenario_id": "03_health_body",
+      "scenario_role": "core",
+      "communicative_function": "state_body_part_quantity",
+      "grammar": ["have_got", "first_person_singular", "affirmative_statement", "number_plural_noun"],
+      "pattern": "I have got {body_quantity_chunk}.",
+      "slots": {
+        "body_quantity_chunk": "ten fingers"
+      },
+      "chunks": [
+        {
+          "slot": "body_quantity_chunk",
+          "text": "ten fingers",
+          "semantic_group": "body_part_quantity",
+          "form": "number_plural_noun_phrase"
+        }
+      ],
+      "words": ["I", "have", "got", "ten", "fingers"],
+      "drill_tags": ["echo", "rapid_substitution", "have_got_statement", "body_part_quantity"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["body_quantity_chunk"],
+        "notes": "Keep 'ten fingers' as a number + plural noun chunk."
+      }
+    },
+    {
+      "id": "A1_03_health_body_0007",
+      "text": "She has got a cold.",
+      "zh": "她感冒了。",
+      "level": "A1",
+      "scenario_id": "03_health_body",
+      "scenario_role": "core",
+      "communicative_function": "state_health_condition",
+      "grammar": ["has_got", "third_person_singular", "affirmative_statement", "health_condition"],
+      "pattern": "She has got {health_condition_chunk}.",
+      "slots": {
+        "health_condition_chunk": "a cold"
+      },
+      "chunks": [
+        {
+          "slot": "health_condition_chunk",
+          "text": "a cold",
+          "semantic_group": "health_condition",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": ["she", "has", "got", "a", "cold"],
+      "drill_tags": ["echo", "rapid_substitution", "has_got_statement", "health_condition"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["health_condition_chunk"],
+        "notes": "Use full health condition chunk 'a cold'. Do not generate 'She has got cold.'"
+      }
+    },
+    {
+      "id": "A1_03_health_body_0008",
+      "text": "My hands are cold.",
+      "zh": "我的手很冷。",
+      "level": "A1",
+      "scenario_id": "03_health_body",
+      "scenario_role": "extension",
+      "communicative_function": "describe_body_part_sensation",
+      "grammar": ["be_verb", "third_person_plural", "affirmative_statement", "possessive_adjective", "adjective_complement"],
+      "pattern": "{possessive_body_part_plural} are {sensation_adjective}.",
+      "slots": {
+        "possessive_body_part_plural": "My hands",
+        "sensation_adjective": "cold"
+      },
+      "chunks": [
+        {
+          "slot": "possessive_body_part_plural",
+          "text": "My hands",
+          "semantic_group": "body_part_plural",
+          "form": "possessive_plural_noun_phrase"
+        },
+        {
+          "slot": "sensation_adjective",
+          "text": "cold",
+          "semantic_group": "sensation",
+          "form": "adjective"
+        }
+      ],
+      "words": ["my", "hands", "are", "cold"],
+      "drill_tags": ["body_part_description", "be_verb_agreement", "plural_subject_statement"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["possessive_body_part_plural", "sensation_adjective"],
+        "notes": "Plural body part subjects require 'are'. Do not generate 'My hands is cold.'"
+      }
+    },
+    {
+      "id": "A1_03_health_body_0009",
+      "text": "Have you got a stomach ache?",
+      "zh": "你胃痛嗎？",
+      "level": "A1",
+      "scenario_id": "03_health_body",
+      "scenario_role": "core",
+      "communicative_function": "ask_health_condition",
+      "grammar": ["have_got", "second_person", "yes_no_question", "health_condition"],
+      "pattern": "Have you got {health_condition_chunk}?",
+      "slots": {
+        "health_condition_chunk": "a stomach ache"
+      },
+      "chunks": [
+        {
+          "slot": "health_condition_chunk",
+          "text": "a stomach ache",
+          "semantic_group": "health_condition",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": ["have", "you", "got", "a", "stomach", "ache"],
+      "drill_tags": ["rapid_substitution", "yes_no_answer", "have_got_question", "health_condition"],
+      "expected_answers": {
+        "yes": "Yes, I have.",
+        "no": "No, I haven't."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["health_condition_chunk"],
+        "notes": "Use full phrase 'a stomach ache'. Do not generate 'Have you got stomach ache?'"
+      }
+    },
+    {
+      "id": "A1_03_health_body_0010",
+      "text": "He has got big ears.",
+      "zh": "他有大耳朵。",
+      "level": "A1",
+      "scenario_id": "03_health_body",
+      "scenario_role": "core",
+      "communicative_function": "state_physical_feature",
+      "grammar": ["has_got", "third_person_singular", "affirmative_statement", "physical_feature"],
+      "pattern": "He has got {physical_feature_chunk}.",
+      "slots": {
+        "physical_feature_chunk": "big ears"
+      },
+      "chunks": [
+        {
+          "slot": "physical_feature_chunk",
+          "text": "big ears",
+          "semantic_group": "physical_feature",
+          "form": "adjective_plural_noun_phrase"
+        }
+      ],
+      "words": ["he", "has", "got", "big", "ears"],
+      "drill_tags": ["echo", "rapid_substitution", "has_got_statement", "third_person_singular", "physical_feature"],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": ["physical_feature_chunk"],
+        "notes": "Use 'has got' with third person singular subject. Do not generate 'He have got big ears.'"
+      }
+    }
+  ]
+}

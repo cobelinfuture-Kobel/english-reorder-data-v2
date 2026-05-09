@@ -1,6 +1,6 @@
-import personalInfoScenario from "../data/scenarios/personal_info.json";
-import personalInfoSentenceRegistry from "../data/registries/personal_info_sentence_registry.json";
-import { Chunk, DrillMode, DrillPrompt, Pattern, Scenario } from "../runtime/types";
+import personalInfoSentenceRegistry from "../../data/sentence_registry/A1/01_personal_info.json";
+import { Chunk, DrillMode, DrillPrompt } from "../runtime/types";
+import { normalizeOfficialSentenceRegistry } from "../runtime/registryNormalizer";
 import { buildDrillSessionFromRegistry } from "../runtime/sessionBuilder";
 import { PlayablePrompt, RegistrySentence } from "../runtime/sessionTypes";
 
@@ -27,36 +27,11 @@ export interface MockSessionState {
 }
 
 type MockPromptMode = Extract<DrillMode, "LEARN" | "DRILL" | "RAPID_RESPONSE">;
-type PersonalInfoSentenceRegistry = {
-  registry_id: string;
-  scenario_id: string;
-  title: string;
-  sentences: Array<
-    Omit<RegistrySentence, "chunkPool"> & {
-      source?: {
-        scenario: string;
-        patternId: string;
-      };
-    }
-  >;
-};
-
-const scenario = personalInfoScenario as Scenario;
-const allChunks = scenario.chunks as Chunk[];
-const patternsById = new Map<string, Pattern>(
-  scenario.patterns.map((pattern) => [pattern.id, pattern as Pattern]),
+const normalizedSentenceRegistry = normalizeOfficialSentenceRegistry(
+  personalInfoSentenceRegistry as never,
 );
+const allChunks = normalizedSentenceRegistry.chunkCatalog;
 const chunksById = new Map<string, Chunk>(allChunks.map((chunk) => [chunk.id, chunk]));
-
-function requirePattern(patternId: string): Pattern {
-  const pattern = patternsById.get(patternId);
-
-  if (!pattern) {
-    throw new Error(`Missing mock pattern: ${patternId}`);
-  }
-
-  return pattern;
-}
 
 function requireChunk(chunkId: string): Chunk {
   const chunk = chunksById.get(chunkId);
@@ -108,30 +83,10 @@ function buildMockPrompt(
   };
 }
 
-// This file is the transition layer between registry content
+// This file is the transition layer between official registry content
 // and runtime gameplay UI.
-// sentence registry JSON -> sessionBuilder -> DrillConsole-ready prompts
-const registryData = personalInfoSentenceRegistry as PersonalInfoSentenceRegistry;
-const registrySentences: RegistrySentence[] = registryData.sentences.map((sentence) => {
-  const chunkPool = Array.from(
-    new Set(Object.values(sentence.slotSelections ?? {})),
-  ).map((chunkId) => requireChunk(chunkId));
-
-  const stateChunkIds = ["happy", "hungry", "tired"];
-
-  if (sentence.pattern === "I am {state}." || sentence.pattern === "Are you {state}?") {
-    for (const chunkId of stateChunkIds) {
-      if (!chunkPool.some((chunk) => chunk.id === chunkId)) {
-        chunkPool.push(requireChunk(chunkId));
-      }
-    }
-  }
-
-  return {
-    ...sentence,
-    chunkPool,
-  };
-});
+// official sentence registry JSON -> registryNormalizer -> sessionBuilder -> DrillConsole-ready prompts
+const registrySentences: RegistrySentence[] = normalizedSentenceRegistry.sentences;
 
 const playablePrompts = buildDrillSessionFromRegistry(registrySentences, {
   sessionId: "personal-info-playground",
@@ -142,13 +97,11 @@ const playablePrompts = buildDrillSessionFromRegistry(registrySentences, {
 export const initialSessionState: MockSessionState = {
   xp: 0,
   combo: 0,
-  unlockedChunkIds: scenario.unlockRules.firstChunkUnlocks,
+  unlockedChunkIds: [],
 };
 
 export const sampleChunks: Chunk[] = allChunks;
-export const mockPrompts: MockPrompt[] = playablePrompts
-  .filter((playablePrompt) => playablePrompt.id !== "p6_be_from_taiwan")
-  .map((playablePrompt) => {
+export const mockPrompts: MockPrompt[] = playablePrompts.map((playablePrompt) => {
     const sourceSentence = registrySentences.find((sentence) => sentence.id === playablePrompt.id);
 
     if (!sourceSentence) {

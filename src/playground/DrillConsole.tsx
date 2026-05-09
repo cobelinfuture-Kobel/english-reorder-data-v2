@@ -11,6 +11,21 @@ type FeedbackState = {
   answered: boolean;
 };
 
+type PersistedDrillSession = {
+  promptIndex: number;
+  xp: number;
+  combo: number;
+  unlockedChunkIds: string[];
+  feedback: FeedbackState;
+};
+
+const DRILL_CONSOLE_STORAGE_KEY = "sentence-combat-rpg:drill-console";
+const defaultFeedbackState: FeedbackState = {
+  message: "Choose an answer to begin.",
+  unlockedMessage: "",
+  answered: false,
+};
+
 const panelStyle = {
   border: "1px solid #999",
   padding: "12px",
@@ -61,17 +76,77 @@ function getCorrectFeedback(comboAfterAnswer: number): string {
   return "Correct.";
 }
 
+function clampPromptIndex(promptIndex: number): number {
+  if (Number.isNaN(promptIndex) || promptIndex < 0) {
+    return 0;
+  }
+
+  if (promptIndex >= mockPrompts.length) {
+    return mockPrompts.length - 1;
+  }
+
+  return promptIndex;
+}
+
+function loadPersistedSession(): PersistedDrillSession | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const storedValue = window.localStorage.getItem(DRILL_CONSOLE_STORAGE_KEY);
+
+  if (!storedValue) {
+    return null;
+  }
+
+  try {
+    const parsedValue = JSON.parse(storedValue) as Partial<PersistedDrillSession>;
+
+    if (
+      typeof parsedValue.promptIndex !== "number" ||
+      typeof parsedValue.xp !== "number" ||
+      typeof parsedValue.combo !== "number" ||
+      !Array.isArray(parsedValue.unlockedChunkIds) ||
+      !parsedValue.feedback
+    ) {
+      return null;
+    }
+
+    return {
+      promptIndex: clampPromptIndex(parsedValue.promptIndex),
+      xp: parsedValue.xp,
+      combo: parsedValue.combo,
+      unlockedChunkIds: parsedValue.unlockedChunkIds,
+      feedback: {
+        message:
+          typeof parsedValue.feedback.message === "string"
+            ? parsedValue.feedback.message
+            : defaultFeedbackState.message,
+        unlockedMessage:
+          typeof parsedValue.feedback.unlockedMessage === "string"
+            ? parsedValue.feedback.unlockedMessage
+            : defaultFeedbackState.unlockedMessage,
+        answered:
+          typeof parsedValue.feedback.answered === "boolean"
+            ? parsedValue.feedback.answered
+            : defaultFeedbackState.answered,
+      },
+    };
+  } catch {
+    return null;
+  }
+}
+
 export default function DrillConsole() {
-  const [promptIndex, setPromptIndex] = useState(0);
-  const [xp, setXp] = useState(initialSessionState.xp);
-  const [combo, setCombo] = useState(initialSessionState.combo);
-  const [unlockedChunkIds, setUnlockedChunkIds] = useState(initialSessionState.unlockedChunkIds);
+  const persistedSession = loadPersistedSession();
+  const [promptIndex, setPromptIndex] = useState(persistedSession?.promptIndex ?? 0);
+  const [xp, setXp] = useState(persistedSession?.xp ?? initialSessionState.xp);
+  const [combo, setCombo] = useState(persistedSession?.combo ?? initialSessionState.combo);
+  const [unlockedChunkIds, setUnlockedChunkIds] = useState(
+    persistedSession?.unlockedChunkIds ?? initialSessionState.unlockedChunkIds,
+  );
   const [timerSeconds, setTimerSeconds] = useState<number | null>(null);
-  const [feedback, setFeedback] = useState<FeedbackState>({
-    message: "Choose an answer to begin.",
-    unlockedMessage: "",
-    answered: false,
-  });
+  const [feedback, setFeedback] = useState<FeedbackState>(persistedSession?.feedback ?? defaultFeedbackState);
 
   const currentPrompt = mockPrompts[promptIndex];
   const selectedPromptChunks = useMemo(
@@ -80,6 +155,25 @@ export default function DrillConsole() {
   );
   const comboLabel = getComboLabel(combo);
   const isRapidResponse = currentPrompt.mode === "RAPID_RESPONSE";
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const persistedSessionState: PersistedDrillSession = {
+      promptIndex,
+      xp,
+      combo,
+      unlockedChunkIds,
+      feedback,
+    };
+
+    window.localStorage.setItem(
+      DRILL_CONSOLE_STORAGE_KEY,
+      JSON.stringify(persistedSessionState),
+    );
+  }, [combo, feedback, promptIndex, unlockedChunkIds, xp]);
 
   useEffect(() => {
     if (!isRapidResponse || feedback.answered) {
@@ -176,6 +270,19 @@ export default function DrillConsole() {
     });
   }
 
+  function handleResetSession() {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(DRILL_CONSOLE_STORAGE_KEY);
+    }
+
+    setPromptIndex(0);
+    setXp(initialSessionState.xp);
+    setCombo(initialSessionState.combo);
+    setUnlockedChunkIds(initialSessionState.unlockedChunkIds);
+    setTimerSeconds(null);
+    setFeedback(defaultFeedbackState);
+  }
+
   return (
     <div style={{ fontFamily: "sans-serif", maxWidth: "640px", padding: "16px" }}>
       <h1>Sentence Combat RPG Debug Drill Console</h1>
@@ -225,9 +332,14 @@ export default function DrillConsole() {
         </div>
       </div>
 
-      <button type="button" onClick={handleNext}>
-        Next
-      </button>
+      <div>
+        <button type="button" onClick={handleNext} style={{ marginRight: "8px" }}>
+          Next
+        </button>
+        <button type="button" onClick={handleResetSession}>
+          Reset Session
+        </button>
+      </div>
     </div>
   );
 }

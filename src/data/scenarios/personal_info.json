@@ -1,0 +1,140 @@
+{
+  "id": "1_1_personal_info",
+  "title": "1-1 Personal Info",
+  "patterns": [
+    {
+      "id": "be_state",
+      "scenarioId": "1_1_personal_info",
+      "prompt": "How are you?",
+      "template": "I am {state}.",
+      "slots": [
+        { "name": "state", "type": "state", "required": true }
+      ],
+      "allowedChunkIds": ["happy", "hungry", "tired"],
+      "distractorChunkIds": ["taiwan", "seven_years_old"],
+      "expectedAnswers": ["I am happy.", "I am hungry.", "I am tired."],
+      "hint": "Use I am plus a feeling word."
+    },
+    {
+      "id": "be_age",
+      "scenarioId": "1_1_personal_info",
+      "prompt": "How old are you?",
+      "template": "I am {age}.",
+      "slots": [
+        { "name": "age", "type": "age", "required": true }
+      ],
+      "allowedChunkIds": ["seven_years_old"],
+      "distractorChunkIds": ["taiwan", "happy"],
+      "expectedAnswers": ["I am seven years old."],
+      "hint": "Use I am plus your age chunk."
+    },
+    {
+      "id": "be_from_place",
+      "scenarioId": "1_1_personal_info",
+      "prompt": "Where are you from?",
+      "template": "I am from {place}.",
+      "slots": [
+        { "name": "place", "type": "place", "required": true }
+      ],
+      "allowedChunkIds": ["taiwan"],
+      "distractorChunkIds": ["from_taiwan", "hungry"],
+      "expectedAnswers": ["I am from Taiwan."],
+      "hint": "Use I am from plus a place."
+    },
+    {
+      "id": "question_are_you_state",
+      "scenarioId": "1_1_personal_info",
+      "prompt": "Answer the question: Are you hungry?",
+      "template": "Are you {state}?",
+      "slots": [
+        { "name": "state", "type": "state", "required": true }
+      ],
+      "allowedChunkIds": ["happy", "hungry", "tired"],
+      "distractorChunkIds": ["taiwan"],
+      "expectedAnswers": ["Are you happy?", "Are you hungry?", "Are you tired?"],
+      "hint": "Use Are you plus a feeling word."
+    },
+    {
+      "id": "short_answer_yes",
+      "scenarioId": "1_1_personal_info",
+      "prompt": "Answer yes.",
+      "template": "Yes, I am.",
+      "slots": [],
+      "allowedChunkIds": [],
+      "distractorChunkIds": [],
+      "expectedAnswers": ["Yes, I am."],
+      "hint": "Use the full short answer."
+    },
+    {
+      "id": "short_answer_no",
+      "scenarioId": "1_1_personal_info",
+      "prompt": "Answer no.",
+      "template": "No, I am not.",
+      "slots": [],
+      "allowedChunkIds": [],
+      "distractorChunkIds": [],
+      "expectedAnswers": ["No, I am not."],
+      "hint": "Use the full short answer."
+    }
+  ],
+  "chunks": [
+    {
+      "id": "happy",
+      "text": "happy",
+      "slotType": "state",
+      "unlockedByDefault": true,
+      "scenarioSource": "1_1_personal_info"
+    },
+    {
+      "id": "hungry",
+      "text": "hungry",
+      "slotType": "state",
+      "unlockedByDefault": true,
+      "scenarioSource": "1_1_personal_info"
+    },
+    {
+      "id": "tired",
+      "text": "tired",
+      "slotType": "state",
+      "unlockedByDefault": false,
+      "scenarioSource": "1_1_personal_info"
+    },
+    {
+      "id": "seven_years_old",
+      "text": "seven years old",
+      "slotType": "age",
+      "unlockedByDefault": false,
+      "scenarioSource": "1_1_personal_info"
+    },
+    {
+      "id": "from_taiwan",
+      "text": "from Taiwan",
+      "slotType": "identity",
+      "unlockedByDefault": false,
+      "scenarioSource": "1_1_personal_info"
+    },
+    {
+      "id": "taiwan",
+      "text": "Taiwan",
+      "slotType": "place",
+      "unlockedByDefault": false,
+      "scenarioSource": "1_1_personal_info"
+    }
+  ],
+  "unlockRules": {
+    "firstChunkUnlocks": ["happy", "hungry"],
+    "modeProgression": {
+      "LEARN": 2,
+      "DRILL": 3,
+      "RAPID_RESPONSE": 4,
+      "BOSS": 5,
+      "MASTERED": 6
+    }
+  },
+  "masteryThresholds": {
+    "learnToDrill": 0.8,
+    "drillToRapidResponse": 0.9,
+    "rapidResponseToBoss": 0.9,
+    "bossToMastered": 0.9
+  }
+}

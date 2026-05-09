@@ -1,0 +1,100 @@
+{
+  "registry_id": "personal_info_sentence_registry",
+  "scenario_id": "personal_info",
+  "title": "1-1 Personal Info",
+  "sentences": [
+    {
+      "id": "p1_be_state_happy",
+      "scenarioId": "1_1_personal_info",
+      "mode": "LEARN",
+      "npcPrompt": "How are you?",
+      "pattern": "I am {state}.",
+      "expectedAnswer": "I am happy.",
+      "answerChoices": ["I am happy.", "I am hungry.", "Yes, I am."],
+      "unlockableChunkId": "happy",
+      "grammarTags": ["be_verb", "present_simple", "state_expression"],
+      "slotSelections": { "state": "happy" },
+      "source": {
+        "scenario": "1-1 Personal Info",
+        "patternId": "be_state"
+      }
+    },
+    {
+      "id": "p2_be_state_hungry",
+      "scenarioId": "1_1_personal_info",
+      "mode": "DRILL",
+      "npcPrompt": "How are you?",
+      "pattern": "I am {state}.",
+      "expectedAnswer": "I am hungry.",
+      "answerChoices": ["I am hungry.", "I am tired.", "No, I am not."],
+      "unlockableChunkId": "hungry",
+      "grammarTags": ["be_verb", "present_simple", "state_expression"],
+      "slotSelections": { "state": "hungry" },
+      "source": {
+        "scenario": "1-1 Personal Info",
+        "patternId": "be_state"
+      }
+    },
+    {
+      "id": "p3_are_you_hungry",
+      "scenarioId": "1_1_personal_info",
+      "mode": "DRILL",
+      "npcPrompt": "Answer the question: Are you hungry?",
+      "pattern": "Are you {state}?",
+      "expectedAnswer": "Are you hungry?",
+      "answerChoices": ["Are you hungry?", "Are you happy?", "I am hungry."],
+      "grammarTags": ["question_form", "be_verb", "state_expression"],
+      "slotSelections": { "state": "hungry" },
+      "source": {
+        "scenario": "1-1 Personal Info",
+        "patternId": "question_are_you_state"
+      }
+    },
+    {
+      "id": "p4_short_answer_yes",
+      "scenarioId": "1_1_personal_info",
+      "mode": "RAPID_RESPONSE",
+      "npcPrompt": "Answer the question: Are you hungry?",
+      "pattern": "Yes, I am.",
+      "expectedAnswer": "Yes, I am.",
+      "answerChoices": ["Yes, I am.", "No, I am not.", "I am hungry."],
+      "grammarTags": ["short_answer", "be_verb", "affirmative_response"],
+      "timerSeconds": 3,
+      "source": {
+        "scenario": "1-1 Personal Info",
+        "patternId": "short_answer_yes"
+      }
+    },
+    {
+      "id": "p5_short_answer_no",
+      "scenarioId": "1_1_personal_info",
+      "mode": "RAPID_RESPONSE",
+      "npcPrompt": "Answer the question: Are you tired?",
+      "pattern": "No, I am not.",
+      "expectedAnswer": "No, I am not.",
+      "answerChoices": ["No, I am not.", "Yes, I am.", "Are you tired?"],
+      "grammarTags": ["short_answer", "be_verb", "negative_response"],
+      "timerSeconds": 3,
+      "source": {
+        "scenario": "1-1 Personal Info",
+        "patternId": "short_answer_no"
+      }
+    },
+    {
+      "id": "p6_be_from_taiwan",
+      "scenarioId": "1_1_personal_info",
+      "mode": "DRILL",
+      "npcPrompt": "Where are you from?",
+      "pattern": "I am from {place}.",
+      "expectedAnswer": "I am from Taiwan.",
+      "answerChoices": ["I am from Taiwan.", "I am hungry.", "No, I am not."],
+      "unlockableChunkId": "taiwan",
+      "grammarTags": ["be_verb", "present_simple", "origin_expression"],
+      "slotSelections": { "place": "taiwan" },
+      "source": {
+        "scenario": "1-1 Personal Info",
+        "patternId": "be_from_place"
+      }
+    }
+  ]
+}

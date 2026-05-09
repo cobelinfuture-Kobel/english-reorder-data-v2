@@ -1,4 +1,5 @@
 import personalInfoScenario from "../data/scenarios/personal_info.json";
+import personalInfoSentenceRegistry from "../data/registries/personal_info_sentence_registry.json";
 import { Chunk, DrillMode, DrillPrompt, Pattern, Scenario } from "../runtime/types";
 import { buildDrillSessionFromRegistry } from "../runtime/sessionBuilder";
 import { PlayablePrompt, RegistrySentence } from "../runtime/sessionTypes";
@@ -26,6 +27,19 @@ export interface MockSessionState {
 }
 
 type MockPromptMode = Extract<DrillMode, "LEARN" | "DRILL" | "RAPID_RESPONSE">;
+type PersonalInfoSentenceRegistry = {
+  registry_id: string;
+  scenario_id: string;
+  title: string;
+  sentences: Array<
+    Omit<RegistrySentence, "chunkPool"> & {
+      source?: {
+        scenario: string;
+        patternId: string;
+      };
+    }
+  >;
+};
 
 const scenario = personalInfoScenario as Scenario;
 const allChunks = scenario.chunks as Chunk[];
@@ -96,84 +110,28 @@ function buildMockPrompt(
 
 // This file is the transition layer between registry content
 // and runtime gameplay UI.
-// registry-like sentence data -> sessionBuilder -> DrillConsole-ready prompts
-const registrySentences: RegistrySentence[] = [
-  {
-    id: "p1_be_state_happy",
-    scenarioId: "1_1_personal_info",
-    mode: "LEARN",
-    npcPrompt: "How are you?",
-    pattern: "I am {state}.",
-    expectedAnswer: "I am happy.",
-    answerChoices: ["I am happy.", "I am hungry.", "Yes, I am."],
-    unlockableChunkId: "happy",
-    grammarTags: ["be_verb", "present_simple", "state_expression"],
-    chunkPool: [requireChunk("happy"), requireChunk("hungry"), requireChunk("tired")],
-    slotSelections: { state: "happy" },
-  },
-  {
-    id: "p2_be_state_hungry",
-    scenarioId: "1_1_personal_info",
-    mode: "DRILL",
-    npcPrompt: "How are you?",
-    pattern: "I am {state}.",
-    expectedAnswer: "I am hungry.",
-    answerChoices: ["I am hungry.", "I am tired.", "No, I am not."],
-    unlockableChunkId: "hungry",
-    grammarTags: ["be_verb", "present_simple", "state_expression"],
-    chunkPool: [requireChunk("happy"), requireChunk("hungry"), requireChunk("tired")],
-    slotSelections: { state: "hungry" },
-  },
-  {
-    id: "p3_are_you_hungry",
-    scenarioId: "1_1_personal_info",
-    mode: "DRILL",
-    npcPrompt: "Answer the question: Are you hungry?",
-    pattern: "Are you {state}?",
-    expectedAnswer: "Are you hungry?",
-    answerChoices: ["Are you hungry?", "Are you happy?", "I am hungry."],
-    grammarTags: ["question_form", "be_verb", "state_expression"],
-    chunkPool: [requireChunk("happy"), requireChunk("hungry"), requireChunk("tired")],
-    slotSelections: { state: "hungry" },
-  },
-  {
-    id: "p4_short_answer_yes",
-    scenarioId: "1_1_personal_info",
-    mode: "RAPID_RESPONSE",
-    npcPrompt: "Answer the question: Are you hungry?",
-    pattern: "Yes, I am.",
-    expectedAnswer: "Yes, I am.",
-    answerChoices: ["Yes, I am.", "No, I am not.", "I am hungry."],
-    grammarTags: ["short_answer", "be_verb", "affirmative_response"],
-    chunkPool: [requireChunk("hungry")],
-    timerSeconds: 3,
-  },
-  {
-    id: "p5_short_answer_no",
-    scenarioId: "1_1_personal_info",
-    mode: "RAPID_RESPONSE",
-    npcPrompt: "Answer the question: Are you tired?",
-    pattern: "No, I am not.",
-    expectedAnswer: "No, I am not.",
-    answerChoices: ["No, I am not.", "Yes, I am.", "Are you tired?"],
-    grammarTags: ["short_answer", "be_verb", "negative_response"],
-    chunkPool: [requireChunk("tired")],
-    timerSeconds: 3,
-  },
-  {
-    id: "p6_be_from_taiwan",
-    scenarioId: "1_1_personal_info",
-    mode: "DRILL",
-    npcPrompt: "Where are you from?",
-    pattern: "I am from {place}.",
-    expectedAnswer: "I am from Taiwan.",
-    answerChoices: ["I am from Taiwan.", "I am hungry.", "No, I am not."],
-    unlockableChunkId: "taiwan",
-    grammarTags: ["be_verb", "present_simple", "origin_expression"],
-    chunkPool: [requireChunk("taiwan"), requireChunk("from_taiwan")],
-    slotSelections: { place: "taiwan" },
-  },
-];
+// sentence registry JSON -> sessionBuilder -> DrillConsole-ready prompts
+const registryData = personalInfoSentenceRegistry as PersonalInfoSentenceRegistry;
+const registrySentences: RegistrySentence[] = registryData.sentences.map((sentence) => {
+  const chunkPool = Array.from(
+    new Set(Object.values(sentence.slotSelections ?? {})),
+  ).map((chunkId) => requireChunk(chunkId));
+
+  const stateChunkIds = ["happy", "hungry", "tired"];
+
+  if (sentence.pattern === "I am {state}." || sentence.pattern === "Are you {state}?") {
+    for (const chunkId of stateChunkIds) {
+      if (!chunkPool.some((chunk) => chunk.id === chunkId)) {
+        chunkPool.push(requireChunk(chunkId));
+      }
+    }
+  }
+
+  return {
+    ...sentence,
+    chunkPool,
+  };
+});
 
 const playablePrompts = buildDrillSessionFromRegistry(registrySentences, {
   sessionId: "personal-info-playground",

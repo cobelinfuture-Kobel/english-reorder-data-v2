@@ -4,3 +4,6 @@
 .env
 *.pyc
 .pytest-tmp/
+node_modules/
+dist/
+build/

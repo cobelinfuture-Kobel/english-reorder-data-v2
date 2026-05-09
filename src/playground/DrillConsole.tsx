@@ -1,8 +1,9 @@
 // This is a debug gameplay prototype, not production UI.
 
-import { useMemo, useState } from "react";
-import { mockPrompts, initialSessionState } from "./mockSession";
+import { useEffect, useMemo, useState } from "react";
+import { initialSessionState, mockPrompts, totalPrompts } from "./mockSession";
 import { validateAnswer } from "../runtime/validationEngine";
+import { Chunk } from "../runtime/types";
 
 type FeedbackState = {
   message: string;
@@ -24,11 +25,48 @@ const buttonStyle = {
   padding: "8px",
 };
 
+function getComboLabel(combo: number): string {
+  if (combo >= 10) {
+    return "Automatic Mode";
+  }
+
+  if (combo >= 8) {
+    return "Pattern Mastery";
+  }
+
+  if (combo >= 5) {
+    return "Sentence Chain";
+  }
+
+  if (combo >= 3) {
+    return "Nice Flow";
+  }
+
+  return "Warm Up";
+}
+
+function getCorrectFeedback(comboAfterAnswer: number): string {
+  if (comboAfterAnswer >= 8) {
+    return "Pattern Mastery.";
+  }
+
+  if (comboAfterAnswer >= 5) {
+    return "Sentence Chain.";
+  }
+
+  if (comboAfterAnswer >= 3) {
+    return "Nice Flow.";
+  }
+
+  return "Correct.";
+}
+
 export default function DrillConsole() {
   const [promptIndex, setPromptIndex] = useState(0);
   const [xp, setXp] = useState(initialSessionState.xp);
   const [combo, setCombo] = useState(initialSessionState.combo);
   const [unlockedChunkIds, setUnlockedChunkIds] = useState(initialSessionState.unlockedChunkIds);
+  const [timerSeconds, setTimerSeconds] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<FeedbackState>({
     message: "Choose an answer to begin.",
     unlockedMessage: "",
@@ -37,11 +75,54 @@ export default function DrillConsole() {
 
   const currentPrompt = mockPrompts[promptIndex];
   const selectedPromptChunks = useMemo(
-    () => Object.values(currentPrompt.drillPrompt.selectedChunks),
+    () => Object.values(currentPrompt.drillPrompt.selectedChunks) as Chunk[],
     [currentPrompt],
   );
+  const comboLabel = getComboLabel(combo);
+  const isRapidResponse = currentPrompt.mode === "RAPID_RESPONSE";
+
+  useEffect(() => {
+    if (!isRapidResponse || feedback.answered) {
+      setTimerSeconds(null);
+      return;
+    }
+
+    setTimerSeconds(3);
+  }, [currentPrompt.id, feedback.answered, isRapidResponse]);
+
+  useEffect(() => {
+    if (!isRapidResponse || feedback.answered || timerSeconds === null) {
+      return;
+    }
+
+    if (timerSeconds <= 0) {
+      setCombo(0);
+      setFeedback({
+        message: "Too slow. Try again.",
+        unlockedMessage: "",
+        answered: true,
+      });
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setTimerSeconds((currentValue) => {
+        if (currentValue === null) {
+          return null;
+        }
+
+        return currentValue - 1;
+      });
+    }, 1000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [feedback.answered, isRapidResponse, timerSeconds]);
 
   function handleAnswer(answer: string) {
+    if (feedback.answered) {
+      return;
+    }
+
     const result = validateAnswer(currentPrompt.expectedAnswer, answer);
 
     if (result.isCorrect) {
@@ -53,6 +134,7 @@ export default function DrillConsole() {
       setCombo(nextCombo);
 
       if (
+        nextCombo >= 3 &&
         currentPrompt.unlockChunkId &&
         !unlockedChunkIds.includes(currentPrompt.unlockChunkId)
       ) {
@@ -61,7 +143,7 @@ export default function DrillConsole() {
       }
 
       setFeedback({
-        message: `Correct. ${result.hint}`,
+        message: getCorrectFeedback(nextCombo),
         unlockedMessage,
         answered: true,
       });
@@ -70,7 +152,7 @@ export default function DrillConsole() {
 
     setCombo(0);
     setFeedback({
-      message: `Not quite. ${result.hint} Correct answer: ${result.correctedAnswer}`,
+      message: result.hint ? `Mana unstable. ${result.hint}` : "Mana unstable. Try again.",
       unlockedMessage: "",
       answered: true,
     });
@@ -99,9 +181,14 @@ export default function DrillConsole() {
       <h1>Sentence Combat RPG Debug Drill Console</h1>
 
       <div style={panelStyle}>
+        <div>
+          Prompt: {promptIndex + 1} / {totalPrompts}
+        </div>
         <div>Mode: {currentPrompt.mode}</div>
         <div>XP: {xp}</div>
         <div>Combo: {combo}</div>
+        <div>Combo Label: {comboLabel}</div>
+        {isRapidResponse && <div>Timer: {timerSeconds ?? 0}s</div>}
       </div>
 
       <div style={panelStyle}>
@@ -123,7 +210,7 @@ export default function DrillConsole() {
             style={buttonStyle}
             type="button"
             onClick={() => handleAnswer(choice.answer)}
-            disabled={feedback.answered}
+            disabled={feedback.answered || (isRapidResponse && timerSeconds === 0)}
           >
             {choice.label}
           </button>

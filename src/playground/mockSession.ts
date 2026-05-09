@@ -74,6 +74,7 @@ export const initialSessionState: MockSessionState = {
 };
 
 export const sampleChunks: Chunk[] = allChunks;
+export const totalPrompts = 5;
 
 export const mockPrompts: MockPrompt[] = [
   buildMockPrompt(
@@ -144,6 +145,6 @@ export const mockPrompts: MockPrompt[] = [
       { id: "p5-b", label: "No, I am not.", answer: "No, I am not." },
       { id: "p5-c", label: "Are you tired?", answer: "Are you tired?" },
     ],
-  expectedAnswer: "No, I am not.",
+    expectedAnswer: "No, I am not.",
   },
 ];

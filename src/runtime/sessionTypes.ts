@@ -1,0 +1,85 @@
+import { Chunk, DrillMode } from "./types";
+
+export interface CurriculumScenario {
+  id: string;
+  order: number;
+  title: string;
+  status: "ready" | "planned";
+  sentence_registry_path: string;
+  combo_registry_ids: string[];
+}
+
+export interface CurriculumIndex {
+  level_id: string;
+  title: string;
+  scenarios: CurriculumScenario[];
+}
+
+export interface RegistrySentence {
+  id: string;
+  scenarioId: string;
+  mode: DrillMode;
+  npcPrompt: string;
+  expectedAnswer: string;
+  answerChoices?: string[];
+  distractorAnswers?: string[];
+  unlockableChunkId?: string;
+  timerSeconds?: number;
+  chunkPool?: Chunk[];
+}
+
+export interface RegistryCombo {
+  id: string;
+  title: string;
+  description: string;
+  requiredSentences: RegistrySentence[];
+  availableChunks: Chunk[];
+  rewards: {
+    xp: number;
+    unlockedChunkReward: string;
+  };
+}
+
+export interface PlayableAnswerChoice {
+  id: string;
+  label: string;
+  answer: string;
+}
+
+export interface PlayablePrompt {
+  id: string;
+  mode: DrillMode;
+  npcPrompt: string;
+  expectedAnswer: string;
+  answerChoices: PlayableAnswerChoice[];
+  unlockableChunkId?: string;
+  sourceSentenceId: string;
+  timerSeconds?: number;
+}
+
+export interface PlayableBossMission {
+  id: string;
+  title: string;
+  description: string;
+  requiredSentences: string[];
+  availableChunks: Chunk[];
+  rewards: {
+    xp: number;
+    unlockedChunkReward: string;
+  };
+  sourceComboId: string;
+}
+
+export interface PlayableSession {
+  id: string;
+  title: string;
+  prompts: PlayablePrompt[];
+  bossMission?: PlayableBossMission;
+}
+
+export interface SessionBuildOptions {
+  sessionId?: string;
+  sessionTitle?: string;
+  defaultTimerSeconds?: number;
+  includeBossMission?: boolean;
+}

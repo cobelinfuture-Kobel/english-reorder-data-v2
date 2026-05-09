@@ -1,0 +1,141 @@
+{
+  "registry_id": "personal_info_combo_registry",
+  "scenario_id": "personal_info",
+  "title": "Introduce Yourself to the Guild",
+  "description": "Forge a short guild introduction by completing your identity, age, and origin sentences.",
+  "templates": [
+    {
+      "id": "identity_intro",
+      "pattern": {
+        "id": "boss_identity",
+        "scenarioId": "1_1_personal_info_boss",
+        "prompt": "Tell the guild who you are.",
+        "template": "I am {identity}.",
+        "slots": [{ "name": "identity", "type": "identity", "required": true }],
+        "allowedChunkIds": ["leo", "student"],
+        "hint": "Use a name or identity chunk."
+      }
+    },
+    {
+      "id": "age_intro",
+      "pattern": {
+        "id": "boss_age",
+        "scenarioId": "1_1_personal_info_boss",
+        "prompt": "Tell the guild your age.",
+        "template": "I am {age}.",
+        "slots": [{ "name": "age", "type": "age", "required": true }],
+        "allowedChunkIds": ["seven_years_old"],
+        "hint": "Use your age chunk."
+      }
+    },
+    {
+      "id": "place_intro",
+      "pattern": {
+        "id": "boss_place",
+        "scenarioId": "1_1_personal_info_boss",
+        "prompt": "Tell the guild where you are from.",
+        "template": "I am from {place}.",
+        "slots": [{ "name": "place", "type": "place", "required": true }],
+        "allowedChunkIds": ["taiwan", "japan"],
+        "hint": "Use a place chunk after from."
+      }
+    }
+  ],
+  "required_sentences": [
+    {
+      "id": "boss_identity_leo",
+      "scenarioId": "1_1_personal_info_boss",
+      "mode": "BOSS",
+      "npcPrompt": "Tell the guild who you are.",
+      "pattern": "I am {identity}.",
+      "expectedAnswer": "I am Leo.",
+      "answerChoices": ["I am Leo.", "I am a student."],
+      "grammarTags": ["be_verb", "identity_expression"],
+      "slotSelections": { "identity": "leo" }
+    },
+    {
+      "id": "boss_age_seven",
+      "scenarioId": "1_1_personal_info_boss",
+      "mode": "BOSS",
+      "npcPrompt": "Tell the guild your age.",
+      "pattern": "I am {age}.",
+      "expectedAnswer": "I am seven years old.",
+      "answerChoices": ["I am seven years old."],
+      "grammarTags": ["be_verb", "age_expression"],
+      "slotSelections": { "age": "seven_years_old" }
+    },
+    {
+      "id": "boss_place_taiwan",
+      "scenarioId": "1_1_personal_info_boss",
+      "mode": "BOSS",
+      "npcPrompt": "Tell the guild where you are from.",
+      "pattern": "I am from {place}.",
+      "expectedAnswer": "I am from Taiwan.",
+      "answerChoices": ["I am from Taiwan.", "I am from Japan."],
+      "grammarTags": ["be_verb", "origin_expression"],
+      "slotSelections": { "place": "taiwan" }
+    }
+  ],
+  "available_chunks": [
+    {
+      "id": "leo",
+      "text": "Leo",
+      "displayText": "Leo",
+      "slotType": "identity",
+      "scenarioSource": "1_1_personal_info_boss",
+      "unlockedByDefault": true
+    },
+    {
+      "id": "student",
+      "text": "a student",
+      "displayText": "a student",
+      "slotType": "identity",
+      "scenarioSource": "1_1_personal_info_boss",
+      "unlockedByDefault": true
+    },
+    {
+      "id": "seven_years_old",
+      "text": "seven years old",
+      "displayText": "seven years old",
+      "slotType": "age",
+      "scenarioSource": "1_1_personal_info_boss",
+      "unlockedByDefault": true
+    },
+    {
+      "id": "taiwan",
+      "text": "Taiwan",
+      "displayText": "from Taiwan",
+      "slotType": "place",
+      "scenarioSource": "1_1_personal_info_boss",
+      "unlockedByDefault": true
+    },
+    {
+      "id": "japan",
+      "text": "Japan",
+      "displayText": "from Japan",
+      "slotType": "place",
+      "scenarioSource": "1_1_personal_info_boss",
+      "unlockedByDefault": true
+    },
+    {
+      "id": "happy",
+      "text": "happy",
+      "displayText": "happy",
+      "slotType": "state",
+      "scenarioSource": "1_1_personal_info_boss",
+      "unlockedByDefault": true
+    },
+    {
+      "id": "hungry",
+      "text": "hungry",
+      "displayText": "hungry",
+      "slotType": "state",
+      "scenarioSource": "1_1_personal_info_boss",
+      "unlockedByDefault": true
+    }
+  ],
+  "rewards": {
+    "xp": 50,
+    "unlockedChunkReward": "Guild Badge Phrase"
+  }
+}

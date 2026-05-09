@@ -1,3 +1,6 @@
+import personalInfoComboRegistry from "../data/registries/personal_info_combo_registry.json";
+import { buildBossMissionFromCombo } from "../runtime/sessionBuilder";
+import { RegistryCombo, RegistrySentence } from "../runtime/sessionTypes";
 import { Chunk, Pattern } from "../runtime/types";
 
 export interface BossChunk extends Chunk {
@@ -10,6 +13,7 @@ export interface BossMissionTemplate {
 }
 
 export interface BossMissionDefinition {
+  id: string;
   title: string;
   description: string;
   templates: BossMissionTemplate[];
@@ -17,115 +21,48 @@ export interface BossMissionDefinition {
   expectedSolutions: string[];
   xpReward: number;
   unlockedChunkReward: string;
+  sourceComboId: string;
 }
 
-const scenarioId = "1_1_personal_info_boss";
+type BossComboRegistry = {
+  registry_id: string;
+  scenario_id: string;
+  title: string;
+  description: string;
+  templates: BossMissionTemplate[];
+  required_sentences: RegistrySentence[];
+  available_chunks: BossChunk[];
+  rewards: {
+    xp: number;
+    unlockedChunkReward: string;
+  };
+};
 
+const comboRegistry = personalInfoComboRegistry as unknown as BossComboRegistry;
+const comboDefinition: RegistryCombo = {
+  id: comboRegistry.registry_id,
+  title: comboRegistry.title,
+  description: comboRegistry.description,
+  requiredSentences: comboRegistry.required_sentences,
+  availableChunks: comboRegistry.available_chunks,
+  rewards: comboRegistry.rewards,
+};
+
+const playableBossMission = buildBossMissionFromCombo(comboDefinition, {
+  sessionId: comboRegistry.scenario_id,
+});
+
+// This adapter is the transition layer between combo registry content
+// and the current BossMission playground UI.
+// combo registry JSON -> sessionBuilder -> BossMission-ready data
 export const bossMissionData: BossMissionDefinition = {
-  title: "Introduce Yourself to the Guild",
-  description:
-    "Forge a short guild introduction by completing your identity, age, and origin sentences.",
-  templates: [
-    {
-      id: "identity_intro",
-      pattern: {
-        id: "boss_identity",
-        scenarioId,
-        prompt: "Tell the guild who you are.",
-        template: "I am {identity}.",
-        slots: [{ name: "identity", type: "identity", required: true }],
-        allowedChunkIds: ["leo", "student"],
-        hint: "Use a name or identity chunk.",
-      },
-    },
-    {
-      id: "age_intro",
-      pattern: {
-        id: "boss_age",
-        scenarioId,
-        prompt: "Tell the guild your age.",
-        template: "I am {age}.",
-        slots: [{ name: "age", type: "age", required: true }],
-        allowedChunkIds: ["seven_years_old"],
-        hint: "Use your age chunk.",
-      },
-    },
-    {
-      id: "place_intro",
-      pattern: {
-        id: "boss_place",
-        scenarioId,
-        prompt: "Tell the guild where you are from.",
-        template: "I am from {place}.",
-        slots: [{ name: "place", type: "place", required: true }],
-        allowedChunkIds: ["taiwan", "japan"],
-        hint: "Use a place chunk after from.",
-      },
-    },
-  ],
-  availableChunks: [
-    {
-      id: "leo",
-      text: "Leo",
-      displayText: "Leo",
-      slotType: "identity",
-      scenarioSource: scenarioId,
-      unlockedByDefault: true,
-    },
-    {
-      id: "student",
-      text: "a student",
-      displayText: "a student",
-      slotType: "identity",
-      scenarioSource: scenarioId,
-      unlockedByDefault: true,
-    },
-    {
-      id: "seven_years_old",
-      text: "seven years old",
-      displayText: "seven years old",
-      slotType: "age",
-      scenarioSource: scenarioId,
-      unlockedByDefault: true,
-    },
-    {
-      id: "taiwan",
-      text: "Taiwan",
-      displayText: "from Taiwan",
-      slotType: "place",
-      scenarioSource: scenarioId,
-      unlockedByDefault: true,
-    },
-    {
-      id: "japan",
-      text: "Japan",
-      displayText: "from Japan",
-      slotType: "place",
-      scenarioSource: scenarioId,
-      unlockedByDefault: true,
-    },
-    {
-      id: "happy",
-      text: "happy",
-      displayText: "happy",
-      slotType: "state",
-      scenarioSource: scenarioId,
-      unlockedByDefault: true,
-    },
-    {
-      id: "hungry",
-      text: "hungry",
-      displayText: "hungry",
-      slotType: "state",
-      scenarioSource: scenarioId,
-      unlockedByDefault: true,
-    },
-  ],
-  expectedSolutions: [
-    "I am Leo.",
-    "I am seven years old.",
-    "I am from Taiwan.",
-  ],
-  xpReward: 50,
-  unlockedChunkReward: "Guild Badge Phrase",
+  id: playableBossMission.id,
+  title: playableBossMission.title,
+  description: playableBossMission.description,
+  templates: comboRegistry.templates,
+  availableChunks: comboRegistry.available_chunks,
+  expectedSolutions: playableBossMission.requiredSentences,
+  xpReward: playableBossMission.rewards.xp,
+  unlockedChunkReward: playableBossMission.rewards.unlockedChunkReward,
+  sourceComboId: playableBossMission.sourceComboId,
 };

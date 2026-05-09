@@ -1,4 +1,4 @@
-import { Chunk, DrillMode } from "./types";
+import { Chunk, DrillMode, Pattern } from "./types";
 
 export interface CurriculumScenario {
   id: string;
@@ -37,6 +37,7 @@ export interface RegistryCombo {
   description: string;
   requiredSentences: RegistrySentence[];
   availableChunks: Chunk[];
+  templates?: PlayableBossTemplate[];
   rewards: {
     xp: number;
     unlockedChunkReward: string;
@@ -60,12 +61,22 @@ export interface PlayablePrompt {
   timerSeconds?: number;
 }
 
+export interface PlayableBossChunk extends Chunk {
+  displayText?: string;
+}
+
+export interface PlayableBossTemplate {
+  id: string;
+  pattern: Pattern;
+}
+
 export interface PlayableBossMission {
   id: string;
   title: string;
   description: string;
+  templates: PlayableBossTemplate[];
   requiredSentences: string[];
-  availableChunks: Chunk[];
+  availableChunks: PlayableBossChunk[];
   rewards: {
     xp: number;
     unlockedChunkReward: string;

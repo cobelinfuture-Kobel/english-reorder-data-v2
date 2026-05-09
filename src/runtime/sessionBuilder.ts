@@ -1,6 +1,7 @@
 import { Chunk } from "./types";
 import {
   PlayableAnswerChoice,
+  PlayableBossChunk,
   PlayableBossMission,
   PlayablePrompt,
   PlayableSession,
@@ -90,6 +91,7 @@ export function buildBossMissionFromCombo(
     id: options.sessionId ? `${options.sessionId}-boss` : combo.id,
     title: combo.title,
     description: combo.description,
+    templates: combo.templates ?? [],
     requiredSentences: combo.requiredSentences.map((sentence) => sentence.expectedAnswer),
     availableChunks:
       combo.availableChunks.length > 0
@@ -97,7 +99,7 @@ export function buildBossMissionFromCombo(
         : collectComboChunks(combo.requiredSentences),
     rewards: combo.rewards,
     sourceComboId: combo.id,
-  };
+  } as PlayableBossMission;
 }
 
 export function buildPlayableSession(input: {

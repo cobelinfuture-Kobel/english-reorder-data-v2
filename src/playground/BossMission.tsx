@@ -1,8 +1,9 @@
 // This is a debug gameplay prototype, not production UI.
 
 import { useMemo, useState } from "react";
-import { bossMissionData, BossChunk, BossMissionTemplate } from "./bossMissionData";
+import { bossMissionData } from "./bossMissionData";
 import { getAllowedChunks, renderPattern } from "../runtime/sentenceEngine";
+import { PlayableBossChunk, PlayableBossTemplate } from "../runtime/sessionTypes";
 import { validateSlotAnswer } from "../runtime/validationEngine";
 
 type FeedbackState = {
@@ -25,9 +26,9 @@ const buttonStyle = {
 };
 
 function getSelectedChunkRecord(
-  template: BossMissionTemplate,
-  selectedChunk: BossChunk | null,
-): Record<string, BossChunk> {
+  template: PlayableBossTemplate,
+  selectedChunk: PlayableBossChunk | null,
+): Record<string, PlayableBossChunk> {
   if (!selectedChunk || template.pattern.slots.length === 0) {
     return {};
   }
@@ -39,7 +40,7 @@ function getSelectedChunkRecord(
 
 export default function BossMission() {
   const [templateIndex, setTemplateIndex] = useState(0);
-  const [selectedChunk, setSelectedChunk] = useState<BossChunk | null>(null);
+  const [selectedChunk, setSelectedChunk] = useState<PlayableBossChunk | null>(null);
   const [completedSentences, setCompletedSentences] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<FeedbackState>({
     message: "Choose a chunk to begin your guild introduction.",
@@ -54,7 +55,11 @@ export default function BossMission() {
       return [];
     }
 
-    return getAllowedChunks(currentTemplate.pattern, currentTemplate.pattern.slots[0].name, bossMissionData.availableChunks);
+    return getAllowedChunks(
+      currentTemplate.pattern,
+      currentTemplate.pattern.slots[0].name,
+      bossMissionData.availableChunks,
+    );
   }, [currentTemplate]);
 
   const previewSentence = useMemo(() => {
@@ -65,7 +70,7 @@ export default function BossMission() {
     return renderPattern(currentTemplate.pattern, getSelectedChunkRecord(currentTemplate, selectedChunk));
   }, [currentTemplate, selectedChunk]);
 
-  function handleChunkSelect(chunk: BossChunk) {
+  function handleChunkSelect(chunk: PlayableBossChunk) {
     if (!currentTemplate || missionComplete) {
       return;
     }
@@ -149,15 +154,15 @@ export default function BossMission() {
         {!missionComplete && currentTemplate && (
           <>
             <div>Current Template: {currentTemplate.pattern.template}</div>
-            <div>Selected Chunk: {selectedChunk ? selectedChunk.displayText : "none"}</div>
+            <div>Selected Chunk: {selectedChunk ? selectedChunk.displayText ?? selectedChunk.text : "none"}</div>
             <div>Sentence Preview: {previewSentence}</div>
           </>
         )}
         {missionComplete && (
           <>
             <div>Mission Complete</div>
-            <div>XP Reward: {bossMissionData.xpReward}</div>
-            <div>Unlocked Reward: {bossMissionData.unlockedChunkReward}</div>
+            <div>XP Reward: {bossMissionData.rewards.xp}</div>
+            <div>Unlocked Reward: {bossMissionData.rewards.unlockedChunkReward}</div>
           </>
         )}
       </div>
@@ -172,7 +177,7 @@ export default function BossMission() {
               style={buttonStyle}
               onClick={() => handleChunkSelect(chunk)}
             >
-              {chunk.displayText}
+              {chunk.displayText ?? chunk.text}
             </button>
           ))}
         </div>
@@ -196,7 +201,7 @@ export default function BossMission() {
 
       <div style={panelStyle}>
         <div>Expected Solutions</div>
-        {bossMissionData.expectedSolutions.map((solution) => (
+        {bossMissionData.requiredSentences.map((solution) => (
           <div key={solution}>{solution}</div>
         ))}
       </div>

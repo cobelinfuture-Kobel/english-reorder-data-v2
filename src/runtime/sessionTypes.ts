@@ -25,6 +25,10 @@ export interface RegistrySentence {
   grammarTags?: string[];
   answerChoices?: string[];
   distractorAnswers?: string[];
+  responseAnswers?: {
+    yes?: string;
+    no?: string;
+  };
   unlockableChunkId?: string;
   timerSeconds?: number;
   chunkPool?: Chunk[];
@@ -96,4 +100,7 @@ export interface SessionBuildOptions {
   sessionTitle?: string;
   defaultTimerSeconds?: number;
   includeBossMission?: boolean;
+  sessionSize?: number;
+  strategy?: "phase_progression";
+  includeModes?: Array<Extract<DrillMode, "LEARN" | "DRILL" | "RAPID_RESPONSE">>;
 }

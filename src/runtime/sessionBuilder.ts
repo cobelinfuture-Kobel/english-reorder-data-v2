@@ -10,10 +10,35 @@ import {
   SessionBuildOptions,
 } from "./sessionTypes";
 
+type DrillPlayableMode = Extract<RegistrySentence["mode"], "LEARN" | "DRILL" | "RAPID_RESPONSE">;
+
 function createAnswerChoices(
   sentence: RegistrySentence,
   allSentences: RegistrySentence[],
+  effectiveExpectedAnswer: string,
+  effectiveMode: DrillPlayableMode,
+  rapidResponseVariant: "yes" | "no" | null,
 ): PlayableAnswerChoice[] {
+  if (effectiveMode === "RAPID_RESPONSE" && rapidResponseVariant && sentence.responseAnswers) {
+    const preferredAnswer =
+      rapidResponseVariant === "yes"
+        ? sentence.responseAnswers.yes ?? effectiveExpectedAnswer
+        : sentence.responseAnswers.no ?? effectiveExpectedAnswer;
+    const alternateAnswer =
+      rapidResponseVariant === "yes"
+        ? sentence.responseAnswers.no ?? "No, I am not."
+        : sentence.responseAnswers.yes ?? "Yes, I am.";
+
+    return [preferredAnswer, alternateAnswer, sentence.npcPrompt]
+      .filter((choice, index, choices) => choices.indexOf(choice) === index)
+      .slice(0, 4)
+      .map((choice, index) => ({
+        id: `${sentence.id}-choice-${index + 1}`,
+        label: choice,
+        answer: choice,
+      }));
+  }
+
   const providedChoices = sentence.answerChoices ?? [];
   const providedDistractors = sentence.distractorAnswers ?? [];
   const fallbackDistractors = allSentences
@@ -21,10 +46,10 @@ function createAnswerChoices(
     .map((candidate) => candidate.expectedAnswer);
 
   const orderedChoices = [
-    sentence.expectedAnswer,
-    ...providedChoices.filter((choice) => choice !== sentence.expectedAnswer),
-    ...providedDistractors.filter((choice) => choice !== sentence.expectedAnswer),
-    ...fallbackDistractors.filter((choice) => choice !== sentence.expectedAnswer),
+    effectiveExpectedAnswer,
+    ...providedChoices.filter((choice) => choice !== effectiveExpectedAnswer),
+    ...providedDistractors.filter((choice) => choice !== effectiveExpectedAnswer),
+    ...fallbackDistractors.filter((choice) => choice !== effectiveExpectedAnswer),
   ].filter((choice, index, choices) => choices.indexOf(choice) === index);
 
   return orderedChoices.slice(0, 4).map((choice, index) => ({
@@ -49,6 +74,68 @@ function inferTimerSeconds(
   return undefined;
 }
 
+function getModeCounts(totalSentences: number): Record<DrillPlayableMode, number> {
+  const learnCount = Math.max(1, Math.ceil(totalSentences * 0.3));
+  const rapidResponseCount = Math.max(1, Math.ceil(totalSentences * 0.3));
+  const drillCount = Math.max(0, totalSentences - learnCount - rapidResponseCount);
+
+  if (drillCount >= 0) {
+    return {
+      LEARN: learnCount,
+      DRILL: drillCount,
+      RAPID_RESPONSE: rapidResponseCount,
+    };
+  }
+
+  return {
+    LEARN: Math.max(1, totalSentences - 2),
+    DRILL: 1,
+    RAPID_RESPONSE: 1,
+  };
+}
+
+function selectSessionSentences(
+  sentences: RegistrySentence[],
+  options: SessionBuildOptions,
+): RegistrySentence[] {
+  const filteredSentences =
+    options.includeModes && options.includeModes.length > 0
+      ? sentences.filter((sentence) => options.includeModes?.includes(sentence.mode as DrillPlayableMode))
+      : sentences;
+
+  const sessionSize = options.sessionSize ?? filteredSentences.length;
+
+  return filteredSentences.slice(0, Math.min(sessionSize, filteredSentences.length));
+}
+
+function getGeneratedMode(index: number, total: number): DrillPlayableMode {
+  const counts = getModeCounts(total);
+
+  if (index < counts.LEARN) {
+    return "LEARN";
+  }
+
+  if (index < counts.LEARN + counts.DRILL) {
+    return "DRILL";
+  }
+
+  return "RAPID_RESPONSE";
+}
+
+function getEffectiveExpectedAnswer(
+  sentence: RegistrySentence,
+  effectiveMode: DrillPlayableMode,
+  rapidResponseVariant: "yes" | "no" | null,
+): string {
+  if (effectiveMode === "RAPID_RESPONSE" && rapidResponseVariant && sentence.responseAnswers) {
+    return rapidResponseVariant === "yes"
+      ? sentence.responseAnswers.yes ?? sentence.expectedAnswer
+      : sentence.responseAnswers.no ?? sentence.expectedAnswer;
+  }
+
+  return sentence.expectedAnswer;
+}
+
 function collectComboChunks(requiredSentences: RegistrySentence[]): Chunk[] {
   const seenChunkIds = new Set<string>();
   const chunks: Chunk[] = [];
@@ -71,16 +158,47 @@ export function buildDrillSessionFromRegistry(
   sentences: RegistrySentence[],
   options: SessionBuildOptions = {},
 ): PlayablePrompt[] {
-  return sentences.map((sentence) => ({
-    id: sentence.id,
-    mode: sentence.mode,
-    npcPrompt: sentence.npcPrompt,
-    expectedAnswer: sentence.expectedAnswer,
-    answerChoices: createAnswerChoices(sentence, sentences),
-    unlockableChunkId: sentence.unlockableChunkId,
-    sourceSentenceId: sentence.id,
-    timerSeconds: inferTimerSeconds(sentence, options),
-  }));
+  const selectedSentences = selectSessionSentences(sentences, options);
+  const rapidResponseQuestionIndex = selectedSentences
+    .map((sentence, index) => ({ sentence, index }))
+    .filter(({ sentence }) => sentence.responseAnswers)
+    .map(({ index }) => index);
+
+  let rapidResponseVariantCounter = 0;
+
+  return selectedSentences.map((sentence, index) => {
+    const effectiveMode =
+      options.strategy === "phase_progression" || !options.strategy
+        ? getGeneratedMode(index, selectedSentences.length)
+        : (sentence.mode as DrillPlayableMode);
+    const rapidResponseVariant =
+      effectiveMode === "RAPID_RESPONSE" && sentence.responseAnswers
+        ? (rapidResponseVariantCounter++ % 2 === 0 ? "yes" : "no")
+        : null;
+    const effectiveExpectedAnswer = getEffectiveExpectedAnswer(
+      sentence,
+      effectiveMode,
+      rapidResponseVariant,
+    );
+
+    return {
+      id: sentence.id,
+      mode: effectiveMode,
+      npcPrompt: sentence.npcPrompt,
+      expectedAnswer: effectiveExpectedAnswer,
+      answerChoices: createAnswerChoices(
+        sentence,
+        selectedSentences,
+        effectiveExpectedAnswer,
+        effectiveMode,
+        rapidResponseVariant,
+      ),
+      unlockableChunkId: sentence.unlockableChunkId,
+      sourceSentenceId: sentence.id,
+      timerSeconds:
+        effectiveMode === "RAPID_RESPONSE" ? inferTimerSeconds(sentence, options) : undefined,
+    };
+  });
 }
 
 export function buildBossMissionFromCombo(

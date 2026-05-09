@@ -92,6 +92,9 @@ const playablePrompts = buildDrillSessionFromRegistry(registrySentences, {
   sessionId: "personal-info-playground",
   sessionTitle: "1-1 Personal Info",
   defaultTimerSeconds: 3,
+  sessionSize: 10,
+  strategy: "phase_progression",
+  includeModes: ["LEARN", "DRILL", "RAPID_RESPONSE"],
 });
 
 export const initialSessionState: MockSessionState = {

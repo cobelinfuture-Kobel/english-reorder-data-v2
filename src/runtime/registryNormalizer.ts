@@ -93,13 +93,34 @@ function semanticGroupToSlotType(semanticGroup: string): SlotType {
 }
 
 function sentenceToChunkPool(sentence: OfficialSentenceEntry): Chunk[] {
-  return (sentence.chunks ?? []).map((chunk) => ({
-    id: toChunkId(chunk.text),
-    text: chunk.text,
-    slotType: semanticGroupToSlotType(chunk.semantic_group),
-    scenarioSource: sentence.scenario_id,
-    unlockedByDefault: false,
-  }));
+  const chunkMap = new Map<string, Chunk>();
+
+  for (const [slotName, slotValue] of Object.entries(sentence.slots ?? {})) {
+    const slotType = semanticGroupToSlotType(slotName);
+    const slotChunk: Chunk = {
+      id: toChunkId(slotValue),
+      text: slotValue,
+      slotType,
+      scenarioSource: sentence.scenario_id,
+      unlockedByDefault: false,
+    };
+
+    chunkMap.set(slotChunk.id, slotChunk);
+  }
+
+  for (const chunk of sentence.chunks ?? []) {
+    const chunkEntry: Chunk = {
+      id: toChunkId(chunk.text),
+      text: chunk.text,
+      slotType: semanticGroupToSlotType(chunk.semantic_group),
+      scenarioSource: sentence.scenario_id,
+      unlockedByDefault: false,
+    };
+
+    chunkMap.set(chunkEntry.id, chunkEntry);
+  }
+
+  return Array.from(chunkMap.values());
 }
 
 function sentenceToSlotSelections(sentence: OfficialSentenceEntry): Record<string, string> | undefined {
@@ -112,113 +133,84 @@ function sentenceToSlotSelections(sentence: OfficialSentenceEntry): Record<strin
   );
 }
 
+function sentenceToNpcPrompt(sentence: OfficialSentenceEntry): string {
+  if (sentence.text.endsWith("?")) {
+    return sentence.text;
+  }
+
+  switch (sentence.communicative_function) {
+    case "state_personal_age":
+      return "Say your age.";
+    case "state_feeling":
+      return "Say how you feel.";
+    case "state_negative_feeling":
+      return "Say how you do not feel.";
+    case "state_origin":
+      return "Say where someone is from.";
+    case "state_role_identity":
+      return "Say who someone is.";
+    case "state_weather":
+      return "Say the weather.";
+    default:
+      return sentence.text;
+  }
+}
+
+function sentenceToRegistrySentence(sentence: OfficialSentenceEntry): RegistrySentence {
+  const commonFields = {
+    scenarioId: sentence.scenario_id,
+    mode: "DRILL" as const,
+    npcPrompt: sentenceToNpcPrompt(sentence),
+    expectedAnswer: sentence.text,
+    pattern: sentence.pattern,
+    grammarTags: sentence.grammar,
+    chunkPool: sentenceToChunkPool(sentence),
+    slotSelections: sentenceToSlotSelections(sentence),
+    responseAnswers: sentence.expected_answers
+      ? {
+          yes: sentence.expected_answers.yes,
+          no: sentence.expected_answers.no,
+        }
+      : undefined,
+  };
+  const unlockableChunkId = commonFields.chunkPool[0]?.id;
+
+  return {
+    id: sentence.id,
+    ...commonFields,
+    answerChoices: sentence.expected_answers
+      ? [sentence.text, sentence.expected_answers.yes ?? "Yes, I am.", sentence.expected_answers.no ?? "No, I'm not."]
+      : [sentence.text],
+    distractorAnswers: sentence.expected_answers
+      ? undefined
+      : sentence.scenario_role === "extension"
+        ? ["Yes, I am.", "No, I am not."]
+        : undefined,
+    unlockableChunkId,
+  };
+}
+
 function choosePlayableSentences(sentences: OfficialSentenceEntry[]): RegistrySentence[] {
-  const byId = new Map(sentences.map((sentence) => [sentence.id, sentence]));
-  const selectedIds = [
-    "A1_01_personal_info_0004",
-    "A1_01_personal_info_0001",
-    "A1_01_personal_info_0002",
-    "A1_01_personal_info_0005",
-    "A1_01_personal_info_0005",
-  ];
+  return sentences.map((sentence) => {
+    const registrySentence = sentenceToRegistrySentence(sentence);
+    const stateChunkIds = ["happy", "hungry", "tired"];
 
-  return selectedIds.reduce<RegistrySentence[]>((playableSentences, id, index) => {
-    const sentence = byId.get(id);
-
-    if (!sentence) {
-      return playableSentences;
+    if (sentence.pattern === "I am {state}." || sentence.pattern === "Are you {state}?") {
+      for (const chunkId of stateChunkIds) {
+        if (!registrySentence.chunkPool?.some((chunk) => chunk.id === chunkId)) {
+          registrySentence.chunkPool?.push({
+            id: chunkId,
+            text: chunkId,
+            slotType: "state",
+            scenarioSource: sentence.scenario_id,
+            unlockedByDefault: false,
+          });
+        }
+      }
     }
 
-    const commonFields = {
-      scenarioId: sentence.scenario_id,
-      pattern: sentence.pattern,
-      grammarTags: sentence.grammar,
-      chunkPool: sentenceToChunkPool(sentence),
-      slotSelections: sentenceToSlotSelections(sentence),
-    };
-
-    if (index === 0) {
-      playableSentences.push(
-        {
-          id: sentence.id,
-          mode: "LEARN",
-          npcPrompt: "How are you?",
-          expectedAnswer: sentence.text,
-          answerChoices: ["I am happy.", "I am seven years old.", "Yes, I am."],
-          unlockableChunkId: "happy",
-          ...commonFields,
-        },
-      );
-      return playableSentences;
-    }
-
-    if (index === 1) {
-      playableSentences.push(
-        {
-          id: sentence.id,
-          mode: "DRILL",
-          npcPrompt: "How old are you?",
-          expectedAnswer: sentence.text,
-          answerChoices: ["I am seven years old.", "I am happy.", "Are you a student?"],
-          unlockableChunkId: "seven_years_old",
-          ...commonFields,
-        },
-      );
-      return playableSentences;
-    }
-
-    if (index === 2) {
-      playableSentences.push(
-        {
-          id: sentence.id,
-          mode: "DRILL",
-          npcPrompt: sentence.text,
-          expectedAnswer: sentence.text,
-          answerChoices: ["Are you a student?", "Are you tired?", "I am seven years old."],
-          unlockableChunkId: "a_student",
-          ...commonFields,
-        },
-      );
-      return playableSentences;
-    }
-
-    if (index === 3) {
-      playableSentences.push(
-        {
-          id: `${sentence.id}_yes`,
-          mode: "RAPID_RESPONSE",
-          npcPrompt: sentence.text,
-          expectedAnswer: sentence.expected_answers?.yes ?? "Yes, I am.",
-          answerChoices: [
-            sentence.expected_answers?.yes ?? "Yes, I am.",
-            sentence.expected_answers?.no ?? "No, I'm not.",
-            sentence.text,
-          ],
-          timerSeconds: 3,
-          ...commonFields,
-        },
-      );
-      return playableSentences;
-    }
-
-    playableSentences.push(
-      {
-        id: `${sentence.id}_no`,
-        mode: "RAPID_RESPONSE",
-        npcPrompt: sentence.text,
-        expectedAnswer: sentence.expected_answers?.no ?? "No, I'm not.",
-        answerChoices: [
-          sentence.expected_answers?.no ?? "No, I'm not.",
-          sentence.expected_answers?.yes ?? "Yes, I am.",
-          sentence.text,
-        ],
-        timerSeconds: 3,
-        ...commonFields,
-      },
-    );
-
-    return playableSentences;
-  }, []);
+    return registrySentence;
+  });
 }
 
 function collectChunkCatalog(sentences: RegistrySentence[]): Chunk[] {

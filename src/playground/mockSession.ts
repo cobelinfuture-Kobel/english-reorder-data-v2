@@ -1,6 +1,7 @@
 import personalInfoScenario from "../data/scenarios/personal_info.json";
-import { buildPrompt } from "../runtime/sentenceEngine";
-import { Chunk, DrillPrompt, Pattern, Scenario } from "../runtime/types";
+import { Chunk, DrillMode, DrillPrompt, Pattern, Scenario } from "../runtime/types";
+import { buildDrillSessionFromRegistry } from "../runtime/sessionBuilder";
+import { PlayablePrompt, RegistrySentence } from "../runtime/sessionTypes";
 
 export interface MockPromptOption {
   id: string;
@@ -24,11 +25,14 @@ export interface MockSessionState {
   unlockedChunkIds: string[];
 }
 
+type MockPromptMode = Extract<DrillMode, "LEARN" | "DRILL" | "RAPID_RESPONSE">;
+
 const scenario = personalInfoScenario as Scenario;
 const allChunks = scenario.chunks as Chunk[];
 const patternsById = new Map<string, Pattern>(
   scenario.patterns.map((pattern) => [pattern.id, pattern as Pattern]),
 );
+const chunksById = new Map<string, Chunk>(allChunks.map((chunk) => [chunk.id, chunk]));
 
 function requirePattern(patternId: string): Pattern {
   const pattern = patternsById.get(patternId);
@@ -40,32 +44,142 @@ function requirePattern(patternId: string): Pattern {
   return pattern;
 }
 
-function selectChunks(chunkIds: string[]): Chunk[] {
-  return allChunks.filter((chunk) => chunkIds.includes(chunk.id));
+function requireChunk(chunkId: string): Chunk {
+  const chunk = chunksById.get(chunkId);
+
+  if (!chunk) {
+    throw new Error(`Missing mock chunk: ${chunkId}`);
+  }
+
+  return chunk;
+}
+
+function buildSelectedChunks(sentence: RegistrySentence): Record<string, Chunk> {
+  if (!sentence.slotSelections) {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(sentence.slotSelections).map(([slotName, chunkId]) => [
+      slotName,
+      requireChunk(chunkId),
+    ]),
+  );
 }
 
 function buildMockPrompt(
-  id: string,
-  mode: "LEARN" | "DRILL" | "RAPID_RESPONSE",
-  patternId: string,
-  chunkIds: string[],
-  choices: MockPromptOption[],
-  unlockChunkId?: string,
+  playablePrompt: PlayablePrompt,
+  sentence: RegistrySentence,
 ): MockPrompt {
-  const pattern = requirePattern(patternId);
-  const chunks = selectChunks(chunkIds);
-  const drillPrompt = buildPrompt(pattern, chunks);
+  const patternId = sentence.id.replace(/^p\d+_/, "");
+  const drillPrompt: DrillPrompt = {
+    patternId,
+    promptText: playablePrompt.npcPrompt,
+    expectedAnswer: playablePrompt.expectedAnswer,
+    selectedChunks: buildSelectedChunks(sentence),
+  };
 
   return {
-    id,
-    mode,
-    npcPrompt: pattern.prompt,
+    id: playablePrompt.id,
+    mode: playablePrompt.mode as MockPromptMode,
+    npcPrompt: playablePrompt.npcPrompt,
     drillPrompt,
-    choices,
-    expectedAnswer: drillPrompt.expectedAnswer,
-    unlockChunkId,
+    choices: playablePrompt.answerChoices.map((choice) => ({
+      id: choice.id,
+      label: choice.label,
+      answer: choice.answer,
+    })),
+    expectedAnswer: playablePrompt.expectedAnswer,
+    unlockChunkId: playablePrompt.unlockableChunkId,
   };
 }
+
+// This file is the transition layer between registry content
+// and runtime gameplay UI.
+// registry-like sentence data -> sessionBuilder -> DrillConsole-ready prompts
+const registrySentences: RegistrySentence[] = [
+  {
+    id: "p1_be_state_happy",
+    scenarioId: "1_1_personal_info",
+    mode: "LEARN",
+    npcPrompt: "How are you?",
+    pattern: "I am {state}.",
+    expectedAnswer: "I am happy.",
+    answerChoices: ["I am happy.", "I am hungry.", "Yes, I am."],
+    unlockableChunkId: "happy",
+    grammarTags: ["be_verb", "present_simple", "state_expression"],
+    chunkPool: [requireChunk("happy"), requireChunk("hungry"), requireChunk("tired")],
+    slotSelections: { state: "happy" },
+  },
+  {
+    id: "p2_be_state_hungry",
+    scenarioId: "1_1_personal_info",
+    mode: "DRILL",
+    npcPrompt: "How are you?",
+    pattern: "I am {state}.",
+    expectedAnswer: "I am hungry.",
+    answerChoices: ["I am hungry.", "I am tired.", "No, I am not."],
+    unlockableChunkId: "hungry",
+    grammarTags: ["be_verb", "present_simple", "state_expression"],
+    chunkPool: [requireChunk("happy"), requireChunk("hungry"), requireChunk("tired")],
+    slotSelections: { state: "hungry" },
+  },
+  {
+    id: "p3_are_you_hungry",
+    scenarioId: "1_1_personal_info",
+    mode: "DRILL",
+    npcPrompt: "Answer the question: Are you hungry?",
+    pattern: "Are you {state}?",
+    expectedAnswer: "Are you hungry?",
+    answerChoices: ["Are you hungry?", "Are you happy?", "I am hungry."],
+    grammarTags: ["question_form", "be_verb", "state_expression"],
+    chunkPool: [requireChunk("happy"), requireChunk("hungry"), requireChunk("tired")],
+    slotSelections: { state: "hungry" },
+  },
+  {
+    id: "p4_short_answer_yes",
+    scenarioId: "1_1_personal_info",
+    mode: "RAPID_RESPONSE",
+    npcPrompt: "Answer the question: Are you hungry?",
+    pattern: "Yes, I am.",
+    expectedAnswer: "Yes, I am.",
+    answerChoices: ["Yes, I am.", "No, I am not.", "I am hungry."],
+    grammarTags: ["short_answer", "be_verb", "affirmative_response"],
+    chunkPool: [requireChunk("hungry")],
+    timerSeconds: 3,
+  },
+  {
+    id: "p5_short_answer_no",
+    scenarioId: "1_1_personal_info",
+    mode: "RAPID_RESPONSE",
+    npcPrompt: "Answer the question: Are you tired?",
+    pattern: "No, I am not.",
+    expectedAnswer: "No, I am not.",
+    answerChoices: ["No, I am not.", "Yes, I am.", "Are you tired?"],
+    grammarTags: ["short_answer", "be_verb", "negative_response"],
+    chunkPool: [requireChunk("tired")],
+    timerSeconds: 3,
+  },
+  {
+    id: "p6_be_from_taiwan",
+    scenarioId: "1_1_personal_info",
+    mode: "DRILL",
+    npcPrompt: "Where are you from?",
+    pattern: "I am from {place}.",
+    expectedAnswer: "I am from Taiwan.",
+    answerChoices: ["I am from Taiwan.", "I am hungry.", "No, I am not."],
+    unlockableChunkId: "taiwan",
+    grammarTags: ["be_verb", "present_simple", "origin_expression"],
+    chunkPool: [requireChunk("taiwan"), requireChunk("from_taiwan")],
+    slotSelections: { place: "taiwan" },
+  },
+];
+
+const playablePrompts = buildDrillSessionFromRegistry(registrySentences, {
+  sessionId: "personal-info-playground",
+  sessionTitle: "1-1 Personal Info",
+  defaultTimerSeconds: 3,
+});
 
 export const initialSessionState: MockSessionState = {
   xp: 0,
@@ -74,77 +188,15 @@ export const initialSessionState: MockSessionState = {
 };
 
 export const sampleChunks: Chunk[] = allChunks;
-export const totalPrompts = 5;
+export const mockPrompts: MockPrompt[] = playablePrompts
+  .filter((playablePrompt) => playablePrompt.id !== "p6_be_from_taiwan")
+  .map((playablePrompt) => {
+    const sourceSentence = registrySentences.find((sentence) => sentence.id === playablePrompt.id);
 
-export const mockPrompts: MockPrompt[] = [
-  buildMockPrompt(
-    "p1",
-    "LEARN",
-    "be_state",
-    ["happy"],
-    [
-      { id: "p1-a", label: "I am happy.", answer: "I am happy." },
-      { id: "p1-b", label: "I am hungry.", answer: "I am hungry." },
-      { id: "p1-c", label: "Yes, I am.", answer: "Yes, I am." },
-    ],
-    "happy",
-  ),
-  buildMockPrompt(
-    "p2",
-    "DRILL",
-    "be_state",
-    ["hungry"],
-    [
-      { id: "p2-a", label: "I am tired.", answer: "I am tired." },
-      { id: "p2-b", label: "I am hungry.", answer: "I am hungry." },
-      { id: "p2-c", label: "No, I am not.", answer: "No, I am not." },
-    ],
-    "hungry",
-  ),
-  buildMockPrompt(
-    "p3",
-    "DRILL",
-    "question_are_you_state",
-    ["tired"],
-    [
-      { id: "p3-a", label: "Are you tired?", answer: "Are you tired?" },
-      { id: "p3-b", label: "Are you happy?", answer: "Are you happy?" },
-      { id: "p3-c", label: "I am tired.", answer: "I am tired." },
-    ],
-    "tired",
-  ),
-  {
-    id: "p4",
-    mode: "RAPID_RESPONSE",
-    npcPrompt: "Answer the question: Are you hungry?",
-    drillPrompt: {
-      patternId: "short_answer_yes",
-      promptText: "Answer yes.",
-      expectedAnswer: "Yes, I am.",
-      selectedChunks: {},
-    },
-    choices: [
-      { id: "p4-a", label: "Yes, I am.", answer: "Yes, I am." },
-      { id: "p4-b", label: "No, I am not.", answer: "No, I am not." },
-      { id: "p4-c", label: "I am hungry.", answer: "I am hungry." },
-    ],
-    expectedAnswer: "Yes, I am.",
-  },
-  {
-    id: "p5",
-    mode: "RAPID_RESPONSE",
-    npcPrompt: "Answer the question: Are you tired?",
-    drillPrompt: {
-      patternId: "short_answer_no",
-      promptText: "Answer no.",
-      expectedAnswer: "No, I am not.",
-      selectedChunks: {},
-    },
-    choices: [
-      { id: "p5-a", label: "Yes, I am.", answer: "Yes, I am." },
-      { id: "p5-b", label: "No, I am not.", answer: "No, I am not." },
-      { id: "p5-c", label: "Are you tired?", answer: "Are you tired?" },
-    ],
-    expectedAnswer: "No, I am not.",
-  },
-];
+    if (!sourceSentence) {
+      throw new Error(`Missing registry sentence for playable prompt: ${playablePrompt.id}`);
+    }
+
+    return buildMockPrompt(playablePrompt, sourceSentence);
+  });
+export const totalPrompts = mockPrompts.length;

@@ -21,11 +21,14 @@ export interface RegistrySentence {
   mode: DrillMode;
   npcPrompt: string;
   expectedAnswer: string;
+  pattern?: string;
+  grammarTags?: string[];
   answerChoices?: string[];
   distractorAnswers?: string[];
   unlockableChunkId?: string;
   timerSeconds?: number;
   chunkPool?: Chunk[];
+  slotSelections?: Record<string, string>;
 }
 
 export interface RegistryCombo {

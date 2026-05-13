@@ -93,12 +93,14 @@ const registrySentences: RegistrySentence[] = normalizedSentenceRegistry.sentenc
 
 export function createMockPrompts(
   masteryBySentenceId: SentenceMasteryMap = loadSentenceMastery(),
+  replayCount = 0,
 ): MockPrompt[] {
   const playablePrompts = buildDrillSessionFromRegistry(registrySentences, {
     sessionId: "personal-info-playground",
     sessionTitle: "1-1 Personal Info",
     defaultTimerSeconds: 3,
     sessionSize: 10,
+    replayCount,
     strategy: "phase_progression",
     includeModes: ["LEARN", "DRILL", "RAPID_RESPONSE"],
     masteryBySentenceId,

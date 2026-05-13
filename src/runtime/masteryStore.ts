@@ -5,7 +5,7 @@ export const DEFAULT_SENTENCE_MASTERY = 0.5;
 const CORRECT_MASTERY_DELTA = 0.1;
 const WRONG_MASTERY_DELTA = -0.1;
 
-type StorageLike = Pick<Storage, "getItem" | "setItem">;
+type StorageLike = Pick<Storage, "getItem" | "setItem" | "removeItem">;
 
 function isFiniteNumber(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value);
@@ -127,6 +127,16 @@ export function saveSentenceMastery(
   }
 
   storage.setItem(SENTENCE_MASTERY_STORAGE_KEY, JSON.stringify(masteryBySentenceId));
+}
+
+export function clearSentenceMastery(
+  storage: StorageLike | null = getBrowserStorage(),
+): void {
+  if (!storage) {
+    return;
+  }
+
+  storage.removeItem(SENTENCE_MASTERY_STORAGE_KEY);
 }
 
 export function recordSentenceAnswer(

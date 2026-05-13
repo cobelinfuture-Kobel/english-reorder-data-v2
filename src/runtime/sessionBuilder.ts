@@ -18,6 +18,52 @@ import {
 
 type DrillPlayableMode = Extract<RegistrySentence["mode"], "LEARN" | "DRILL" | "RAPID_RESPONSE">;
 
+function rotateSentences<T>(items: T[], rotation: number): T[] {
+  if (items.length <= 1) {
+    return items;
+  }
+
+  const normalizedRotation = ((rotation % items.length) + items.length) % items.length;
+
+  if (normalizedRotation === 0) {
+    return items;
+  }
+
+  return [...items.slice(normalizedRotation), ...items.slice(0, normalizedRotation)];
+}
+
+function applyReplayRotation(
+  prioritizedSentences: Array<{
+    sentence: RegistrySentence;
+    index: number;
+    masteryScore: number;
+  }>,
+  replayCount: number,
+): RegistrySentence[] {
+  if (replayCount <= 0) {
+    return prioritizedSentences.map(({ sentence }) => sentence);
+  }
+
+  const rotatedSentences: RegistrySentence[] = [];
+
+  for (let index = 0; index < prioritizedSentences.length;) {
+    const groupStart = index;
+    const groupMastery = prioritizedSentences[index].masteryScore;
+
+    while (
+      index < prioritizedSentences.length &&
+      prioritizedSentences[index].masteryScore === groupMastery
+    ) {
+      index += 1;
+    }
+
+    const group = prioritizedSentences.slice(groupStart, index).map(({ sentence }) => sentence);
+    rotatedSentences.push(...rotateSentences(group, replayCount));
+  }
+
+  return rotatedSentences;
+}
+
 function createAnswerChoices(
   sentence: RegistrySentence,
   allSentences: RegistrySentence[],
@@ -127,11 +173,14 @@ function selectSessionSentences(
       }
 
       return left.index - right.index;
-    })
-    .map(({ sentence }) => sentence);
-  const sessionSize = options.sessionSize ?? prioritizedSentences.length;
+    });
+  const replayRotatedSentences = applyReplayRotation(
+    prioritizedSentences,
+    options.replayCount ?? 0,
+  );
+  const sessionSize = options.sessionSize ?? replayRotatedSentences.length;
 
-  return prioritizedSentences.slice(0, Math.min(sessionSize, prioritizedSentences.length));
+  return replayRotatedSentences.slice(0, Math.min(sessionSize, replayRotatedSentences.length));
 }
 
 function getGeneratedMode(index: number, total: number): DrillPlayableMode {

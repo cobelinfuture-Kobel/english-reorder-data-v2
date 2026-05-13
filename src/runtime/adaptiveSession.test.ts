@@ -143,7 +143,45 @@ function testDialoguePairingFunctions() {
   );
 }
 
+function testReplayRotationWithinSameMasteryGroup() {
+  const equalMasterySentences: RegistrySentence[] = [
+    {
+      id: "rotation-1",
+      scenarioId: "personal",
+      mode: "LEARN",
+      npcPrompt: "Prompt A",
+      expectedAnswer: "Answer A",
+    },
+    {
+      id: "rotation-2",
+      scenarioId: "personal",
+      mode: "DRILL",
+      npcPrompt: "Prompt B",
+      expectedAnswer: "Answer B",
+    },
+    {
+      id: "rotation-3",
+      scenarioId: "personal",
+      mode: "RAPID_RESPONSE",
+      npcPrompt: "Prompt C",
+      expectedAnswer: "Answer C",
+    },
+  ];
+
+  const prompts = buildDrillSessionFromRegistry(equalMasterySentences, {
+    sessionSize: 3,
+    strategy: "phase_progression",
+    replayCount: 1,
+  });
+
+  assertDeepEqual(
+    prompts.map((prompt) => prompt.id),
+    ["rotation-2", "rotation-3", "rotation-1"],
+  );
+}
+
 testWeightedSessionOrdering();
 testMasteryUpdatesAndClamps();
 testQuestionPromptUsesCompatibleResponses();
 testDialoguePairingFunctions();
+testReplayRotationWithinSameMasteryGroup();

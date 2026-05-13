@@ -45,7 +45,13 @@ export default function PlaygroundHub() {
         </button>
       </div>
 
-      <div>{activeView === "drill" ? <DrillConsole /> : <BossMission />}</div>
+      <div>
+        {activeView === "drill" ? (
+          <DrillConsole onChallengeBoss={() => setActiveView("boss")} />
+        ) : (
+          <BossMission />
+        )}
+      </div>
     </div>
   );
 }

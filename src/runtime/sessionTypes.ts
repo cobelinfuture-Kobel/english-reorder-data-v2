@@ -120,6 +120,7 @@ export interface SessionBuildOptions {
   defaultTimerSeconds?: number;
   includeBossMission?: boolean;
   sessionSize?: number;
+  replayCount?: number;
   strategy?: "phase_progression";
   includeModes?: Array<Extract<DrillMode, "LEARN" | "DRILL" | "RAPID_RESPONSE">>;
   masteryBySentenceId?: SentenceMasteryMap;

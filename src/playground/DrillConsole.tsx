@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createMockPrompts, initialSessionState, MockPrompt } from "./mockSession";
 import {
+  clearSentenceMastery,
   getSentenceMasteryEntry,
   loadSentenceMastery,
   recordSentenceAnswer,
@@ -22,8 +23,15 @@ type PersistedDrillSession = {
   promptIndex: number;
   xp: number;
   combo: number;
+  highestCombo: number;
+  replayCount: number;
   unlockedChunkIds: string[];
+  sessionStartMasteryBySentenceId: SentenceMasteryMap;
   feedback: FeedbackState;
+};
+
+type DrillConsoleProps = {
+  onChallengeBoss?: () => void;
 };
 
 const DRILL_CONSOLE_STORAGE_KEY = "sentence-combat-rpg:drill-console";
@@ -88,6 +96,20 @@ const buttonStyle = {
 const feedbackPanelStyle = {
   ...panelStyle,
   marginTop: "-4px",
+};
+
+const completionPanelStyle = {
+  ...panelStyle,
+  padding: "18px",
+};
+
+const completionTitleStyle = {
+  fontSize: "28px",
+  marginBottom: "12px",
+};
+
+const completionStatStyle = {
+  marginBottom: "8px",
 };
 
 const urgentTimerStyle = {
@@ -168,7 +190,10 @@ function loadPersistedSession(): PersistedDrillSession | null {
       typeof parsedValue.promptIndex !== "number" ||
       typeof parsedValue.xp !== "number" ||
       typeof parsedValue.combo !== "number" ||
+      typeof parsedValue.highestCombo !== "number" ||
+      typeof parsedValue.replayCount !== "number" ||
       !Array.isArray(parsedValue.unlockedChunkIds) ||
+      !parsedValue.sessionStartMasteryBySentenceId ||
       !parsedValue.feedback
     ) {
       return null;
@@ -185,7 +210,11 @@ function loadPersistedSession(): PersistedDrillSession | null {
       promptIndex: clampPromptIndex(parsedValue.promptIndex, prompts.length),
       xp: parsedValue.xp,
       combo: parsedValue.combo,
+      highestCombo: parsedValue.highestCombo,
+      replayCount: parsedValue.replayCount,
       unlockedChunkIds: parsedValue.unlockedChunkIds,
+      sessionStartMasteryBySentenceId:
+        parsedValue.sessionStartMasteryBySentenceId as SentenceMasteryMap,
       feedback: {
         message:
           typeof parsedValue.feedback.message === "string"
@@ -207,19 +236,46 @@ function loadPersistedSession(): PersistedDrillSession | null {
   }
 }
 
-export default function DrillConsole() {
+function cloneMasteryMap(masteryBySentenceId: SentenceMasteryMap): SentenceMasteryMap {
+  return Object.fromEntries(
+    Object.entries(masteryBySentenceId).map(([sentenceId, entry]) => [
+      sentenceId,
+      { ...entry },
+    ]),
+  );
+}
+
+function countMasteryImprovements(
+  prompts: MockPrompt[],
+  startMastery: SentenceMasteryMap,
+  currentMastery: SentenceMasteryMap,
+): number {
+  return prompts.reduce((count, prompt) => {
+    const startScore = getSentenceMasteryEntry(startMastery, prompt.id).mastery;
+    const currentScore = getSentenceMasteryEntry(currentMastery, prompt.id).mastery;
+
+    return currentScore > startScore ? count + 1 : count;
+  }, 0);
+}
+
+export default function DrillConsole({ onChallengeBoss }: DrillConsoleProps) {
   const persistedSession = loadPersistedSession();
   const [masteryBySentenceId, setMasteryBySentenceId] = useState<SentenceMasteryMap>(() =>
     loadSentenceMastery(),
   );
+  const [replayCount, setReplayCount] = useState(persistedSession?.replayCount ?? 0);
   const [prompts, setPrompts] = useState<MockPrompt[]>(
-    persistedSession?.prompts ?? createMockPrompts(masteryBySentenceId),
+    persistedSession?.prompts ?? createMockPrompts(masteryBySentenceId, replayCount),
   );
   const [promptIndex, setPromptIndex] = useState(persistedSession?.promptIndex ?? 0);
   const [xp, setXp] = useState(persistedSession?.xp ?? initialSessionState.xp);
   const [combo, setCombo] = useState(persistedSession?.combo ?? initialSessionState.combo);
+  const [highestCombo, setHighestCombo] = useState(persistedSession?.highestCombo ?? 0);
   const [unlockedChunkIds, setUnlockedChunkIds] = useState(
     persistedSession?.unlockedChunkIds ?? initialSessionState.unlockedChunkIds,
+  );
+  const [sessionStartMasteryBySentenceId, setSessionStartMasteryBySentenceId] = useState<SentenceMasteryMap>(
+    persistedSession?.sessionStartMasteryBySentenceId ?? cloneMasteryMap(masteryBySentenceId),
   );
   const [timerSeconds, setTimerSeconds] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<FeedbackState>(persistedSession?.feedback ?? defaultFeedbackState);
@@ -243,6 +299,11 @@ export default function DrillConsole() {
     isRapidResponse &&
     timerSeconds !== null &&
     timerSeconds <= URGENT_TIMER_THRESHOLD_SECONDS;
+  const masteryImprovementCount = countMasteryImprovements(
+    prompts,
+    sessionStartMasteryBySentenceId,
+    masteryBySentenceId,
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -254,7 +315,10 @@ export default function DrillConsole() {
       promptIndex,
       xp,
       combo,
+      highestCombo,
+      replayCount,
       unlockedChunkIds,
+      sessionStartMasteryBySentenceId,
       feedback,
     };
 
@@ -262,7 +326,17 @@ export default function DrillConsole() {
       DRILL_CONSOLE_STORAGE_KEY,
       JSON.stringify(persistedSessionState),
     );
-  }, [combo, feedback, promptIndex, prompts, unlockedChunkIds, xp]);
+  }, [
+    combo,
+    feedback,
+    highestCombo,
+    promptIndex,
+    prompts,
+    replayCount,
+    sessionStartMasteryBySentenceId,
+    unlockedChunkIds,
+    xp,
+  ]);
 
   useEffect(() => {
     if (!isRapidResponse || isInteractionLocked) {
@@ -305,7 +379,11 @@ export default function DrillConsole() {
   }, [currentPrompt.id, isInteractionLocked, isRapidResponse, timerSeconds]);
 
   useEffect(() => {
-    if (feedback.phase !== "correct_locked" && feedback.phase !== "timeout_locked") {
+    if (
+      feedback.phase !== "correct_locked" &&
+      feedback.phase !== "timeout_locked" &&
+      feedback.phase !== "final_correct"
+    ) {
       return;
     }
 
@@ -313,6 +391,15 @@ export default function DrillConsole() {
       if (feedback.phase === "correct_locked") {
         setPromptIndex((currentValue) => currentValue + 1);
         setFeedback(defaultFeedbackState);
+        return;
+      }
+
+      if (feedback.phase === "final_correct") {
+        setFeedback({
+          message: "Session Complete!",
+          unlockedMessage: "",
+          phase: "complete",
+        });
         return;
       }
 
@@ -346,6 +433,7 @@ export default function DrillConsole() {
 
       setXp(nextXp);
       setCombo(nextCombo);
+      setHighestCombo((currentValue) => Math.max(currentValue, nextCombo));
 
       if (
         nextCombo >= 3 &&
@@ -374,34 +462,72 @@ export default function DrillConsole() {
     });
   }
 
-  function handleNext() {
-    if (promptIndex < prompts.length - 1) {
-      setPromptIndex(promptIndex + 1);
-      setFeedback(defaultFeedbackState);
-      return;
-    }
-
-    setFeedback({
-      message: "Session complete. Restart the file state to replay this mock run.",
-      unlockedMessage: "",
-      phase: "complete",
-    });
+  function resetRunState(nextPrompts: MockPrompt[], nextMastery: SentenceMasteryMap) {
+    setPrompts(nextPrompts);
+    setPromptIndex(0);
+    setXp(initialSessionState.xp);
+    setCombo(initialSessionState.combo);
+    setHighestCombo(0);
+    setUnlockedChunkIds(initialSessionState.unlockedChunkIds);
+    setTimerSeconds(null);
+    setFeedback(defaultFeedbackState);
+    setSessionStartMasteryBySentenceId(cloneMasteryMap(nextMastery));
   }
 
-  function handleResetSession() {
+  function handleReplaySession() {
+    const nextReplayCount = replayCount + 1;
+    const nextMastery = loadSentenceMastery();
+    const nextPrompts = createMockPrompts(nextMastery, nextReplayCount);
+
+    setMasteryBySentenceId(nextMastery);
+    setReplayCount(nextReplayCount);
+    resetRunState(nextPrompts, nextMastery);
+  }
+
+  function handleResetPractice() {
     if (typeof window !== "undefined") {
       window.localStorage.removeItem(DRILL_CONSOLE_STORAGE_KEY);
     }
 
+    clearSentenceMastery();
     const nextMastery = loadSentenceMastery();
+    const nextPrompts = createMockPrompts(nextMastery, 0);
+
     setMasteryBySentenceId(nextMastery);
-    setPrompts(createMockPrompts(nextMastery));
-    setPromptIndex(0);
-    setXp(initialSessionState.xp);
-    setCombo(initialSessionState.combo);
-    setUnlockedChunkIds(initialSessionState.unlockedChunkIds);
-    setTimerSeconds(null);
-    setFeedback(defaultFeedbackState);
+    setReplayCount(0);
+    resetRunState(nextPrompts, nextMastery);
+  }
+
+  if (feedback.phase === "complete") {
+    return (
+      <div style={{ fontFamily: "sans-serif", maxWidth: "640px", padding: "16px" }}>
+        <h1>Sentence Combat RPG</h1>
+
+        <div style={completionPanelStyle}>
+          <div style={completionTitleStyle}>Session Complete!</div>
+          <div style={completionStatStyle}>XP Earned: {xp}</div>
+          <div style={completionStatStyle}>Highest Combo: {highestCombo}</div>
+          <div style={completionStatStyle}>Prompts Completed: {prompts.length}</div>
+          <div style={completionStatStyle}>Mastery Improved: {masteryImprovementCount}</div>
+        </div>
+
+        <div style={{ marginBottom: "12px" }}>
+          <button type="button" onClick={handleReplaySession} style={{ marginRight: "8px" }}>
+            Replay Session
+          </button>
+          <button
+            type="button"
+            onClick={() => onChallengeBoss?.()}
+            style={{ marginRight: "8px" }}
+          >
+            Challenge Boss
+          </button>
+          <button type="button" onClick={handleResetPractice}>
+            Reset Practice
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -452,13 +578,8 @@ export default function DrillConsole() {
       </div>
 
       <div style={{ marginBottom: "12px" }}>
-        {(feedback.phase === "final_correct" || feedback.phase === "complete") && (
-          <button type="button" onClick={handleNext} style={{ marginRight: "8px" }}>
-            Next
-          </button>
-        )}
-        <button type="button" onClick={handleResetSession}>
-          Reset Session
+        <button type="button" onClick={handleResetPractice}>
+          Reset Practice
         </button>
       </div>
 

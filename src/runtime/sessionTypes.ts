@@ -22,13 +22,16 @@ export interface RegistrySentence {
   npcPrompt: string;
   expectedAnswer: string;
   pattern?: string;
+  communicativeFunction?: string;
   grammarTags?: string[];
+  drillTags?: string[];
   answerChoices?: string[];
   distractorAnswers?: string[];
   responseAnswers?: {
     yes?: string;
     no?: string;
   };
+  interactionType?: "be_yes_no_response";
   unlockableChunkId?: string;
   timerSeconds?: number;
   chunkPool?: Chunk[];

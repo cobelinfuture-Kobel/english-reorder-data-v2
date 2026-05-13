@@ -1,3 +1,5 @@
+import personalInfoSentenceRegistry from "../../data/sentence_registry/A1/01_personal_info.json";
+import { normalizeOfficialSentenceRegistry } from "./registryNormalizer";
 import { buildDrillSessionFromRegistry } from "./sessionBuilder";
 import {
   createEmptySentenceMastery,
@@ -81,5 +83,38 @@ function testMasteryUpdatesAndClamps() {
   });
 }
 
+function testQuestionPromptUsesCompatibleResponses() {
+  const normalizedRegistry = normalizeOfficialSentenceRegistry(
+    personalInfoSentenceRegistry as never,
+  );
+  const targetSentence = normalizedRegistry.sentences.find(
+    (sentence) => sentence.npcPrompt === "Are you tired?",
+  );
+
+  if (!targetSentence) {
+    throw new Error("Expected official registry to include 'Are you tired?'");
+  }
+
+  const [prompt] = buildDrillSessionFromRegistry([targetSentence], {
+    strategy: "phase_progression",
+    sessionSize: 1,
+  });
+
+  assertEqual(prompt.expectedAnswer, "Yes, I am.");
+  assertEqual(
+    prompt.answerChoices.some((choice) => choice.answer === "Are you tired?"),
+    false,
+  );
+  assertEqual(
+    prompt.answerChoices.some((choice) => choice.answer === "Yes, I am."),
+    true,
+  );
+  assertEqual(
+    prompt.answerChoices.some((choice) => choice.answer === "No, I'm not."),
+    true,
+  );
+}
+
 testWeightedSessionOrdering();
 testMasteryUpdatesAndClamps();
+testQuestionPromptUsesCompatibleResponses();

@@ -157,13 +157,22 @@ function sentenceToNpcPrompt(sentence: OfficialSentenceEntry): string {
 }
 
 function sentenceToRegistrySentence(sentence: OfficialSentenceEntry): RegistrySentence {
+  const isBeYesNoQuestion =
+    sentence.text.endsWith("?") &&
+    sentence.grammar.includes("be_verb") &&
+    sentence.grammar.includes("yes_no_question") &&
+    Boolean(sentence.expected_answers);
+  const defaultYesAnswer = sentence.expected_answers?.yes ?? "Yes, I am.";
+  const defaultNoAnswer = sentence.expected_answers?.no ?? "No, I'm not.";
   const commonFields = {
     scenarioId: sentence.scenario_id,
     mode: "DRILL" as const,
     npcPrompt: sentenceToNpcPrompt(sentence),
-    expectedAnswer: sentence.text,
+    expectedAnswer: isBeYesNoQuestion ? defaultYesAnswer : sentence.text,
     pattern: sentence.pattern,
+    communicativeFunction: sentence.communicative_function,
     grammarTags: sentence.grammar,
+    drillTags: sentence.drill_tags,
     chunkPool: sentenceToChunkPool(sentence),
     slotSelections: sentenceToSlotSelections(sentence),
     responseAnswers: sentence.expected_answers
@@ -172,6 +181,7 @@ function sentenceToRegistrySentence(sentence: OfficialSentenceEntry): RegistrySe
           no: sentence.expected_answers.no,
         }
       : undefined,
+    interactionType: isBeYesNoQuestion ? ("be_yes_no_response" as const) : undefined,
   };
   const unlockableChunkId = commonFields.chunkPool[0]?.id;
 
@@ -179,7 +189,7 @@ function sentenceToRegistrySentence(sentence: OfficialSentenceEntry): RegistrySe
     id: sentence.id,
     ...commonFields,
     answerChoices: sentence.expected_answers
-      ? [sentence.text, sentence.expected_answers.yes ?? "Yes, I am.", sentence.expected_answers.no ?? "No, I'm not."]
+      ? [defaultYesAnswer, defaultNoAnswer]
       : [sentence.text],
     distractorAnswers: sentence.expected_answers
       ? undefined

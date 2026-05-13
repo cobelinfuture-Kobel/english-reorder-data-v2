@@ -1,5 +1,12 @@
 import { Chunk, DrillMode, Pattern } from "./types";
 
+export type DialogueInteractionType =
+  | "be_yes_no_response"
+  | "wh_name_response"
+  | "wh_age_response"
+  | "wh_origin_response"
+  | "family_identity_response";
+
 export interface CurriculumScenario {
   id: string;
   order: number;
@@ -31,7 +38,7 @@ export interface RegistrySentence {
     yes?: string;
     no?: string;
   };
-  interactionType?: "be_yes_no_response";
+  interactionType?: DialogueInteractionType;
   unlockableChunkId?: string;
   timerSeconds?: number;
   chunkPool?: Chunk[];

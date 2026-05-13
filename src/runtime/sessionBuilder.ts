@@ -1,4 +1,9 @@
 import { Chunk } from "./types";
+import {
+  getCompatibleResponses,
+  getDialogueInteractionType,
+  shouldExcludeAsAnswerChoice,
+} from "./dialoguePairing";
 import { getSentenceMasteryScore } from "./masteryStore";
 import {
   PlayableAnswerChoice,
@@ -13,38 +18,6 @@ import {
 
 type DrillPlayableMode = Extract<RegistrySentence["mode"], "LEARN" | "DRILL" | "RAPID_RESPONSE">;
 
-function isQuestionPrompt(sentence: RegistrySentence): boolean {
-  return (
-    sentence.npcPrompt.trim().endsWith("?") ||
-    sentence.expectedAnswer.trim().endsWith("?") ||
-    sentence.communicativeFunction?.startsWith("ask_") === true ||
-    sentence.grammarTags?.includes("yes_no_question") === true ||
-    sentence.grammarTags?.includes("wh_question") === true ||
-    sentence.drillTags?.some((tag) => tag.includes("question")) === true
-  );
-}
-
-function allowsQuestionAnswerChoices(sentence: RegistrySentence): boolean {
-  return sentence.grammarTags?.includes("question_form") === true;
-}
-
-function isCompatibleResponseQuestion(sentence: RegistrySentence): boolean {
-  return sentence.interactionType === "be_yes_no_response" ||
-    (isQuestionPrompt(sentence) && Boolean(sentence.responseAnswers));
-}
-
-function shouldKeepAnswerChoice(sentence: RegistrySentence, choice: string): boolean {
-  if (choice === sentence.npcPrompt) {
-    return false;
-  }
-
-  if (!allowsQuestionAnswerChoices(sentence) && choice.trim().endsWith("?")) {
-    return false;
-  }
-
-  return true;
-}
-
 function createAnswerChoices(
   sentence: RegistrySentence,
   allSentences: RegistrySentence[],
@@ -52,19 +25,18 @@ function createAnswerChoices(
   effectiveMode: DrillPlayableMode,
   rapidResponseVariant: "yes" | "no" | null,
 ): PlayableAnswerChoice[] {
-  if (effectiveMode === "RAPID_RESPONSE" && rapidResponseVariant && sentence.responseAnswers) {
-    const preferredAnswer =
-      rapidResponseVariant === "yes"
-        ? sentence.responseAnswers.yes ?? effectiveExpectedAnswer
-        : sentence.responseAnswers.no ?? effectiveExpectedAnswer;
-    const alternateAnswer =
-      rapidResponseVariant === "yes"
-        ? sentence.responseAnswers.no ?? "No, I am not."
-        : sentence.responseAnswers.yes ?? "Yes, I am.";
+  const compatibleResponses = getCompatibleResponses(sentence, allSentences, {
+    rapidResponseVariant,
+  });
 
-    return [preferredAnswer, alternateAnswer]
+  if (compatibleResponses.length > 0) {
+    return compatibleResponses
       .filter((choice, index, choices) => choices.indexOf(choice) === index)
-      .filter((choice) => shouldKeepAnswerChoice(sentence, choice))
+      .filter((choice) =>
+        !shouldExcludeAsAnswerChoice(choice, sentence, {
+          allowQuestionAnswerChoices: sentence.grammarTags?.includes("question_form") === true,
+        }),
+      )
       .slice(0, 4)
       .map((choice, index) => ({
         id: `${sentence.id}-choice-${index + 1}`,
@@ -86,7 +58,11 @@ function createAnswerChoices(
     ...fallbackDistractors.filter((choice) => choice !== effectiveExpectedAnswer),
   ]
     .filter((choice, index, choices) => choices.indexOf(choice) === index)
-    .filter((choice) => shouldKeepAnswerChoice(sentence, choice));
+    .filter((choice) =>
+      !shouldExcludeAsAnswerChoice(choice, sentence, {
+        allowQuestionAnswerChoices: sentence.grammarTags?.includes("question_form") === true,
+      }),
+    );
 
   return orderedChoices.slice(0, 4).map((choice, index) => ({
     id: `${sentence.id}-choice-${index + 1}`,
@@ -177,20 +153,13 @@ function getEffectiveExpectedAnswer(
   effectiveMode: DrillPlayableMode,
   rapidResponseVariant: "yes" | "no" | null,
 ): string {
-  if (isCompatibleResponseQuestion(sentence) && sentence.responseAnswers) {
-    if (effectiveMode === "RAPID_RESPONSE" && rapidResponseVariant) {
-      return rapidResponseVariant === "yes"
-        ? sentence.responseAnswers.yes ?? sentence.expectedAnswer
-        : sentence.responseAnswers.no ?? sentence.expectedAnswer;
-    }
+  const compatibleResponses = getCompatibleResponses(sentence, [sentence], {
+    rapidResponseVariant:
+      effectiveMode === "RAPID_RESPONSE" ? rapidResponseVariant : null,
+  });
 
-    return sentence.responseAnswers.yes ?? sentence.expectedAnswer;
-  }
-
-  if (effectiveMode === "RAPID_RESPONSE" && rapidResponseVariant && sentence.responseAnswers) {
-    return rapidResponseVariant === "yes"
-      ? sentence.responseAnswers.yes ?? sentence.expectedAnswer
-      : sentence.responseAnswers.no ?? sentence.expectedAnswer;
+  if (compatibleResponses.length > 0) {
+    return compatibleResponses[0];
   }
 
   return sentence.expectedAnswer;
@@ -219,11 +188,6 @@ export function buildDrillSessionFromRegistry(
   options: SessionBuildOptions = {},
 ): PlayablePrompt[] {
   const selectedSentences = selectSessionSentences(sentences, options);
-  const rapidResponseQuestionIndex = selectedSentences
-    .map((sentence, index) => ({ sentence, index }))
-    .filter(({ sentence }) => sentence.responseAnswers)
-    .map(({ index }) => index);
-
   let rapidResponseVariantCounter = 0;
 
   return selectedSentences.map((sentence, index) => {
@@ -232,7 +196,7 @@ export function buildDrillSessionFromRegistry(
         ? getGeneratedMode(index, selectedSentences.length)
         : (sentence.mode as DrillPlayableMode);
     const rapidResponseVariant =
-      effectiveMode === "RAPID_RESPONSE" && sentence.responseAnswers
+      effectiveMode === "RAPID_RESPONSE" && getDialogueInteractionType(sentence) === "be_yes_no_response"
         ? (rapidResponseVariantCounter++ % 2 === 0 ? "yes" : "no")
         : null;
     const effectiveExpectedAnswer = getEffectiveExpectedAnswer(

@@ -1,4 +1,9 @@
 import personalInfoSentenceRegistry from "../../data/sentence_registry/A1/01_personal_info.json";
+import {
+  getCompatibleResponses,
+  getDialogueInteractionType,
+  shouldExcludeAsAnswerChoice,
+} from "./dialoguePairing";
 import { normalizeOfficialSentenceRegistry } from "./registryNormalizer";
 import { buildDrillSessionFromRegistry } from "./sessionBuilder";
 import {
@@ -115,6 +120,30 @@ function testQuestionPromptUsesCompatibleResponses() {
   );
 }
 
+function testDialoguePairingFunctions() {
+  const normalizedRegistry = normalizeOfficialSentenceRegistry(
+    personalInfoSentenceRegistry as never,
+  );
+  const targetSentence = normalizedRegistry.sentences.find(
+    (sentence) => sentence.npcPrompt === "Are you tired?",
+  );
+
+  if (!targetSentence) {
+    throw new Error("Expected official registry to include 'Are you tired?'");
+  }
+
+  assertEqual(getDialogueInteractionType(targetSentence), "be_yes_no_response");
+  assertDeepEqual(
+    getCompatibleResponses(targetSentence, normalizedRegistry.sentences),
+    ["Yes, I am.", "No, I'm not."],
+  );
+  assertEqual(
+    shouldExcludeAsAnswerChoice("Are you tired?", targetSentence),
+    true,
+  );
+}
+
 testWeightedSessionOrdering();
 testMasteryUpdatesAndClamps();
 testQuestionPromptUsesCompatibleResponses();
+testDialoguePairingFunctions();

@@ -1,4 +1,5 @@
 import { Chunk } from "./types";
+import { getSentenceMasteryScore } from "./masteryStore";
 import {
   PlayableAnswerChoice,
   PlayableBossChunk,
@@ -103,9 +104,23 @@ function selectSessionSentences(
       ? sentences.filter((sentence) => options.includeModes?.includes(sentence.mode as DrillPlayableMode))
       : sentences;
 
-  const sessionSize = options.sessionSize ?? filteredSentences.length;
+  const prioritizedSentences = filteredSentences
+    .map((sentence, index) => ({
+      sentence,
+      index,
+      masteryScore: getSentenceMasteryScore(options.masteryBySentenceId ?? {}, sentence.id),
+    }))
+    .sort((left, right) => {
+      if (left.masteryScore !== right.masteryScore) {
+        return left.masteryScore - right.masteryScore;
+      }
 
-  return filteredSentences.slice(0, Math.min(sessionSize, filteredSentences.length));
+      return left.index - right.index;
+    })
+    .map(({ sentence }) => sentence);
+  const sessionSize = options.sessionSize ?? prioritizedSentences.length;
+
+  return prioritizedSentences.slice(0, Math.min(sessionSize, prioritizedSentences.length));
 }
 
 function getGeneratedMode(index: number, total: number): DrillPlayableMode {
@@ -197,6 +212,7 @@ export function buildDrillSessionFromRegistry(
       sourceSentenceId: sentence.id,
       timerSeconds:
         effectiveMode === "RAPID_RESPONSE" ? inferTimerSeconds(sentence, options) : undefined,
+      masteryScore: getSentenceMasteryScore(options.masteryBySentenceId ?? {}, sentence.id),
     };
   });
 }

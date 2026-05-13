@@ -1,8 +1,9 @@
 import personalInfoSentenceRegistry from "../../data/sentence_registry/A1/01_personal_info.json";
+import { loadSentenceMastery } from "../runtime/masteryStore";
 import { Chunk, DrillMode, DrillPrompt } from "../runtime/types";
 import { normalizeOfficialSentenceRegistry } from "../runtime/registryNormalizer";
 import { buildDrillSessionFromRegistry } from "../runtime/sessionBuilder";
-import { PlayablePrompt, RegistrySentence } from "../runtime/sessionTypes";
+import { PlayablePrompt, RegistrySentence, SentenceMasteryMap } from "../runtime/sessionTypes";
 
 export interface MockPromptOption {
   id: string;
@@ -18,6 +19,7 @@ export interface MockPrompt {
   choices: MockPromptOption[];
   expectedAnswer: string;
   unlockChunkId?: string;
+  masteryScore: number;
 }
 
 export interface MockSessionState {
@@ -80,6 +82,7 @@ function buildMockPrompt(
     })),
     expectedAnswer: playablePrompt.expectedAnswer,
     unlockChunkId: playablePrompt.unlockableChunkId,
+    masteryScore: playablePrompt.masteryScore,
   };
 }
 
@@ -88,23 +91,20 @@ function buildMockPrompt(
 // official sentence registry JSON -> registryNormalizer -> sessionBuilder -> DrillConsole-ready prompts
 const registrySentences: RegistrySentence[] = normalizedSentenceRegistry.sentences;
 
-const playablePrompts = buildDrillSessionFromRegistry(registrySentences, {
-  sessionId: "personal-info-playground",
-  sessionTitle: "1-1 Personal Info",
-  defaultTimerSeconds: 3,
-  sessionSize: 10,
-  strategy: "phase_progression",
-  includeModes: ["LEARN", "DRILL", "RAPID_RESPONSE"],
-});
+export function createMockPrompts(
+  masteryBySentenceId: SentenceMasteryMap = loadSentenceMastery(),
+): MockPrompt[] {
+  const playablePrompts = buildDrillSessionFromRegistry(registrySentences, {
+    sessionId: "personal-info-playground",
+    sessionTitle: "1-1 Personal Info",
+    defaultTimerSeconds: 3,
+    sessionSize: 10,
+    strategy: "phase_progression",
+    includeModes: ["LEARN", "DRILL", "RAPID_RESPONSE"],
+    masteryBySentenceId,
+  });
 
-export const initialSessionState: MockSessionState = {
-  xp: 0,
-  combo: 0,
-  unlockedChunkIds: [],
-};
-
-export const sampleChunks: Chunk[] = allChunks;
-export const mockPrompts: MockPrompt[] = playablePrompts.map((playablePrompt) => {
+  return playablePrompts.map((playablePrompt) => {
     const sourceSentence = registrySentences.find((sentence) => sentence.id === playablePrompt.id);
 
     if (!sourceSentence) {
@@ -113,4 +113,14 @@ export const mockPrompts: MockPrompt[] = playablePrompts.map((playablePrompt) =>
 
     return buildMockPrompt(playablePrompt, sourceSentence);
   });
+}
+
+export const initialSessionState: MockSessionState = {
+  xp: 0,
+  combo: 0,
+  unlockedChunkIds: [],
+};
+
+export const sampleChunks: Chunk[] = allChunks;
+export const mockPrompts: MockPrompt[] = createMockPrompts();
 export const totalPrompts = mockPrompts.length;

@@ -35,6 +35,14 @@ export interface RegistrySentence {
   slotSelections?: Record<string, string>;
 }
 
+export interface SentenceMasteryEntry {
+  correct: number;
+  wrong: number;
+  mastery: number;
+}
+
+export type SentenceMasteryMap = Record<string, SentenceMasteryEntry>;
+
 export interface RegistryCombo {
   id: string;
   title: string;
@@ -63,6 +71,7 @@ export interface PlayablePrompt {
   unlockableChunkId?: string;
   sourceSentenceId: string;
   timerSeconds?: number;
+  masteryScore: number;
 }
 
 export interface PlayableBossChunk extends Chunk {
@@ -103,4 +112,5 @@ export interface SessionBuildOptions {
   sessionSize?: number;
   strategy?: "phase_progression";
   includeModes?: Array<Extract<DrillMode, "LEARN" | "DRILL" | "RAPID_RESPONSE">>;
+  masteryBySentenceId?: SentenceMasteryMap;
 }

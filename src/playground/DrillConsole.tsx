@@ -1,9 +1,15 @@
 // This is a debug gameplay prototype, not production UI.
 
 import { useEffect, useMemo, useState } from "react";
-import { initialSessionState, mockPrompts, totalPrompts } from "./mockSession";
+import { createMockPrompts, initialSessionState, MockPrompt } from "./mockSession";
+import {
+  getSentenceMasteryEntry,
+  loadSentenceMastery,
+  recordSentenceAnswer,
+} from "../runtime/masteryStore";
 import { validateAnswer } from "../runtime/validationEngine";
 import { Chunk } from "../runtime/types";
+import { SentenceMasteryMap } from "../runtime/sessionTypes";
 
 type FeedbackState = {
   message: string;
@@ -12,6 +18,7 @@ type FeedbackState = {
 };
 
 type PersistedDrillSession = {
+  prompts: MockPrompt[];
   promptIndex: number;
   xp: number;
   combo: number;
@@ -76,13 +83,17 @@ function getCorrectFeedback(comboAfterAnswer: number): string {
   return "Correct.";
 }
 
-function clampPromptIndex(promptIndex: number): number {
+function clampPromptIndex(promptIndex: number, totalPrompts: number): number {
   if (Number.isNaN(promptIndex) || promptIndex < 0) {
     return 0;
   }
 
-  if (promptIndex >= mockPrompts.length) {
-    return mockPrompts.length - 1;
+  if (totalPrompts <= 0) {
+    return 0;
+  }
+
+  if (promptIndex >= totalPrompts) {
+    return totalPrompts - 1;
   }
 
   return promptIndex;
@@ -103,6 +114,7 @@ function loadPersistedSession(): PersistedDrillSession | null {
     const parsedValue = JSON.parse(storedValue) as Partial<PersistedDrillSession>;
 
     if (
+      !Array.isArray(parsedValue.prompts) ||
       typeof parsedValue.promptIndex !== "number" ||
       typeof parsedValue.xp !== "number" ||
       typeof parsedValue.combo !== "number" ||
@@ -112,8 +124,15 @@ function loadPersistedSession(): PersistedDrillSession | null {
       return null;
     }
 
+    const prompts = parsedValue.prompts as MockPrompt[];
+
+    if (prompts.length === 0) {
+      return null;
+    }
+
     return {
-      promptIndex: clampPromptIndex(parsedValue.promptIndex),
+      prompts,
+      promptIndex: clampPromptIndex(parsedValue.promptIndex, prompts.length),
       xp: parsedValue.xp,
       combo: parsedValue.combo,
       unlockedChunkIds: parsedValue.unlockedChunkIds,
@@ -139,6 +158,12 @@ function loadPersistedSession(): PersistedDrillSession | null {
 
 export default function DrillConsole() {
   const persistedSession = loadPersistedSession();
+  const [masteryBySentenceId, setMasteryBySentenceId] = useState<SentenceMasteryMap>(() =>
+    loadSentenceMastery(),
+  );
+  const [prompts, setPrompts] = useState<MockPrompt[]>(
+    persistedSession?.prompts ?? createMockPrompts(masteryBySentenceId),
+  );
   const [promptIndex, setPromptIndex] = useState(persistedSession?.promptIndex ?? 0);
   const [xp, setXp] = useState(persistedSession?.xp ?? initialSessionState.xp);
   const [combo, setCombo] = useState(persistedSession?.combo ?? initialSessionState.combo);
@@ -148,13 +173,14 @@ export default function DrillConsole() {
   const [timerSeconds, setTimerSeconds] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<FeedbackState>(persistedSession?.feedback ?? defaultFeedbackState);
 
-  const currentPrompt = mockPrompts[promptIndex];
+  const currentPrompt = prompts[promptIndex];
   const selectedPromptChunks = useMemo(
     () => Object.values(currentPrompt.drillPrompt.selectedChunks) as Chunk[],
     [currentPrompt],
   );
   const comboLabel = getComboLabel(combo);
   const isRapidResponse = currentPrompt.mode === "RAPID_RESPONSE";
+  const currentPromptMastery = getSentenceMasteryEntry(masteryBySentenceId, currentPrompt.id);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -162,6 +188,7 @@ export default function DrillConsole() {
     }
 
     const persistedSessionState: PersistedDrillSession = {
+      prompts,
       promptIndex,
       xp,
       combo,
@@ -173,7 +200,7 @@ export default function DrillConsole() {
       DRILL_CONSOLE_STORAGE_KEY,
       JSON.stringify(persistedSessionState),
     );
-  }, [combo, feedback, promptIndex, unlockedChunkIds, xp]);
+  }, [combo, feedback, promptIndex, prompts, unlockedChunkIds, xp]);
 
   useEffect(() => {
     if (!isRapidResponse || feedback.answered) {
@@ -191,6 +218,9 @@ export default function DrillConsole() {
 
     if (timerSeconds <= 0) {
       setCombo(0);
+      setMasteryBySentenceId(
+        recordSentenceAnswer(currentPrompt.id, false, -0.1),
+      );
       setFeedback({
         message: "Too slow. Try again.",
         unlockedMessage: "",
@@ -218,6 +248,12 @@ export default function DrillConsole() {
     }
 
     const result = validateAnswer(currentPrompt.expectedAnswer, answer);
+    const nextMastery = recordSentenceAnswer(
+      currentPrompt.id,
+      result.isCorrect,
+      result.masteryDelta,
+    );
+    setMasteryBySentenceId(nextMastery);
 
     if (result.isCorrect) {
       const nextXp = xp + 10;
@@ -253,7 +289,7 @@ export default function DrillConsole() {
   }
 
   function handleNext() {
-    if (promptIndex < mockPrompts.length - 1) {
+    if (promptIndex < prompts.length - 1) {
       setPromptIndex(promptIndex + 1);
       setFeedback({
         message: "Choose an answer to begin.",
@@ -275,6 +311,9 @@ export default function DrillConsole() {
       window.localStorage.removeItem(DRILL_CONSOLE_STORAGE_KEY);
     }
 
+    const nextMastery = loadSentenceMastery();
+    setMasteryBySentenceId(nextMastery);
+    setPrompts(createMockPrompts(nextMastery));
     setPromptIndex(0);
     setXp(initialSessionState.xp);
     setCombo(initialSessionState.combo);
@@ -289,13 +328,17 @@ export default function DrillConsole() {
 
       <div style={panelStyle}>
         <div>
-          Prompt: {promptIndex + 1} / {totalPrompts}
+          Prompt: {promptIndex + 1} / {prompts.length}
         </div>
         <div>Mode: {currentPrompt.mode}</div>
         <div>XP: {xp}</div>
         <div>Combo: {combo}</div>
         <div>Combo Label: {comboLabel}</div>
         {isRapidResponse && <div>Timer: {timerSeconds ?? 0}s</div>}
+        <div>
+          Mastery Debug: {currentPromptMastery.mastery.toFixed(2)} ({currentPromptMastery.correct}C /{" "}
+          {currentPromptMastery.wrong}W)
+        </div>
       </div>
 
       <div style={panelStyle}>

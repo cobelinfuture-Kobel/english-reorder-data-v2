@@ -11,6 +11,10 @@ type FeedbackState = {
   success: boolean;
 };
 
+type BossChoice = PlayableBossChunk & {
+  isCorrect: boolean;
+};
+
 const panelStyle = {
   border: "1px solid #999",
   padding: "12px",
@@ -59,7 +63,7 @@ const debugToggleStyle = {
 
 function getSelectedChunkRecord(
   template: PlayableBossTemplate,
-  selectedChunk: PlayableBossChunk | null,
+  selectedChunk: BossChoice | null,
 ): Record<string, PlayableBossChunk> {
   if (!selectedChunk || template.pattern.slots.length === 0) {
     return {};
@@ -70,9 +74,75 @@ function getSelectedChunkRecord(
   };
 }
 
+function toTitleCase(text: string): string {
+  return text.replace(/\b([a-z])/g, (match) => match.toUpperCase());
+}
+
+function createCapitalizationVariant(chunk: PlayableBossChunk): BossChoice | null {
+  const variantText = toTitleCase(chunk.text);
+
+  if (variantText === chunk.text) {
+    return null;
+  }
+
+  return {
+    ...chunk,
+    id: `${chunk.id}-caps`,
+    text: variantText,
+    displayText: variantText,
+    isCorrect: false,
+  };
+}
+
+function createShapeVariant(chunk: PlayableBossChunk): BossChoice | null {
+  let variantText = chunk.text;
+
+  if (/\byears\b/.test(chunk.text)) {
+    variantText = chunk.text.replace(/\byears\b/, "year");
+  } else if (/ent\b/.test(chunk.text)) {
+    variantText = chunk.text.replace(/ent\b/, "ant");
+  } else if (/(.)\1/.test(chunk.text)) {
+    variantText = chunk.text.replace(/(.)\1/, "$1");
+  } else if (/[aeiou]/i.test(chunk.text)) {
+    variantText = chunk.text.replace(/[aeiou]/i, "");
+  }
+
+  if (!variantText || variantText === chunk.text) {
+    return null;
+  }
+
+  return {
+    ...chunk,
+    id: `${chunk.id}-shape`,
+    text: variantText,
+    displayText: variantText,
+    isCorrect: false,
+  };
+}
+
+function buildBossChoices(allowedChunks: PlayableBossChunk[]): BossChoice[] {
+  const correctChunk = allowedChunks[0];
+
+  if (!correctChunk) {
+    return [];
+  }
+
+  const correctChoice: BossChoice = {
+    ...correctChunk,
+    isCorrect: true,
+  };
+  const capitalizationVariant = createCapitalizationVariant(correctChunk);
+  const shapeVariant = createShapeVariant(correctChunk);
+
+  return [correctChoice, capitalizationVariant, shapeVariant]
+    .filter((choice): choice is BossChoice => Boolean(choice))
+    .filter((choice, index, choices) => choices.findIndex((item) => item.text === choice.text) === index)
+    .slice(0, 3);
+}
+
 export default function BossMission() {
   const [templateIndex, setTemplateIndex] = useState(0);
-  const [selectedChunk, setSelectedChunk] = useState<PlayableBossChunk | null>(null);
+  const [selectedChunk, setSelectedChunk] = useState<BossChoice | null>(null);
   const [completedSentences, setCompletedSentences] = useState<string[]>([]);
   const [showDebug, setShowDebug] = useState(false);
   const [feedback, setFeedback] = useState<FeedbackState>({
@@ -102,26 +172,19 @@ export default function BossMission() {
 
     return renderPattern(currentTemplate.pattern, getSelectedChunkRecord(currentTemplate, selectedChunk));
   }, [currentTemplate, selectedChunk]);
+  const currentSlotName = currentTemplate?.pattern.slots[0]?.name ?? null;
+  const visibleChoices = useMemo(() => buildBossChoices(allowedChunks), [allowedChunks]);
 
-  function handleChunkSelect(chunk: PlayableBossChunk) {
+  function handleChunkSelect(chunk: BossChoice) {
     if (!currentTemplate || missionComplete) {
-      return;
-    }
-
-    const isAllowed = allowedChunks.some((allowedChunk) => allowedChunk.id === chunk.id);
-
-    if (!isAllowed) {
-      setSelectedChunk(null);
-      setFeedback({
-        message: "Mana unstable... This chunk does not fit here.",
-        success: false,
-      });
       return;
     }
 
     setSelectedChunk(chunk);
     setFeedback({
-      message: "Chunk aligned. Confirm the sentence when ready.",
+      message: chunk.isCorrect
+        ? "Chunk aligned. Confirm the sentence when ready."
+        : "Word power set. Cast the sentence.",
       success: false,
     });
   }
@@ -137,6 +200,15 @@ export default function BossMission() {
 
     const selectedChunks = getSelectedChunkRecord(currentTemplate, selectedChunk);
     const renderedSentence = renderPattern(currentTemplate.pattern, selectedChunks);
+
+    if (!selectedChunk.isCorrect) {
+      setFeedback({
+        message: "Check the word power shape.",
+        success: false,
+      });
+      return;
+    }
+
     const validationResult = validateSlotAnswer(
       currentTemplate.pattern,
       selectedChunks,
@@ -202,15 +274,18 @@ export default function BossMission() {
         <div style={panelStyle}>
           <div style={{ marginBottom: "12px", fontSize: "14px", color: "#555" }}>
             Choose your word power
+            {currentSlotName ? ` for: ${currentSlotName}` : ""}
           </div>
-          {bossMissionData.availableChunks.map((chunk) => (
+          {visibleChoices.map((chunk) => (
             <button
               key={chunk.id}
               type="button"
               style={buttonStyle}
               onClick={() => handleChunkSelect(chunk)}
             >
-              {chunk.displayText ?? chunk.text}
+              {"displayText" in chunk && typeof chunk.displayText === "string"
+                ? chunk.displayText
+                : chunk.text}
             </button>
           ))}
         </div>

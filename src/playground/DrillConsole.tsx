@@ -33,7 +33,9 @@ const defaultFeedbackState: FeedbackState = {
   phase: "idle",
 };
 
-const AUTO_ADVANCE_DELAY_MS = 800;
+const AUTO_ADVANCE_DELAY_MS = 1400;
+const RAPID_RESPONSE_TIMER_SECONDS = 5;
+const URGENT_TIMER_THRESHOLD_SECONDS = 2;
 const correctFeedbackPool = ["Hit!", "Nice Flow!", "Chain!", "Pattern Mastery!", "Perfect!"];
 const wrongFeedbackPool = ["Mana unstable...", "Not quite.", "Try again.", "That pattern doesn't fit."];
 const timeoutFeedbackPool = ["Too Slow!", "Chain broken!", "Focus!"];
@@ -237,7 +239,10 @@ export default function DrillConsole() {
     feedback.phase === "timeout_locked" ||
     feedback.phase === "final_correct" ||
     feedback.phase === "complete";
-  const isUrgentTimer = isRapidResponse && timerSeconds !== null && timerSeconds <= 1;
+  const isUrgentTimer =
+    isRapidResponse &&
+    timerSeconds !== null &&
+    timerSeconds <= URGENT_TIMER_THRESHOLD_SECONDS;
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -265,7 +270,7 @@ export default function DrillConsole() {
       return;
     }
 
-    setTimerSeconds(3);
+    setTimerSeconds(RAPID_RESPONSE_TIMER_SECONDS);
   }, [currentPrompt.id, feedback.phase, isInteractionLocked, isRapidResponse]);
 
   useEffect(() => {

@@ -14,7 +14,7 @@ import { SentenceMasteryMap } from "../runtime/sessionTypes";
 type FeedbackState = {
   message: string;
   unlockedMessage: string;
-  answered: boolean;
+  phase: "idle" | "correct_locked" | "wrong" | "timeout_locked" | "final_correct" | "complete";
 };
 
 type PersistedDrillSession = {
@@ -30,8 +30,13 @@ const DRILL_CONSOLE_STORAGE_KEY = "sentence-combat-rpg:drill-console";
 const defaultFeedbackState: FeedbackState = {
   message: "Choose an answer to begin.",
   unlockedMessage: "",
-  answered: false,
+  phase: "idle",
 };
+
+const AUTO_ADVANCE_DELAY_MS = 800;
+const correctFeedbackPool = ["Hit!", "Nice Flow!", "Chain!", "Pattern Mastery!", "Perfect!"];
+const wrongFeedbackPool = ["Mana unstable...", "Not quite.", "Try again.", "That pattern doesn't fit."];
+const timeoutFeedbackPool = ["Too Slow!", "Chain broken!", "Focus!"];
 
 const panelStyle = {
   border: "1px solid #999",
@@ -39,12 +44,67 @@ const panelStyle = {
   marginBottom: "12px",
 };
 
+const topStatusStyle = {
+  ...panelStyle,
+  display: "flex",
+  flexWrap: "wrap" as const,
+  gap: "8px 16px",
+  alignItems: "center",
+  fontSize: "14px",
+};
+
+const promptPanelStyle = {
+  ...panelStyle,
+};
+
+const npcLabelStyle = {
+  fontSize: "12px",
+  textTransform: "uppercase" as const,
+  color: "#555",
+  marginBottom: "8px",
+};
+
+const npcPromptStyle = {
+  fontSize: "26px",
+  lineHeight: 1.35,
+};
+
+const answerPanelStyle = {
+  ...panelStyle,
+};
+
 const buttonStyle = {
   display: "block",
   width: "100%",
   textAlign: "left" as const,
-  marginBottom: "8px",
-  padding: "8px",
+  marginBottom: "12px",
+  padding: "14px 16px",
+  fontSize: "18px",
+  lineHeight: 1.4,
+};
+
+const feedbackPanelStyle = {
+  ...panelStyle,
+  marginTop: "-4px",
+};
+
+const urgentTimerStyle = {
+  fontSize: "20px",
+  fontWeight: "bold" as const,
+  color: "#b00020",
+};
+
+const debugPanelStyle = {
+  ...panelStyle,
+  borderColor: "#bbb",
+  backgroundColor: "#f7f7f7",
+  fontSize: "14px",
+};
+
+const debugToggleStyle = {
+  padding: "6px 10px",
+  fontSize: "14px",
+  marginBottom: "12px",
 };
 
 function getComboLabel(combo: number): string {
@@ -67,20 +127,8 @@ function getComboLabel(combo: number): string {
   return "Warm Up";
 }
 
-function getCorrectFeedback(comboAfterAnswer: number): string {
-  if (comboAfterAnswer >= 8) {
-    return "Pattern Mastery.";
-  }
-
-  if (comboAfterAnswer >= 5) {
-    return "Sentence Chain.";
-  }
-
-  if (comboAfterAnswer >= 3) {
-    return "Nice Flow.";
-  }
-
-  return "Correct.";
+function pickFeedback(pool: string[]): string {
+  return pool[Math.floor(Math.random() * pool.length)] ?? pool[0];
 }
 
 function clampPromptIndex(promptIndex: number, totalPrompts: number): number {
@@ -145,10 +193,11 @@ function loadPersistedSession(): PersistedDrillSession | null {
           typeof parsedValue.feedback.unlockedMessage === "string"
             ? parsedValue.feedback.unlockedMessage
             : defaultFeedbackState.unlockedMessage,
-        answered:
-          typeof parsedValue.feedback.answered === "boolean"
-            ? parsedValue.feedback.answered
-            : defaultFeedbackState.answered,
+        phase:
+          "phase" in parsedValue.feedback &&
+          typeof parsedValue.feedback.phase === "string"
+            ? parsedValue.feedback.phase
+            : defaultFeedbackState.phase,
       },
     };
   } catch {
@@ -172,6 +221,7 @@ export default function DrillConsole() {
   );
   const [timerSeconds, setTimerSeconds] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<FeedbackState>(persistedSession?.feedback ?? defaultFeedbackState);
+  const [showDebug, setShowDebug] = useState(false);
 
   const currentPrompt = prompts[promptIndex];
   const selectedPromptChunks = useMemo(
@@ -181,6 +231,13 @@ export default function DrillConsole() {
   const comboLabel = getComboLabel(combo);
   const isRapidResponse = currentPrompt.mode === "RAPID_RESPONSE";
   const currentPromptMastery = getSentenceMasteryEntry(masteryBySentenceId, currentPrompt.id);
+  const isFinalPrompt = promptIndex === prompts.length - 1;
+  const isInteractionLocked =
+    feedback.phase === "correct_locked" ||
+    feedback.phase === "timeout_locked" ||
+    feedback.phase === "final_correct" ||
+    feedback.phase === "complete";
+  const isUrgentTimer = isRapidResponse && timerSeconds !== null && timerSeconds <= 1;
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -203,16 +260,16 @@ export default function DrillConsole() {
   }, [combo, feedback, promptIndex, prompts, unlockedChunkIds, xp]);
 
   useEffect(() => {
-    if (!isRapidResponse || feedback.answered) {
+    if (!isRapidResponse || isInteractionLocked) {
       setTimerSeconds(null);
       return;
     }
 
     setTimerSeconds(3);
-  }, [currentPrompt.id, feedback.answered, isRapidResponse]);
+  }, [currentPrompt.id, feedback.phase, isInteractionLocked, isRapidResponse]);
 
   useEffect(() => {
-    if (!isRapidResponse || feedback.answered || timerSeconds === null) {
+    if (!isRapidResponse || isInteractionLocked || timerSeconds === null) {
       return;
     }
 
@@ -222,9 +279,9 @@ export default function DrillConsole() {
         recordSentenceAnswer(currentPrompt.id, false, -0.1),
       );
       setFeedback({
-        message: "Too slow. Try again.",
+        message: pickFeedback(timeoutFeedbackPool),
         unlockedMessage: "",
-        answered: true,
+        phase: "timeout_locked",
       });
       return;
     }
@@ -240,10 +297,32 @@ export default function DrillConsole() {
     }, 1000);
 
     return () => window.clearTimeout(timeoutId);
-  }, [feedback.answered, isRapidResponse, timerSeconds]);
+  }, [currentPrompt.id, isInteractionLocked, isRapidResponse, timerSeconds]);
+
+  useEffect(() => {
+    if (feedback.phase !== "correct_locked" && feedback.phase !== "timeout_locked") {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      if (feedback.phase === "correct_locked") {
+        setPromptIndex((currentValue) => currentValue + 1);
+        setFeedback(defaultFeedbackState);
+        return;
+      }
+
+      setFeedback({
+        message: feedback.message,
+        unlockedMessage: "",
+        phase: "idle",
+      });
+    }, AUTO_ADVANCE_DELAY_MS);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [feedback]);
 
   function handleAnswer(answer: string) {
-    if (feedback.answered) {
+    if (isInteractionLocked) {
       return;
     }
 
@@ -273,36 +352,34 @@ export default function DrillConsole() {
       }
 
       setFeedback({
-        message: getCorrectFeedback(nextCombo),
+        message: pickFeedback(correctFeedbackPool),
         unlockedMessage,
-        answered: true,
+        phase: isFinalPrompt ? "final_correct" : "correct_locked",
       });
       return;
     }
 
     setCombo(0);
     setFeedback({
-      message: result.hint ? `Mana unstable. ${result.hint}` : "Mana unstable. Try again.",
+      message: result.hint
+        ? `${pickFeedback(wrongFeedbackPool)} ${result.hint}`
+        : pickFeedback(wrongFeedbackPool),
       unlockedMessage: "",
-      answered: true,
+      phase: "wrong",
     });
   }
 
   function handleNext() {
     if (promptIndex < prompts.length - 1) {
       setPromptIndex(promptIndex + 1);
-      setFeedback({
-        message: "Choose an answer to begin.",
-        unlockedMessage: "",
-        answered: false,
-      });
+      setFeedback(defaultFeedbackState);
       return;
     }
 
     setFeedback({
       message: "Session complete. Restart the file state to replay this mock run.",
       unlockedMessage: "",
-      answered: true,
+      phase: "complete",
     });
   }
 
@@ -324,65 +401,91 @@ export default function DrillConsole() {
 
   return (
     <div style={{ fontFamily: "sans-serif", maxWidth: "640px", padding: "16px" }}>
-      <h1>Sentence Combat RPG Debug Drill Console</h1>
+      <h1>Sentence Combat RPG</h1>
 
-      <div style={panelStyle}>
+      <div style={topStatusStyle}>
         <div>
-          Prompt: {promptIndex + 1} / {prompts.length}
+          {promptIndex + 1} / {prompts.length}
         </div>
-        <div>Mode: {currentPrompt.mode}</div>
         <div>XP: {xp}</div>
         <div>Combo: {combo}</div>
         <div>Combo Label: {comboLabel}</div>
-        {isRapidResponse && <div>Timer: {timerSeconds ?? 0}s</div>}
-        <div>
-          Mastery Debug: {currentPromptMastery.mastery.toFixed(2)} ({currentPromptMastery.correct}C /{" "}
-          {currentPromptMastery.wrong}W)
-        </div>
+        {isRapidResponse && (
+          <div style={isUrgentTimer ? urgentTimerStyle : undefined}>
+            Timer: {timerSeconds ?? 0}s
+          </div>
+        )}
       </div>
 
-      <div style={panelStyle}>
-        <div>NPC Prompt: {currentPrompt.npcPrompt}</div>
-        <div>Expected Pattern: {currentPrompt.drillPrompt.expectedAnswer}</div>
-        <div>
-          Sample Chunks:{" "}
-          {selectedPromptChunks.length > 0
-            ? selectedPromptChunks.map((chunk) => chunk.text).join(", ")
-            : "none"}
-        </div>
+      <div style={promptPanelStyle}>
+        <div style={npcLabelStyle}>NPC</div>
+        <div style={npcPromptStyle}>{currentPrompt.npcPrompt}</div>
       </div>
 
-      <div style={panelStyle}>
-        <div>Answer Choices</div>
+      <div style={answerPanelStyle}>
+        <div style={{ marginBottom: "12px", fontSize: "14px", color: "#555" }}>Choose your answer.</div>
         {currentPrompt.choices.map((choice) => (
           <button
             key={choice.id}
             style={buttonStyle}
             type="button"
             onClick={() => handleAnswer(choice.answer)}
-            disabled={feedback.answered || (isRapidResponse && timerSeconds === 0)}
+            disabled={isInteractionLocked || (isRapidResponse && timerSeconds === 0)}
           >
             {choice.label}
           </button>
         ))}
       </div>
 
-      <div style={panelStyle}>
-        <div>Feedback: {feedback.message}</div>
-        <div>Unlocked: {feedback.unlockedMessage || "none"}</div>
-        <div>
-          Grammar Bank: {unlockedChunkIds.length > 0 ? unlockedChunkIds.join(", ") : "empty"}
-        </div>
+      <div style={feedbackPanelStyle}>
+        <div>{feedback.message}</div>
+        {feedback.unlockedMessage ? (
+          <div style={{ marginTop: "8px", fontSize: "13px", color: "#555" }}>
+            {feedback.unlockedMessage}
+          </div>
+        ) : null}
       </div>
 
-      <div>
-        <button type="button" onClick={handleNext} style={{ marginRight: "8px" }}>
-          Next
-        </button>
+      <div style={{ marginBottom: "12px" }}>
+        {(feedback.phase === "final_correct" || feedback.phase === "complete") && (
+          <button type="button" onClick={handleNext} style={{ marginRight: "8px" }}>
+            Next
+          </button>
+        )}
         <button type="button" onClick={handleResetSession}>
           Reset Session
         </button>
       </div>
+
+      <div>
+        <button
+          type="button"
+          onClick={() => setShowDebug((currentValue) => !currentValue)}
+          style={debugToggleStyle}
+        >
+          {showDebug ? "Hide Debug" : "Show Debug"}
+        </button>
+      </div>
+
+      {showDebug ? (
+        <div style={debugPanelStyle}>
+          <div>Expected: {currentPrompt.drillPrompt.expectedAnswer}</div>
+          <div>Mode: {currentPrompt.mode}</div>
+          <div>
+            Sample Chunks:{" "}
+            {selectedPromptChunks.length > 0
+              ? selectedPromptChunks.map((chunk) => chunk.text).join(", ")
+              : "none"}
+          </div>
+          <div>
+            Mastery: {currentPromptMastery.mastery.toFixed(2)} ({currentPromptMastery.correct}C /{" "}
+            {currentPromptMastery.wrong}W)
+          </div>
+          <div>
+            Grammar Bank: {unlockedChunkIds.length > 0 ? unlockedChunkIds.join(", ") : "empty"}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

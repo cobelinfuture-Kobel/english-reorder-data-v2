@@ -17,12 +17,44 @@ const panelStyle = {
   marginBottom: "12px",
 };
 
+const previewPanelStyle = {
+  ...panelStyle,
+  padding: "16px",
+};
+
+const previewLabelStyle = {
+  fontSize: "12px",
+  textTransform: "uppercase" as const,
+  color: "#555",
+  marginBottom: "8px",
+};
+
+const previewTextStyle = {
+  fontSize: "26px",
+  lineHeight: 1.35,
+};
+
 const buttonStyle = {
   display: "block",
   width: "100%",
   textAlign: "left" as const,
-  marginBottom: "8px",
-  padding: "8px",
+  marginBottom: "12px",
+  padding: "14px 16px",
+  fontSize: "18px",
+  lineHeight: 1.4,
+};
+
+const debugPanelStyle = {
+  ...panelStyle,
+  borderColor: "#bbb",
+  backgroundColor: "#f7f7f7",
+  fontSize: "14px",
+};
+
+const debugToggleStyle = {
+  padding: "6px 10px",
+  fontSize: "14px",
+  marginBottom: "12px",
 };
 
 function getSelectedChunkRecord(
@@ -42,6 +74,7 @@ export default function BossMission() {
   const [templateIndex, setTemplateIndex] = useState(0);
   const [selectedChunk, setSelectedChunk] = useState<PlayableBossChunk | null>(null);
   const [completedSentences, setCompletedSentences] = useState<string[]>([]);
+  const [showDebug, setShowDebug] = useState(false);
   const [feedback, setFeedback] = useState<FeedbackState>({
     message: "Choose a chunk to begin your guild introduction.",
     success: false,
@@ -148,16 +181,7 @@ export default function BossMission() {
       <div style={panelStyle}>{bossMissionData.description}</div>
 
       <div style={panelStyle}>
-        <div>
-          Mission Progress: {completedSentences.length} / {bossMissionData.templates.length}
-        </div>
-        {!missionComplete && currentTemplate && (
-          <>
-            <div>Current Template: {currentTemplate.pattern.template}</div>
-            <div>Selected Chunk: {selectedChunk ? selectedChunk.displayText ?? selectedChunk.text : "none"}</div>
-            <div>Sentence Preview: {previewSentence}</div>
-          </>
-        )}
+        <div>Mission Progress: {completedSentences.length} / {bossMissionData.templates.length}</div>
         {missionComplete && (
           <>
             <div>Mission Complete</div>
@@ -168,8 +192,17 @@ export default function BossMission() {
       </div>
 
       {!missionComplete && (
+        <div style={previewPanelStyle}>
+          <div style={previewLabelStyle}>Your sentence</div>
+          <div style={previewTextStyle}>{previewSentence}</div>
+        </div>
+      )}
+
+      {!missionComplete && (
         <div style={panelStyle}>
-          <div>Available Chunks</div>
+          <div style={{ marginBottom: "12px", fontSize: "14px", color: "#555" }}>
+            Choose your word power
+          </div>
           {bossMissionData.availableChunks.map((chunk) => (
             <button
               key={chunk.id}
@@ -185,31 +218,52 @@ export default function BossMission() {
 
       {!missionComplete && (
         <div style={panelStyle}>
-          <button type="button" style={buttonStyle} onClick={handleConfirmSentence}>
-            Confirm Sentence
-          </button>
+          <div style={{ marginBottom: "12px" }}>
+            <button type="button" style={buttonStyle} onClick={handleConfirmSentence}>
+              Cast Sentence
+            </button>
+          </div>
+          <div>{feedback.message}</div>
         </div>
       )}
 
       <div style={panelStyle}>
-        <div>Completed Sentences</div>
+        <div>Completed Lines</div>
         {completedSentences.length === 0 && <div>none yet</div>}
         {completedSentences.map((sentence, index) => (
           <div key={`${sentence}-${index}`}>{sentence}</div>
         ))}
       </div>
 
-      <div style={panelStyle}>
-        <div>Expected Solutions</div>
-        {bossMissionData.requiredSentences.map((solution) => (
-          <div key={solution}>{solution}</div>
-        ))}
+      <div>
+        <button
+          type="button"
+          onClick={() => setShowDebug((currentValue) => !currentValue)}
+          style={debugToggleStyle}
+        >
+          {showDebug ? "Hide Debug" : "Show Debug"}
+        </button>
       </div>
 
-      <div style={panelStyle}>
-        <div>Feedback: {feedback.message}</div>
-        <div>Status: {feedback.success ? "stable" : "unstable"}</div>
-      </div>
+      {showDebug ? (
+        <div style={debugPanelStyle}>
+          {!missionComplete && currentTemplate && (
+            <>
+              <div>Current Template: {currentTemplate.pattern.template}</div>
+              <div>Selected Chunk: {selectedChunk ? selectedChunk.displayText ?? selectedChunk.text : "none"}</div>
+            </>
+          )}
+          <div>Status: {feedback.success ? "stable" : "unstable"}</div>
+          <div>Source Combo: {bossMissionData.sourceComboId}</div>
+          <div>Expected Solutions</div>
+          {bossMissionData.requiredSentences.map((solution) => (
+            <div key={solution}>{solution}</div>
+          ))}
+          <div>
+            Raw Rewards: XP {bossMissionData.rewards.xp} / {bossMissionData.rewards.unlockedChunkReward}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

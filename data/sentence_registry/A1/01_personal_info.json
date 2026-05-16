@@ -17,7 +17,11 @@
       "scenario_id": "01_personal_info",
       "scenario_role": "core",
       "communicative_function": "state_personal_age",
-      "grammar": ["be_verb", "first_person_singular", "affirmative_statement"],
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement"
+      ],
       "pattern": "I am {age_chunk}.",
       "slots": {
         "age_chunk": "seven years old"
@@ -30,11 +34,22 @@
           "form": "adjective_phrase"
         }
       ],
-      "words": ["I", "am", "seven", "years old"],
-      "drill_tags": ["echo", "rapid_substitution", "identity_response"],
+      "words": [
+        "I",
+        "am",
+        "seven",
+        "years old"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "identity_response"
+      ],
       "generator": {
         "safe_for_substitution": true,
-        "safe_slots": ["age_chunk"],
+        "safe_slots": [
+          "age_chunk"
+        ],
         "notes": "Keep 'seven years old' as a phrase chunk. Do not reduce to 'seven' in this pattern."
       }
     },
@@ -46,7 +61,11 @@
       "scenario_id": "01_personal_info",
       "scenario_role": "core",
       "communicative_function": "ask_role_identity",
-      "grammar": ["be_verb", "second_person", "yes_no_question"],
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question"
+      ],
       "pattern": "Are you {role_chunk}?",
       "slots": {
         "role_chunk": "a student"
@@ -59,15 +78,26 @@
           "form": "noun_phrase"
         }
       ],
-      "words": ["are", "you", "a", "student"],
-      "drill_tags": ["rapid_substitution", "yes_no_answer", "identity_question"],
+      "words": [
+        "are",
+        "you",
+        "a",
+        "student"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "identity_question"
+      ],
       "expected_answers": {
         "yes": "Yes, I am.",
-        "no": "No, I'm not."
+        "no": "No, I am not."
       },
       "generator": {
         "safe_for_substitution": true,
-        "safe_slots": ["role_chunk"],
+        "safe_slots": [
+          "role_chunk"
+        ],
         "notes": "Use phrase chunk 'a student', not raw noun 'student'."
       }
     },
@@ -79,7 +109,11 @@
       "scenario_id": "01_personal_info",
       "scenario_role": "core",
       "communicative_function": "state_origin",
-      "grammar": ["be_verb", "third_person_singular", "affirmative_statement"],
+      "grammar": [
+        "be_verb",
+        "third_person_singular",
+        "affirmative_statement"
+      ],
       "pattern": "{third_person_singular} is {origin_chunk}.",
       "slots": {
         "third_person_singular": "She",
@@ -93,11 +127,23 @@
           "form": "prepositional_phrase"
         }
       ],
-      "words": ["she", "is", "from", "Taiwan"],
-      "drill_tags": ["pronoun_switch", "be_verb_agreement", "identity_statement"],
+      "words": [
+        "she",
+        "is",
+        "from",
+        "Taiwan"
+      ],
+      "drill_tags": [
+        "pronoun_switch",
+        "be_verb_agreement",
+        "identity_statement"
+      ],
       "generator": {
         "safe_for_substitution": true,
-        "safe_slots": ["third_person_singular", "origin_chunk"],
+        "safe_slots": [
+          "third_person_singular",
+          "origin_chunk"
+        ],
         "notes": "Origin should use prepositional phrase 'from Taiwan'. Do not generate 'She is Taiwan.'"
       }
     },
@@ -109,7 +155,12 @@
       "scenario_id": "01_personal_info",
       "scenario_role": "extension",
       "communicative_function": "state_feeling",
-      "grammar": ["be_verb", "first_person_singular", "affirmative_statement", "adjective_complement"],
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
       "pattern": "I am {feeling_adjective}.",
       "slots": {
         "feeling_adjective": "happy"
@@ -122,11 +173,21 @@
           "form": "adjective"
         }
       ],
-      "words": ["I", "am", "happy"],
-      "drill_tags": ["echo", "rapid_substitution", "feeling_response"],
+      "words": [
+        "I",
+        "am",
+        "happy"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "feeling_response"
+      ],
       "generator": {
         "safe_for_substitution": true,
-        "safe_slots": ["feeling_adjective"],
+        "safe_slots": [
+          "feeling_adjective"
+        ],
         "notes": "Can be mixed with Health & Body scenario."
       }
     },
@@ -138,7 +199,12 @@
       "scenario_id": "01_personal_info",
       "scenario_role": "extension",
       "communicative_function": "ask_feeling",
-      "grammar": ["be_verb", "second_person", "yes_no_question", "adjective_complement"],
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "adjective_complement"
+      ],
       "pattern": "Are you {feeling_adjective}?",
       "slots": {
         "feeling_adjective": "tired"
@@ -151,15 +217,25 @@
           "form": "adjective"
         }
       ],
-      "words": ["are", "you", "tired"],
-      "drill_tags": ["rapid_substitution", "yes_no_answer", "feeling_question"],
+      "words": [
+        "are",
+        "you",
+        "tired"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "feeling_question"
+      ],
       "expected_answers": {
         "yes": "Yes, I am.",
-        "no": "No, I'm not."
+        "no": "No, I am not."
       },
       "generator": {
         "safe_for_substitution": true,
-        "safe_slots": ["feeling_adjective"],
+        "safe_slots": [
+          "feeling_adjective"
+        ],
         "notes": "Question pattern shares answer form with identity questions."
       }
     },
@@ -171,7 +247,11 @@
       "scenario_id": "01_personal_info",
       "scenario_role": "core",
       "communicative_function": "state_role_identity",
-      "grammar": ["be_verb", "third_person_singular", "affirmative_statement"],
+      "grammar": [
+        "be_verb",
+        "third_person_singular",
+        "affirmative_statement"
+      ],
       "pattern": "{third_person_singular} is {role_chunk}.",
       "slots": {
         "third_person_singular": "He",
@@ -185,11 +265,23 @@
           "form": "noun_phrase"
         }
       ],
-      "words": ["he", "is", "a", "teacher"],
-      "drill_tags": ["pronoun_switch", "be_verb_agreement", "identity_statement"],
+      "words": [
+        "he",
+        "is",
+        "a",
+        "teacher"
+      ],
+      "drill_tags": [
+        "pronoun_switch",
+        "be_verb_agreement",
+        "identity_statement"
+      ],
       "generator": {
         "safe_for_substitution": true,
-        "safe_slots": ["third_person_singular", "role_chunk"],
+        "safe_slots": [
+          "third_person_singular",
+          "role_chunk"
+        ],
         "notes": "Use phrase chunk 'a teacher', not raw noun 'teacher'."
       }
     },
@@ -201,7 +293,12 @@
       "scenario_id": "01_personal_info",
       "scenario_role": "extension",
       "communicative_function": "state_negative_feeling",
-      "grammar": ["be_verb", "first_person_singular", "negative_statement", "adjective_complement"],
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "negative_statement",
+        "adjective_complement"
+      ],
       "pattern": "I am not {feeling_adjective}.",
       "slots": {
         "feeling_adjective": "hungry"
@@ -214,11 +311,22 @@
           "form": "adjective"
         }
       ],
-      "words": ["I", "am", "not", "hungry"],
-      "drill_tags": ["negative_transformation", "rapid_substitution", "feeling_response"],
+      "words": [
+        "I",
+        "am",
+        "not",
+        "hungry"
+      ],
+      "drill_tags": [
+        "negative_transformation",
+        "rapid_substitution",
+        "feeling_response"
+      ],
       "generator": {
         "safe_for_substitution": true,
-        "safe_slots": ["feeling_adjective"],
+        "safe_slots": [
+          "feeling_adjective"
+        ],
         "notes": "Store negative as pattern-level grammar, not as chunk 'not hungry'."
       }
     },
@@ -230,7 +338,12 @@
       "scenario_id": "01_personal_info",
       "scenario_role": "extension",
       "communicative_function": "ask_trait",
-      "grammar": ["be_verb", "second_person", "yes_no_question", "adjective_complement"],
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "adjective_complement"
+      ],
       "pattern": "Are you {trait_adjective}?",
       "slots": {
         "trait_adjective": "brave"
@@ -243,15 +356,25 @@
           "form": "adjective"
         }
       ],
-      "words": ["are", "you", "brave"],
-      "drill_tags": ["rapid_substitution", "yes_no_answer", "trait_question"],
+      "words": [
+        "are",
+        "you",
+        "brave"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "trait_question"
+      ],
       "expected_answers": {
         "yes": "Yes, I am.",
-        "no": "No, I'm not."
+        "no": "No, I am not."
       },
       "generator": {
         "safe_for_substitution": true,
-        "safe_slots": ["trait_adjective"],
+        "safe_slots": [
+          "trait_adjective"
+        ],
         "notes": "Trait adjectives can be grouped separately from temporary feelings."
       }
     },
@@ -263,7 +386,11 @@
       "scenario_id": "01_personal_info",
       "scenario_role": "core",
       "communicative_function": "state_personal_age",
-      "grammar": ["be_verb", "third_person_singular", "affirmative_statement"],
+      "grammar": [
+        "be_verb",
+        "third_person_singular",
+        "affirmative_statement"
+      ],
       "pattern": "{third_person_singular} is {age_short_chunk}.",
       "slots": {
         "third_person_singular": "She",
@@ -277,12 +404,2660 @@
           "form": "number_as_age"
         }
       ],
-      "words": ["she", "is", "ten"],
-      "drill_tags": ["pronoun_switch", "be_verb_agreement", "age_statement"],
+      "words": [
+        "she",
+        "is",
+        "ten"
+      ],
+      "drill_tags": [
+        "pronoun_switch",
+        "be_verb_agreement",
+        "age_statement"
+      ],
       "generator": {
         "safe_for_substitution": true,
-        "safe_slots": ["third_person_singular", "age_short_chunk"],
+        "safe_slots": [
+          "third_person_singular",
+          "age_short_chunk"
+        ],
         "notes": "In A1 spoken English, 'She is ten' is acceptable as age expression. Keep separate from 'ten years old' for chunk-level control."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0010",
+      "text": "I am sad.",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "sad"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "sad",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "sad"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0011",
+      "text": "I am tired.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "tired"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "tired",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "tired"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0012",
+      "text": "I am brave.",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "brave"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "brave",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "brave"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0013",
+      "text": "I am hungry.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "hungry"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "hungry",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "hungry"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0014",
+      "text": "I am thirsty.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "thirsty"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "thirsty",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "thirsty"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0015",
+      "text": "I am angry.",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "angry"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "angry",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "angry"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0016",
+      "text": "I am cold.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "cold"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "cold",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "cold"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0017",
+      "text": "I am hot.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "hot"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "hot",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "hot"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0018",
+      "text": "I am nervous.",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "nervous"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "nervous",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "nervous"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0019",
+      "text": "I am fine.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "fine"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "fine",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "fine"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0020",
+      "text": "I am sick.",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "sick"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "sick",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "sick"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0021",
+      "text": "I am bored.",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "bored"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "bored",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "bored"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0022",
+      "text": "I am excited.",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "excited"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "excited",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "excited"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0023",
+      "text": "I am scared.",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "scared"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "scared",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "scared"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0024",
+      "text": "I am sleepy.",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "sleepy"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "sleepy",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "sleepy"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0025",
+      "text": "I am busy.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "busy"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "busy",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "busy"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0026",
+      "text": "I am ready.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "ready"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "ready",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "ready"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0027",
+      "text": "I am late.",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "late"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "late",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "late"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0028",
+      "text": "I am quiet.",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_state",
+      "communicative_function": "describe_self_state",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "adjective_complement"
+      ],
+      "pattern": "I am {state}.",
+      "slots": {
+        "state": "quiet"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "quiet",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "quiet"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "self_state"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0029",
+      "text": "I am a student.",
+      "zh": "???????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_identity",
+      "communicative_function": "describe_identity",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "noun_phrase"
+      ],
+      "pattern": "I am {identity}.",
+      "slots": {
+        "identity": "a student"
+      },
+      "chunks": [
+        {
+          "slot": "identity",
+          "text": "a student",
+          "semantic_group": "identity",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "a",
+        "student"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "identity_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "identity"
+        ],
+        "notes": "Keep the identity phrase together as the substitution chunk."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0030",
+      "text": "I am a boy.",
+      "zh": "???????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_identity",
+      "communicative_function": "describe_identity",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "noun_phrase"
+      ],
+      "pattern": "I am {identity}.",
+      "slots": {
+        "identity": "a boy"
+      },
+      "chunks": [
+        {
+          "slot": "identity",
+          "text": "a boy",
+          "semantic_group": "identity",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "a",
+        "boy"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "identity_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "identity"
+        ],
+        "notes": "Keep the identity phrase together as the substitution chunk."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0031",
+      "text": "I am a girl.",
+      "zh": "???????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_identity",
+      "communicative_function": "describe_identity",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "noun_phrase"
+      ],
+      "pattern": "I am {identity}.",
+      "slots": {
+        "identity": "a girl"
+      },
+      "chunks": [
+        {
+          "slot": "identity",
+          "text": "a girl",
+          "semantic_group": "identity",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "a",
+        "girl"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "identity_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "identity"
+        ],
+        "notes": "Keep the identity phrase together as the substitution chunk."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0032",
+      "text": "I am a new student.",
+      "zh": "???????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_identity",
+      "communicative_function": "describe_identity",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "noun_phrase"
+      ],
+      "pattern": "I am {identity}.",
+      "slots": {
+        "identity": "a new student"
+      },
+      "chunks": [
+        {
+          "slot": "identity",
+          "text": "a new student",
+          "semantic_group": "identity",
+          "form": "adjective_noun_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "a",
+        "new",
+        "student"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "identity_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "identity"
+        ],
+        "notes": "Keep the identity phrase together as the substitution chunk."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0033",
+      "text": "I am a good student.",
+      "zh": "????????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_identity",
+      "communicative_function": "describe_identity",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "noun_phrase"
+      ],
+      "pattern": "I am {identity}.",
+      "slots": {
+        "identity": "a good student"
+      },
+      "chunks": [
+        {
+          "slot": "identity",
+          "text": "a good student",
+          "semantic_group": "identity",
+          "form": "adjective_noun_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "a",
+        "good",
+        "student"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "identity_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "identity"
+        ],
+        "notes": "Keep the identity phrase together as the substitution chunk."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0034",
+      "text": "I am a brave boy.",
+      "zh": "??????????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_identity",
+      "communicative_function": "describe_identity",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "noun_phrase"
+      ],
+      "pattern": "I am {identity}.",
+      "slots": {
+        "identity": "a brave boy"
+      },
+      "chunks": [
+        {
+          "slot": "identity",
+          "text": "a brave boy",
+          "semantic_group": "identity",
+          "form": "adjective_noun_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "a",
+        "brave",
+        "boy"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "identity_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "identity"
+        ],
+        "notes": "Keep the identity phrase together as the substitution chunk."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0035",
+      "text": "I am five years old.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_age",
+      "communicative_function": "describe_age",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "age_phrase"
+      ],
+      "pattern": "I am {age}.",
+      "slots": {
+        "age": "five years old"
+      },
+      "chunks": [
+        {
+          "slot": "age",
+          "text": "five years old",
+          "semantic_group": "age",
+          "form": "adjective_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "five",
+        "years",
+        "old"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "age_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "age"
+        ],
+        "notes": "Keep the full age phrase together. Do not reduce it to a bare number."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0036",
+      "text": "I am six years old.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_age",
+      "communicative_function": "describe_age",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "age_phrase"
+      ],
+      "pattern": "I am {age}.",
+      "slots": {
+        "age": "six years old"
+      },
+      "chunks": [
+        {
+          "slot": "age",
+          "text": "six years old",
+          "semantic_group": "age",
+          "form": "adjective_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "six",
+        "years",
+        "old"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "age_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "age"
+        ],
+        "notes": "Keep the full age phrase together. Do not reduce it to a bare number."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0037",
+      "text": "I am eight years old.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_age",
+      "communicative_function": "describe_age",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "age_phrase"
+      ],
+      "pattern": "I am {age}.",
+      "slots": {
+        "age": "eight years old"
+      },
+      "chunks": [
+        {
+          "slot": "age",
+          "text": "eight years old",
+          "semantic_group": "age",
+          "form": "adjective_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "eight",
+        "years",
+        "old"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "age_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "age"
+        ],
+        "notes": "Keep the full age phrase together. Do not reduce it to a bare number."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0038",
+      "text": "I am nine years old.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_age",
+      "communicative_function": "describe_age",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "age_phrase"
+      ],
+      "pattern": "I am {age}.",
+      "slots": {
+        "age": "nine years old"
+      },
+      "chunks": [
+        {
+          "slot": "age",
+          "text": "nine years old",
+          "semantic_group": "age",
+          "form": "adjective_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "nine",
+        "years",
+        "old"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "age_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "age"
+        ],
+        "notes": "Keep the full age phrase together. Do not reduce it to a bare number."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0039",
+      "text": "I am ten years old.",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_age",
+      "communicative_function": "describe_age",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "age_phrase"
+      ],
+      "pattern": "I am {age}.",
+      "slots": {
+        "age": "ten years old"
+      },
+      "chunks": [
+        {
+          "slot": "age",
+          "text": "ten years old",
+          "semantic_group": "age",
+          "form": "adjective_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "ten",
+        "years",
+        "old"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "age_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "age"
+        ],
+        "notes": "Keep the full age phrase together. Do not reduce it to a bare number."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0040",
+      "text": "I am from Taiwan.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_origin",
+      "communicative_function": "describe_origin",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "prepositional_phrase"
+      ],
+      "pattern": "I am from {place}.",
+      "slots": {
+        "place": "Taiwan"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "Taiwan",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "from",
+        "Taiwan"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "origin_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0041",
+      "text": "I am from Taipei.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_origin",
+      "communicative_function": "describe_origin",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "prepositional_phrase"
+      ],
+      "pattern": "I am from {place}.",
+      "slots": {
+        "place": "Taipei"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "Taipei",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "from",
+        "Taipei"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "origin_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0042",
+      "text": "I am from Tainan.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_origin",
+      "communicative_function": "describe_origin",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "prepositional_phrase"
+      ],
+      "pattern": "I am from {place}.",
+      "slots": {
+        "place": "Tainan"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "Tainan",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "from",
+        "Tainan"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "origin_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0043",
+      "text": "I am from Japan.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_origin",
+      "communicative_function": "describe_origin",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "prepositional_phrase"
+      ],
+      "pattern": "I am from {place}.",
+      "slots": {
+        "place": "Japan"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "Japan",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "from",
+        "Japan"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "origin_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0044",
+      "text": "I am from Korea.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_origin",
+      "communicative_function": "describe_origin",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "prepositional_phrase"
+      ],
+      "pattern": "I am from {place}.",
+      "slots": {
+        "place": "Korea"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "Korea",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "from",
+        "Korea"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "origin_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0045",
+      "text": "I am from the UK.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_origin",
+      "communicative_function": "describe_origin",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "prepositional_phrase"
+      ],
+      "pattern": "I am from {place}.",
+      "slots": {
+        "place": "the UK"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "the UK",
+          "semantic_group": "place",
+          "form": "proper_noun_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "from",
+        "the",
+        "UK"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "origin_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0046",
+      "text": "I am from the USA.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_origin",
+      "communicative_function": "describe_origin",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "prepositional_phrase"
+      ],
+      "pattern": "I am from {place}.",
+      "slots": {
+        "place": "the USA"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "the USA",
+          "semantic_group": "place",
+          "form": "proper_noun_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "from",
+        "the",
+        "USA"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "origin_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0047",
+      "text": "I am from London.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_origin",
+      "communicative_function": "describe_origin",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "prepositional_phrase"
+      ],
+      "pattern": "I am from {place}.",
+      "slots": {
+        "place": "London"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "London",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "from",
+        "London"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "origin_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0048",
+      "text": "I am from Tokyo.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_origin",
+      "communicative_function": "describe_origin",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "prepositional_phrase"
+      ],
+      "pattern": "I am from {place}.",
+      "slots": {
+        "place": "Tokyo"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "Tokyo",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "from",
+        "Tokyo"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "origin_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0049",
+      "text": "I am from Paris.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_origin",
+      "communicative_function": "describe_origin",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "prepositional_phrase"
+      ],
+      "pattern": "I am from {place}.",
+      "slots": {
+        "place": "Paris"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "Paris",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "from",
+        "Paris"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "origin_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0050",
+      "text": "I am from New York.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "self_origin",
+      "communicative_function": "describe_origin",
+      "grammar": [
+        "be_verb",
+        "first_person_singular",
+        "affirmative_statement",
+        "prepositional_phrase"
+      ],
+      "pattern": "I am from {place}.",
+      "slots": {
+        "place": "New York"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "New York",
+          "semantic_group": "place",
+          "form": "proper_noun_phrase"
+        }
+      ],
+      "words": [
+        "I",
+        "am",
+        "from",
+        "New",
+        "York"
+      ],
+      "drill_tags": [
+        "echo",
+        "rapid_substitution",
+        "origin_statement"
+      ],
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0051",
+      "text": "Are you happy?",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "adjective_complement"
+      ],
+      "pattern": "Are you {state}?",
+      "slots": {
+        "state": "happy"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "happy",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "happy"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb in yes/no questions."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0052",
+      "text": "Are you sad?",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "adjective_complement"
+      ],
+      "pattern": "Are you {state}?",
+      "slots": {
+        "state": "sad"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "sad",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "sad"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb in yes/no questions."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0053",
+      "text": "Are you hungry?",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "adjective_complement"
+      ],
+      "pattern": "Are you {state}?",
+      "slots": {
+        "state": "hungry"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "hungry",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "hungry"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb in yes/no questions."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0054",
+      "text": "Are you thirsty?",
+      "zh": "????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "adjective_complement"
+      ],
+      "pattern": "Are you {state}?",
+      "slots": {
+        "state": "thirsty"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "thirsty",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "thirsty"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb in yes/no questions."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0055",
+      "text": "Are you seven years old?",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "adjective_phrase"
+      ],
+      "pattern": "Are you {age}?",
+      "slots": {
+        "age": "seven years old"
+      },
+      "chunks": [
+        {
+          "slot": "age",
+          "text": "seven years old",
+          "semantic_group": "age",
+          "form": "adjective_phrase"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "seven",
+        "years",
+        "old"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "age"
+        ],
+        "notes": "Keep the full age phrase together in the question slot."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0056",
+      "text": "Are you ten years old?",
+      "zh": "?????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "adjective_phrase"
+      ],
+      "pattern": "Are you {age}?",
+      "slots": {
+        "age": "ten years old"
+      },
+      "chunks": [
+        {
+          "slot": "age",
+          "text": "ten years old",
+          "semantic_group": "age",
+          "form": "adjective_phrase"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "ten",
+        "years",
+        "old"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "age"
+        ],
+        "notes": "Keep the full age phrase together in the question slot."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0057",
+      "text": "Are you from Taiwan?",
+      "zh": "???????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "proper_noun"
+      ],
+      "pattern": "Are you from {place}?",
+      "slots": {
+        "place": "Taiwan"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "Taiwan",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "from",
+        "Taiwan"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0058",
+      "text": "Are you from Japan?",
+      "zh": "???????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "proper_noun"
+      ],
+      "pattern": "Are you from {place}?",
+      "slots": {
+        "place": "Japan"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "Japan",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "from",
+        "Japan"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0059",
+      "text": "Are you from Taipei?",
+      "zh": "???????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "proper_noun"
+      ],
+      "pattern": "Are you from {place}?",
+      "slots": {
+        "place": "Taipei"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "Taipei",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "from",
+        "Taipei"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0060",
+      "text": "Are you from London?",
+      "zh": "???????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "proper_noun"
+      ],
+      "pattern": "Are you from {place}?",
+      "slots": {
+        "place": "London"
+      },
+      "chunks": [
+        {
+          "slot": "place",
+          "text": "London",
+          "semantic_group": "place",
+          "form": "proper_noun"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "from",
+        "London"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "place"
+        ],
+        "notes": "Store only the place name in the slot. Keep 'from' in the pattern."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0061",
+      "text": "Are you a teacher?",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "noun_phrase"
+      ],
+      "pattern": "Are you {identity}?",
+      "slots": {
+        "identity": "a teacher"
+      },
+      "chunks": [
+        {
+          "slot": "identity",
+          "text": "a teacher",
+          "semantic_group": "identity",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "a",
+        "teacher"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "identity"
+        ],
+        "notes": "Keep the identity phrase together as the substitution chunk."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0062",
+      "text": "Are you a doctor?",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "noun_phrase"
+      ],
+      "pattern": "Are you {identity}?",
+      "slots": {
+        "identity": "a doctor"
+      },
+      "chunks": [
+        {
+          "slot": "identity",
+          "text": "a doctor",
+          "semantic_group": "identity",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "a",
+        "doctor"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "identity"
+        ],
+        "notes": "Keep the identity phrase together as the substitution chunk."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0063",
+      "text": "Are you a pilot?",
+      "zh": "???????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "noun_phrase"
+      ],
+      "pattern": "Are you {identity}?",
+      "slots": {
+        "identity": "a pilot"
+      },
+      "chunks": [
+        {
+          "slot": "identity",
+          "text": "a pilot",
+          "semantic_group": "identity",
+          "form": "noun_phrase"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "a",
+        "pilot"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "identity"
+        ],
+        "notes": "Keep the identity phrase together as the substitution chunk."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0064",
+      "text": "Are you ready?",
+      "zh": "???????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "adjective_complement"
+      ],
+      "pattern": "Are you {state}?",
+      "slots": {
+        "state": "ready"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "ready",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "ready"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb in yes/no questions."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0065",
+      "text": "Are you late?",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "question_prompt",
+      "communicative_function": "ask_personal_info",
+      "grammar": [
+        "be_verb",
+        "second_person",
+        "yes_no_question",
+        "adjective_complement"
+      ],
+      "pattern": "Are you {state}?",
+      "slots": {
+        "state": "late"
+      },
+      "chunks": [
+        {
+          "slot": "state",
+          "text": "late",
+          "semantic_group": "state",
+          "form": "adjective"
+        }
+      ],
+      "words": [
+        "are",
+        "you",
+        "late"
+      ],
+      "drill_tags": [
+        "rapid_substitution",
+        "yes_no_answer",
+        "personal_info_question"
+      ],
+      "expected_answers": {
+        "yes": "Yes, I am.",
+        "no": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": true,
+        "safe_slots": [
+          "state"
+        ],
+        "notes": "Use adjective state complements after be-verb in yes/no questions."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0066",
+      "text": "Yes, I am.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "response",
+      "communicative_function": "answer_yes_no",
+      "grammar": [
+        "be_verb",
+        "yes_no_response"
+      ],
+      "pattern": "Yes, I am.",
+      "slots": {},
+      "chunks": [],
+      "words": [
+        "Yes",
+        "I",
+        "am"
+      ],
+      "drill_tags": [
+        "echo",
+        "yes_no_answer",
+        "response_pattern"
+      ],
+      "expected_answers": {
+        "response": "Yes, I am."
+      },
+      "generator": {
+        "safe_for_substitution": false,
+        "safe_slots": [],
+        "notes": "Fixed response pattern for be-verb yes/no answers."
+      }
+    },
+    {
+      "id": "A1_01_personal_info_0067",
+      "text": "No, I am not.",
+      "zh": "??????",
+      "level": "A1",
+      "scenario_id": "01_personal_info",
+      "scenario_role": "response",
+      "communicative_function": "answer_yes_no",
+      "grammar": [
+        "be_verb",
+        "yes_no_response"
+      ],
+      "pattern": "No, I am not.",
+      "slots": {},
+      "chunks": [],
+      "words": [
+        "No",
+        "I",
+        "am",
+        "not"
+      ],
+      "drill_tags": [
+        "echo",
+        "yes_no_answer",
+        "response_pattern"
+      ],
+      "expected_answers": {
+        "response": "No, I am not."
+      },
+      "generator": {
+        "safe_for_substitution": false,
+        "safe_slots": [],
+        "notes": "Fixed negative response pattern for be-verb yes/no answers."
       }
     },
     {
@@ -293,7 +3068,12 @@
       "scenario_id": "05_weather_environment",
       "scenario_role": "cross_training",
       "communicative_function": "state_weather",
-      "grammar": ["be_verb", "third_person_singular_it", "affirmative_statement", "weather_expression"],
+      "grammar": [
+        "be_verb",
+        "third_person_singular_it",
+        "affirmative_statement",
+        "weather_expression"
+      ],
       "pattern": "It is {weather_adjective}.",
       "slots": {
         "weather_adjective": "sunny"
@@ -306,12 +3086,23 @@
           "form": "adjective"
         }
       ],
-      "words": ["it", "is", "sunny"],
-      "drill_tags": ["weather_response", "cross_scenario_mix"],
-      "cross_training_for": ["A1_01_personal_info"],
+      "words": [
+        "it",
+        "is",
+        "sunny"
+      ],
+      "drill_tags": [
+        "weather_response",
+        "cross_scenario_mix"
+      ],
+      "cross_training_for": [
+        "A1_01_personal_info"
+      ],
       "generator": {
         "safe_for_substitution": true,
-        "safe_slots": ["weather_adjective"],
+        "safe_slots": [
+          "weather_adjective"
+        ],
         "notes": "Belongs to scenario 05 Weather & Environment, but can be mixed with scenario 01 be-verb reaction drills."
       }
     }
